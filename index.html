@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIZUtire — Diagnóstico estructural de neumáticos OTR</title>
+  <meta name="description" content="Diagnóstico estructural no destructivo para neumáticos OTR de minería. Tecnología ultrasónica e IA para cero fallas imprevistas." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR pill flotante ===================== -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <a href="#" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" class="logo-icon">
+          <rect x="1" y="1" width="9" height="9" rx="2" fill="currentColor" opacity="0.9"/>
+          <rect x="12" y="1" width="9" height="9" rx="2" fill="currentColor" opacity="0.5"/>
+          <rect x="1" y="12" width="9" height="9" rx="2" fill="currentColor" opacity="0.5"/>
+          <rect x="12" y="12" width="9" height="9" rx="2" fill="currentColor" opacity="0.9"/>
+        </svg>
+        <span>VIZUtire</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#problema">Tecnología</a></li>
+        <li><a href="#problema" class="nav-highlight">Servicios</a></li>
+        <li><a href="#problema">Resultados</a></li>
+      </ul>
+      <a href="#contacto" class="nav-cta-btn">
+        Solicitar diagnóstico <span class="btn-arrow">→</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="inicio">
+    <div class="hero-dots"></div>
+
+    <div class="hero-cards-left">
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">Cero fallas imprevistas en toda la temporada. Resultados extraordinarios.</p>
+        <div class="side-author">— Jefe de Mantenimiento, BHP</div>
+      </div>
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">Redujimos costos de reemplazo un 35% en el primer trimestre.</p>
+        <div class="side-author">— Gerente de Operaciones, Codelco</div>
+      </div>
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">El diagnóstico en 48h cambió completamente nuestra planificación.</p>
+        <div class="side-author">— Supervisor de Flota, Kal Tire</div>
+      </div>
+    </div>
+
+    <div class="hero-center">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Tecnología validada en minería
+      </div>
+      <h1 class="hero-title">
+        Diagnóstico estructural<br />
+        Para Neumáticos OTR<br />
+        <em>de Minería</em>
+      </h1>
+      <p class="hero-sub">
+        Detectamos daño interno sin pruebas destructivas.<br />
+        Ultrasonido 2.4 MHz + IA. Diagnóstico en 48 horas.
+      </p>
+      <div class="hero-actions">
+        <a href="#contacto" class="hero-btn-dark">
+          Solicitar diagnóstico <span class="btn-arrow-circle">→</span>
+        </a>
+        <a href="#tecnologia" class="hero-btn-light">
+          Ver cómo funciona
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-cards-right">
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">La tecnología ultrasónica es increíble. Detecta lo que nadie más puede ver.</p>
+        <div class="side-author">— Director Técnico, Michelin</div>
+      </div>
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">Implementamos VIZUtire y en 3 meses eliminamos todas las paradas no planificadas.</p>
+        <div class="side-author">— Gerente de Flota, Los Pelambres</div>
+      </div>
+      <div class="side-card">
+        <div class="side-quote">"</div>
+        <p class="side-text">El ROI fue evidente desde la primera inspección. Altamente recomendable.</p>
+        <div class="side-author">— Jefe de Neumáticos, Lomas Bayas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BANNER CLIENTES (logos) ===================== -->
+  <section class="clients-banner">
+    <div class="banner-inner">
+      <div class="banner-label">Clientes validados.</div>
+      <div class="banner-track-wrap">
+        <div class="banner-track" id="bannerTrack">
+          <div class="logo-cell"><img src="assets/logos/bhp.png" alt="BHP" /></div>
+          <div class="logo-cell"><img src="assets/logos/codelco.png" alt="Codelco" /></div>
+          <div class="logo-cell"><img src="assets/logos/kaltire.png" alt="Kal Tire" /></div>
+          <div class="logo-cell"><img src="assets/logos/lomas-bayas.png" alt="Lomas Bayas" /></div>
+          <div class="logo-cell"><img src="assets/logos/los-pelambres.png" alt="Los Pelambres" /></div>
+          <div class="logo-cell"><img src="assets/logos/michelin.png" alt="Michelin" /></div>
+          <div class="logo-cell"><img src="assets/logos/bhp.png" alt="BHP" /></div>
+          <div class="logo-cell"><img src="assets/logos/codelco.png" alt="Codelco" /></div>
+          <div class="logo-cell"><img src="assets/logos/kaltire.png" alt="Kal Tire" /></div>
+          <div class="logo-cell"><img src="assets/logos/lomas-bayas.png" alt="Lomas Bayas" /></div>
+          <div class="logo-cell"><img src="assets/logos/los-pelambres.png" alt="Los Pelambres" /></div>
+          <div class="logo-cell"><img src="assets/logos/michelin.png" alt="Michelin" /></div>
+          <div class="logo-cell"><img src="assets/logos/bhp.png" alt="BHP" /></div>
+          <div class="logo-cell"><img src="assets/logos/codelco.png" alt="Codelco" /></div>
+          <div class="logo-cell"><img src="assets/logos/kaltire.png" alt="Kal Tire" /></div>
+          <div class="logo-cell"><img src="assets/logos/lomas-bayas.png" alt="Lomas Bayas" /></div>
+          <div class="logo-cell"><img src="assets/logos/los-pelambres.png" alt="Los Pelambres" /></div>
+          <div class="logo-cell"><img src="assets/logos/michelin.png" alt="Michelin" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EL DESAFÍO — Apple-style scroll ===================== -->
+  <section class="scroll-story" id="problema">
+    <div class="story-sticky">
+      <div class="hero-dots"></div>
+      <div class="story-layout">
+
+        <!-- LEFT: Apple-style navigation -->
+        <div class="story-left">
+          <div class="tag">El desafío</div>
+          <h2 class="problem-title">Nuestra respuesta<br />al reto de<br />la minería</h2>
+          <nav class="apple-nav">
+            <button class="apple-nav-item active" data-nav="0">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Inspección Ultrasónica</span>
+              </div>
+              <span class="ani-desc">Sin desmontaje. Sin daño. Aplicamos transductores de 2.4 MHz sobre el neumático en operación. 20–40 minutos por unidad.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="1">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Motor de IA Predictivo</span>
+              </div>
+              <span class="ani-desc">Nuestro algoritmo procesa 150+ variables operacionales para priorizar riesgos y predecir fallas antes de que ocurran.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="2">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Reporte en 48 horas</span>
+              </div>
+              <span class="ani-desc">Mapa de daño, nivel de riesgo por capa, horas restantes estimadas y plan de acción prescriptivo detallado.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="3">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">ROI desde el primer mes</span>
+              </div>
+              <span class="ani-desc">Validado en 6+ operaciones mineras. Reducción del 35% en gastos de reemplazo no planificado.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="4">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Nuestra tecnología</span>
+              </div>
+              <span class="ani-desc">Ultrasonido de 2.4 MHz + modelos físico-matemáticos. 150+ variables operacionales en cada análisis.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="5">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Servicios</span>
+              </div>
+              <span class="ani-desc">Inspección, análisis tensional, motor de IA y reporte completo. Todo en un servicio integrado.</span>
+            </button>
+            <button class="apple-nav-item" data-nav="6">
+              <div class="ani-row">
+                <span class="ani-icon">
+                  <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                  <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <span class="ani-name">Resultados comprobados</span>
+              </div>
+              <span class="ani-desc">35% menos en costos. 0 fallas imprevistas. Validado en 6+ operaciones mineras de clase mundial.</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- RIGHT: tarjetas animadas al scroll -->
+        <div class="story-right">
+          <div class="story-card active" data-card="0">
+            <div class="sc-image">
+              <!-- Reemplaza sc-img-ph con: <img src="assets/foto-01.jpg" alt="Inspección Ultrasónica" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">01</div>
+              <h3>Inspección<br />Ultrasónica</h3>
+              <p>Sin desmontaje. Sin daño. Aplicamos transductores de 2.4 MHz sobre el neumático en operación. 20–40 minutos por unidad.</p>
+              <div class="sc-proof">
+                <span class="sc-proof-num">0</span>
+                <span class="sc-proof-label">pruebas destructivas</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="1">
+            <div class="sc-image">
+              <!-- Reemplaza sc-img-ph con: <img src="assets/foto-02.jpg" alt="Motor de IA" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">02</div>
+              <h3>Motor de IA<br />Predictivo</h3>
+              <p>Nuestro algoritmo procesa 150+ variables operacionales para priorizar riesgos y predecir fallas antes de que ocurran.</p>
+              <div class="sc-proof">
+                <span class="sc-proof-num">150+</span>
+                <span class="sc-proof-label">variables operacionales</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="2">
+            <div class="sc-image">
+              <!-- Reemplaza sc-img-ph con: <img src="assets/foto-03.jpg" alt="Reporte 48h" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">03</div>
+              <h3>Reporte completo<br />en 48 horas</h3>
+              <p>Mapa de daño, nivel de riesgo por capa, horas restantes estimadas y plan de acción prescriptivo detallado.</p>
+              <div class="sc-proof">
+                <span class="sc-proof-num">48h</span>
+                <span class="sc-proof-label">tiempo de entrega</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="3">
+            <div class="sc-image">
+              <!-- Reemplaza sc-img-ph con: <img src="assets/foto-04.jpg" alt="ROI" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">04</div>
+              <h3>ROI desde<br />el primer mes</h3>
+              <p>Validado en 6+ operaciones mineras. Reducción del 35% en gastos de reemplazo no planificado desde el primer trimestre.</p>
+              <div class="sc-proof">
+                <span class="sc-proof-num">35%</span>
+                <span class="sc-proof-label">reducción en costos</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="4">
+            <div class="sc-image">
+              <!-- <img src="assets/foto-05.jpg" alt="Tecnología" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">05</div>
+              <h3>Ultrasonido + IA<br />en cada inspección</h3>
+              <div class="sc-steps">
+                <div class="sc-step"><span>01</span> Inspección ultrasónica</div>
+                <div class="sc-step"><span>02</span> Análisis tensional</div>
+                <div class="sc-step"><span>03</span> Motor de IA predictivo</div>
+                <div class="sc-step"><span>04</span> Reporte en 48h</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="5">
+            <div class="sc-image">
+              <!-- <img src="assets/foto-06.jpg" alt="Servicios" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">06</div>
+              <h3>Todo lo que necesitas<br />para operar sin sorpresas</h3>
+              <div class="sc-svc-list">
+                <div class="sc-svc"><span class="sc-svc-name">Inspección Ultrasónica</span><span class="sc-svc-tag">No destructivo</span></div>
+                <div class="sc-svc"><span class="sc-svc-name">Análisis Tensional</span><span class="sc-svc-tag">150+ variables</span></div>
+                <div class="sc-svc"><span class="sc-svc-name">Analítica con IA</span><span class="sc-svc-tag">IA predictiva</span></div>
+                <div class="sc-svc"><span class="sc-svc-name">Reporte de Diagnóstico</span><span class="sc-svc-tag">48h entrega</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card" data-card="6">
+            <div class="sc-image">
+              <!-- <img src="assets/foto-07.jpg" alt="Resultados" /> -->
+              <div class="sc-img-ph">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/>
+                </svg>
+                <span>Agrega tu imagen aquí</span>
+              </div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-num">07</div>
+              <h3>Números que<br />hablan por sí solos</h3>
+              <div class="sc-stats">
+                <div class="sc-stat"><div class="sc-stat-num">35%</div><div class="sc-stat-label">Reducción en reemplazos no planificados</div></div>
+                <div class="sc-stat"><div class="sc-stat-num">0</div><div class="sc-stat-label">Fallas imprevistas con diagnóstico continuo</div></div>
+                <div class="sc-stat"><div class="sc-stat-num">150+</div><div class="sc-stat-label">Variables en el modelo físico-matemático</div></div>
+                <div class="sc-stat"><div class="sc-stat-num">48h</div><div class="sc-stat-label">Tiempo máximo de entrega del diagnóstico</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA DARK ===================== -->
+  <section class="cta-section" id="contacto">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <div class="tag tag-light">Contacto</div>
+        <h2 class="cta-title">¿Listo para cero<br />fallas imprevistas?</h2>
+        <p class="cta-sub">Contáctanos para agendar una inspección piloto. Analizamos los primeros 5 neumáticos sin costo.</p>
+        <a href="mailto:contacto@vizutire.com" class="btn-white btn-lg">Escribir a contacto@vizutire.com</a>
+      </div>
+      <div class="cta-form-wrapper reveal delay-2">
+        <form class="cta-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" name="nombre" placeholder="Tu nombre" required />
+            </div>
+            <div class="form-group">
+              <label>Empresa</label>
+              <input type="text" name="empresa" placeholder="Nombre de la empresa" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email corporativo</label>
+              <input type="email" name="email" placeholder="tu@empresa.com" required />
+            </div>
+            <div class="form-group">
+              <label>Tamaño de flota</label>
+              <select name="flota">
+                <option value="">Selecciona...</option>
+                <option>1–10 camiones</option>
+                <option>11–50 camiones</option>
+                <option>51–100 camiones</option>
+                <option>Más de 100 camiones</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea name="mensaje" placeholder="Cuéntanos sobre tu operación..." rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-lg full-width">Solicitar diagnóstico gratuito</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">VIZUtire</div>
+          <p>Diagnóstico estructural no destructivo para neumáticos OTR de minería.</p>
+          <p class="footer-loc">Antofagasta, Chile · contacto@vizutire.com</p>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-col">
+            <h4>Servicios</h4>
+            <a href="#problema">Inspección Ultrasónica</a>
+            <a href="#problema">Análisis Tensional</a>
+            <a href="#problema">Analítica con IA</a>
+            <a href="#problema">Reportes de Diagnóstico</a>
+          </div>
+          <div class="footer-col">
+            <h4>Empresa</h4>
+            <a href="#problema">Tecnología</a>
+            <a href="#problema">Resultados</a>
+            <a href="#contacto">Contacto</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 VIZUtire. Todos los derechos reservados.</p>
+        <p>Antofagasta, Chile</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
