@@ -1,5 +1,11 @@
 /* VIZUtire — JS */
 
+// ========= DOT REVEAL =========
+document.addEventListener('mousemove', e => {
+  document.documentElement.style.setProperty('--dot-x', e.clientX + 'px');
+  document.documentElement.style.setProperty('--dot-y', e.clientY + 'px');
+}, { passive: true });
+
 // ========= NAVBAR SCROLL =========
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {

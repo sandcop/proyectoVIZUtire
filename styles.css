@@ -338,13 +338,17 @@ section[id].in-view::after {
   padding-top: 80px;
 }
 
-/* Fondo de puntos */
+/* Fondo de puntos — capa global con revelación por cursor */
 .hero-dots {
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1px, transparent 1px);
-  background-size: 28px 28px;
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.22) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
   pointer-events: none;
   z-index: 0;
+  -webkit-mask-image: radial-gradient(circle 70px at var(--dot-x, -200px) var(--dot-y, -200px),
+    rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+  mask-image: radial-gradient(circle 70px at var(--dot-x, -200px) var(--dot-y, -200px),
+    rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
 }
 
 .story-layout {
