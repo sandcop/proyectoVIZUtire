@@ -11,31 +11,22 @@ const hamburger = document.getElementById('hamburger');
 const navLinks = document.querySelector('.nav-links');
 let navOpen = false;
 
+function closeMobileMenu() {
+  navOpen = false;
+  navLinks.classList.remove('mobile-open');
+}
+
 hamburger.addEventListener('click', () => {
   navOpen = !navOpen;
-  if (navOpen) {
-    navLinks.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 70px; left: 0; right: 0;
-      background: rgba(246,247,248,0.97);
-      backdrop-filter: blur(16px);
-      padding: 20px 24px;
-      gap: 4px;
-      border-bottom: 1px solid #ebecef;
-      z-index: 99;
-    `;
-  } else {
-    navLinks.style.display = 'none';
-  }
+  navLinks.classList.toggle('mobile-open', navOpen);
 });
 
 document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => {
-    navOpen = false;
-    navLinks.style.display = 'none';
-  });
+  a.addEventListener('click', () => { if (navOpen) closeMobileMenu(); });
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && navOpen) closeMobileMenu();
 });
 
 // ========= SCROLL REVEAL =========
@@ -83,6 +74,10 @@ window.addEventListener('load', () => {
 
 appleNavItems.forEach((item, i) => {
   item.addEventListener('click', () => {
+    if (window.innerWidth <= 900) {
+      if (window.carouselGoTo) window.carouselGoTo(i);
+      return;
+    }
     if (!scrollStory) return;
     const total = scrollStory.offsetHeight - window.innerHeight;
     const segment = total / storyCards.length;
@@ -128,6 +123,92 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
+// ========= MOBILE CAROUSEL =========
+(function () {
+  const cards   = document.querySelectorAll('.story-card');
+  const dots    = document.querySelectorAll('.carousel-dot');
+  const prevBtn = document.querySelector('.carousel-prev');
+  const nextBtn = document.querySelector('.carousel-next');
+  const window_ = document.querySelector('.carousel-window');
+  let current = 0;
+  let touchStartX = 0;
+
+  const overlay = document.getElementById('mobileNavOverlay');
+
+  function setOverlay(idx) {
+    if (!overlay || !appleNavItems[idx]) return;
+    const name = appleNavItems[idx].querySelector('.ani-name')?.textContent || '';
+    const desc = appleNavItems[idx].querySelector('.ani-desc')?.textContent || '';
+    overlay.innerHTML =
+      `<div class="mob-ov-row">` +
+        `<svg class="mob-ov-plus" width="16" height="16" viewBox="0 0 16 16" fill="none">` +
+          `<path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>` +
+        `</svg>` +
+        `<span class="mob-ov-name">${name}</span>` +
+      `</div>` +
+      `<p class="mob-ov-desc">${desc}</p>`;
+  }
+
+  function goTo(i, skipAnim) {
+    const newI = Math.max(0, Math.min(cards.length - 1, i));
+    const direction = newI > current ? 1 : -1;
+    current = newI;
+    cards.forEach((c, j) => {
+      c.classList.remove('active', 'past');
+      if (j === current)     c.classList.add('active');
+      else if (j < current) c.classList.add('past');
+    });
+    dots.forEach((d, j) => d.classList.toggle('active', j === current));
+    appleNavItems.forEach((item, j) => item.classList.toggle('active', j === current));
+    if (prevBtn) prevBtn.disabled = current === 0;
+    if (nextBtn) nextBtn.disabled = current === cards.length - 1;
+    if (!overlay) return;
+    if (skipAnim) {
+      setOverlay(current);
+      return;
+    }
+    const exitClass  = direction > 0 ? 'mob-ov-out-left'  : 'mob-ov-out-right';
+    const enterClass = direction > 0 ? 'mob-ov-out-right' : 'mob-ov-out-left';
+    overlay.classList.add(exitClass);
+    setTimeout(() => {
+      setOverlay(current);
+      overlay.classList.remove(exitClass);
+      overlay.classList.add(enterClass);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.remove(enterClass);
+      }));
+    }, 300);
+  }
+  window.carouselGoTo = goTo;
+
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+  dots.forEach((d, j) => d.addEventListener('click', () => goTo(j)));
+
+  // Touch swipe
+  if (window_) {
+    window_.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    window_.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 44) goTo(diff > 0 ? current + 1 : current - 1);
+    }, { passive: true });
+  }
+
+  // Init on load; reset when resizing to mobile
+  function init() {
+    if (window.innerWidth <= 900) goTo(current, true);
+  }
+  window.addEventListener('load', init);
+  window.addEventListener('resize', init);
+})();
+
+// ========= SECTION SCROLL HIGHLIGHT =========
+const sectionHighlightObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting));
+}, { threshold: 0.05 });
+
+document.querySelectorAll('section[id]').forEach(s => sectionHighlightObs.observe(s));
+
 // ========= BANNER TRACK PAUSE ON HOVER =========
 const bannerTrack = document.querySelector('.banner-track');
 if (bannerTrack) {
@@ -144,6 +225,22 @@ if (form) {
     const orig = btn.textContent;
     btn.textContent = 'Enviando...';
     btn.disabled = true;
+
+    const data = Object.fromEntries(new FormData(form));
+    const lead = {
+      id: Date.now(),
+      fecha: new Date().toISOString(),
+      nombre:  data.nombre  || '',
+      empresa: data.empresa || '',
+      email:   data.email   || '',
+      flota:   data.flota   || '',
+      mensaje: data.mensaje || '',
+      estado:  'nuevo',
+      notas:   ''
+    };
+    const leads = JSON.parse(localStorage.getItem('vizutire_leads') || '[]');
+    leads.unshift(lead);
+    localStorage.setItem('vizutire_leads', JSON.stringify(leads));
 
     setTimeout(() => {
       btn.textContent = '¡Solicitud enviada! Te contactamos pronto.';
