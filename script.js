@@ -1,5 +1,16 @@
 /* VIZUtire — JS */
 
+// ========= LENIS SMOOTH SCROLL =========
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+(function rafLoop(time) {
+  lenis.raf(time);
+  requestAnimationFrame(rafLoop);
+})(0);
+
 // ========= DOT REVEAL =========
 document.addEventListener('mousemove', e => {
   document.documentElement.style.setProperty('--dot-x', e.clientX + 'px');
@@ -87,7 +98,7 @@ appleNavItems.forEach((item, i) => {
     if (!scrollStory) return;
     const total = scrollStory.offsetHeight - window.innerHeight;
     const segment = total / storyCards.length;
-    window.scrollTo({ top: scrollStory.offsetTop + segment * i + segment * 0.5, behavior: 'smooth' });
+    lenis.scrollTo(scrollStory.offsetTop + segment * i + segment * 0.5);
   });
 });
 
@@ -124,8 +135,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     const target = document.querySelector(link.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    const offset = 80;
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    lenis.scrollTo(target, { offset: -80 });
   });
 });
 
