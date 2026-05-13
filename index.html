@@ -14,17 +14,23 @@
 
   <!-- ===================== NAVBAR pill flotante ===================== -->
   <header class="header">
+    <!-- Logo independiente a la izquierda -->
+    <a href="#" class="header-logo">
+      <img src="imagenes/logo.png" alt="VIZUtire" class="logo-img" />
+    </a>
+
+    <!-- Pill a la derecha -->
     <nav class="navbar" id="navbar">
-      <a href="#" class="nav-logo">
-        <img src="imagenes/logo.png" alt="VIZUtire" class="logo-img" />
-      </a>
       <ul class="nav-links">
-        <li><a href="#problema">Tecnología</a></li>
-        <li><a href="#problema">Servicios</a></li>
-        <li><a href="#problema">Resultados</a></li>
+        <li><a href="#tecnologia">Tecnología</a></li>
+        <li><a href="#tecnologia">Servicios</a></li>
+        <li><a href="#tecnologia">Resultados</a></li>
         <li><a href="#historia">Historia</a></li>
-        <li><a href="#contacto">Contacto</a></li>
       </ul>
+      <div class="nav-actions">
+        <a href="#contacto" class="nav-cta-btn">Contacto</a>
+        <button class="nav-lang-btn">ES</button>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -35,45 +41,168 @@
   <section class="hero" id="inicio">
     <div class="hero-dots"></div>
 
-    <div class="hero-center">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Tecnología validada en minería
+    <div class="hero-layout">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Tecnología validada en minería
+        </div>
+        <h1 class="hero-title">
+          Diagnóstico<br />
+          Estructural<br />
+          Para Neumáticos<br />
+          <em>OTR de Minería</em>
+        </h1>
+        <p class="hero-sub">
+          Detectamos daño interno sin pruebas destructivas.<br />
+          Ultrasonido 2.4 MHz + IA. Diagnóstico en 48 horas.
+        </p>
+        <div class="hero-actions">
+          <a href="#contacto" class="hero-btn-dark">
+            Solicitar Diagnóstico <span class="btn-arrow-circle">→</span>
+          </a>
+          <a href="#tecnologia" class="hero-btn-light">
+            Ver como funciona
+          </a>
+        </div>
       </div>
-      <h1 class="hero-title">
-        Diagnóstico estructural<br />
-        Para Neumáticos OTR<br />
-        <em>de Minería</em>
-      </h1>
-      <p class="hero-sub">
-        Detectamos daño interno sin pruebas destructivas.<br />
-        Ultrasonido 2.4 MHz + IA. Diagnóstico en 48 horas.
-      </p>
-      <div class="hero-actions">
-        <a href="#contacto" class="hero-btn-dark">
-          Solicitar diagnóstico <span class="btn-arrow-circle">→</span>
-        </a>
-        <a href="#tecnologia" class="hero-btn-light">
-          Ver cómo funciona
-        </a>
+    </div>
+
+    <!-- Tire fuera del grid — posición absoluta al borde derecho -->
+    <div class="hero-visual">
+      <img src="imagenes/neumatico 1.png" alt="Neumático OTR — diagnóstico estructural VIZUtire" class="hero-tire-img" />
+    </div>
+
+  </section>
+
+  <!-- ===================== SISTEMA DE DIAGNÓSTICO OPERACIONAL ===================== -->
+  <section class="diag-section" id="problema">
+
+    <!-- Parte 1: Diagnóstico — fondo blanco con neumático + marcadores -->
+    <div class="diag-main">
+      <div class="container">
+        <div class="diag-hdr-light reveal">
+          <div class="tag">SISTEMA DE DIAGNÓSTICO OPERACIONAL</div>
+          <h2 class="diag-title-light">Evento crítico <span class="diag-neq">≠</span> falla visible.</h2>
+          <p class="diag-sub-light">Captura y análisis de fallas estructurales en tiempo real.<br />Cuatro etapas con modelo físico-matemático propio.</p>
+        </div>
+        <div class="diag-two-col reveal delay-1">
+          <!-- Neumático con 5 marcadores interactivos -->
+          <div class="diag-tire-wrap">
+            <img src="imagenes/neumatico 2.png" alt="Fallas detectadas en neumático OTR" class="diag-tire-img" />
+            <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
+            <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
+            <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
+            <span class="fault-marker" data-fault="4" style="top:62%;left:57%" title="F-4"></span>
+            <span class="fault-marker" data-fault="5" style="top:78%;left:17%" title="F-5"></span>
+          </div>
+
+          <!-- Área de tarjetas — se muestran al hover sobre cada marcador -->
+          <div class="diag-cards-area">
+
+            <div class="diag-info-card active" data-card="1">
+              <div class="diag-card-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                F-1
+              </div>
+              <h3 class="diag-card-title">Microfisura interna</h3>
+              <p class="diag-card-desc">Discontinuidades internas detectadas mediante ultrasonido de 2.4 MHz. Etapa inicial con alta probabilidad de progresión bajo carga operacional.</p>
+              <div class="diag-card-thumb">
+                <img src="imagenes/neumatico 1.png" alt="Microfisura interna" />
+              </div>
+            </div>
+
+            <div class="diag-info-card" data-card="2">
+              <div class="diag-card-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                F-2
+              </div>
+              <h3 class="diag-card-title">Separación de capas</h3>
+              <p class="diag-card-desc">Delaminación entre capas estructurales del neumático. El análisis tensional identifica la extensión y profundidad del daño con precisión milimétrica.</p>
+              <div class="diag-card-thumb">
+                <img src="imagenes/neumatico 1.png" alt="Separación de capas" />
+              </div>
+            </div>
+
+            <div class="diag-info-card" data-card="3">
+              <div class="diag-card-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                F-3
+              </div>
+              <h3 class="diag-card-title">Fractura en cinturón</h3>
+              <p class="diag-card-desc">Rotura de cordones metálicos en el cinturón de acero. Riesgo estructural crítico. El modelo de IA predice ventana de falla con ±8% de precisión.</p>
+              <div class="diag-card-thumb">
+                <img src="imagenes/neumatico 1.png" alt="Fractura en cinturón" />
+              </div>
+            </div>
+
+            <div class="diag-info-card" data-card="4">
+              <div class="diag-card-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                F-4
+              </div>
+              <h3 class="diag-card-title">Daño por sobrecarga</h3>
+              <p class="diag-card-desc">Fatiga estructural acumulada por operación fuera de parámetros. Las 150+ variables operacionales detectan el origen y dimensionan el impacto real.</p>
+              <div class="diag-card-thumb">
+                <img src="imagenes/neumatico 1.png" alt="Daño por sobrecarga" />
+              </div>
+            </div>
+
+            <div class="diag-info-card" data-card="5">
+              <div class="diag-card-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                F-5
+              </div>
+              <h3 class="diag-card-title">Impacto lateral</h3>
+              <p class="diag-card-desc">Daño en flanco por impacto con roca o borde. Evaluación ultrasónica determina si el daño es superficial o comprometió capas estructurales internas.</p>
+              <div class="diag-card-thumb">
+                <img src="imagenes/neumatico 1.png" alt="Impacto lateral" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parte 2: Solución — fondo claro -->
+    <div class="diag-solution">
+      <div class="container">
+        <div class="diag-sol-hdr reveal">
+          <div class="tag">Solución</div>
+          <h2 class="section-title">Ultrasonido + análisis tensional<br />+ IA para decidir por condición.</h2>
+          <p class="section-body center">Integramos inspección ultrasónica no destructiva, modelamiento tensional y analítica/IA para entregar criterios técnicos defendibles sobre operación, reparación, rotación o baja técnica.</p>
+        </div>
+        <div class="diag-pillars reveal delay-1">
+          <div class="diag-pillar">
+            <div class="pillar-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/><path d="M16 3.13a10 10 0 0 1 0 17.74"/></svg>
+            </div>
+            <h3>Ultrasonidos</h3>
+            <p>Detección y evaluación de discontinuidades internas.</p>
+          </div>
+          <div class="diag-pillar">
+            <div class="pillar-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Análisis tensional</h3>
+            <p>Relación entre operación y respuesta estructural del neumático.</p>
+          </div>
+          <div class="diag-pillar">
+            <div class="pillar-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <h3>IA / Analítica</h3>
+            <p>Priorización de riesgo, tendencia y recomendación operativa.</p>
+          </div>
+        </div>
       </div>
     </div>
 
   </section>
 
-  <!-- ===================== BANNER CLIENTES (logos) ===================== -->
-  <section class="clients-banner">
-    <iframe
-      src="assets/clientes-banner.html"
-      class="clientes-iframe"
-      frameborder="0"
-      scrolling="no"
-      title="Clientes validados"
-    ></iframe>
-  </section>
-
   <!-- ===================== EL DESAFÍO — Apple-style scroll ===================== -->
-  <section class="scroll-story" id="problema">
+  <section class="scroll-story" id="tecnologia">
     <div class="story-sticky">
       <div class="hero-dots"></div>
       <div class="story-layout">
@@ -360,35 +489,82 @@
     </div>
   </section>
 
-  <!-- ===================== CTA DARK ===================== -->
+  <!-- ===================== CONTACTO ===================== -->
   <section class="cta-section" id="contacto">
     <div class="container">
+
+      <!-- Columna izquierda -->
       <div class="cta-inner reveal">
         <div class="tag tag-light">Contacto</div>
         <h2 class="cta-title">Reduce el riesgo estructural antes del evento.</h2>
         <p class="cta-sub">Solicite una evaluación técnica para su flota OTR. Nuestro equipo analiza su operación y entrega diagnóstico en 48 horas.</p>
-        <a href="#contactForm" class="btn-primary btn-lg">Solicitar evaluación técnica</a>
+        <div class="cta-contact-cards">
+          <div class="cta-contact-card">
+            <span class="cta-contact-label">Ubicación</span>
+            <span class="cta-contact-val">Las Encinas 353,<br />Antofagasta — Chile</span>
+          </div>
+          <div class="cta-contact-card">
+            <span class="cta-contact-label">Contacto</span>
+            <span class="cta-contact-val">contacto@vizutire.com</span>
+          </div>
+        </div>
       </div>
-      <div class="cta-form-wrapper reveal delay-2">
-        <form class="cta-form" id="contactForm">
+
+      <!-- Columna derecha: formulario limpio -->
+      <div class="cta-form-area reveal delay-2">
+        <form class="cta-form" id="contactForm" novalidate>
+
           <div class="form-row">
             <div class="form-group">
-              <label>Nombre</label>
+              <label>Nombre <span class="req">*</span></label>
               <input type="text" name="nombre" placeholder="Tu nombre" required />
             </div>
             <div class="form-group">
-              <label>Empresa</label>
-              <input type="text" name="empresa" placeholder="Nombre de la empresa" required />
+              <label>Apellido <span class="req">*</span></label>
+              <input type="text" name="apellido" placeholder="Tu apellido" required />
             </div>
           </div>
+
           <div class="form-row">
             <div class="form-group">
-              <label>Email corporativo</label>
+              <label>Número de teléfono <span class="req">*</span></label>
+              <div class="phone-input-wrap">
+                <select class="phone-country" name="pais_tel" id="phoneCountry" aria-label="País">
+                  <option value="+56" selected>🇨🇱 +56</option>
+                  <option value="+54">🇦🇷 +54</option>
+                  <option value="+591">🇧🇴 +591</option>
+                  <option value="+55">🇧🇷 +55</option>
+                  <option value="+57">🇨🇴 +57</option>
+                  <option value="+593">🇪🇨 +593</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+64">🇳🇿 +64</option>
+                  <option value="+52">🇲🇽 +52</option>
+                  <option value="+507">🇵🇦 +507</option>
+                  <option value="+51">🇵🇪 +51</option>
+                  <option value="+595">🇵🇾 +595</option>
+                  <option value="+27">🇿🇦 +27</option>
+                  <option value="+598">🇺🇾 +598</option>
+                  <option value="+58">🇻🇪 +58</option>
+                </select>
+                <input type="tel" name="telefono" placeholder="9 1234 5678" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico <span class="req">*</span></label>
               <input type="email" name="email" placeholder="tu@empresa.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre de compañía <span class="req">*</span></label>
+              <input type="text" name="empresa" placeholder="Nombre de la empresa" required />
             </div>
             <div class="form-group">
               <label>Tamaño de flota</label>
-              <select name="flota">
+              <select name="flota_tam">
                 <option value="">Selecciona...</option>
                 <option>1–10 camiones</option>
                 <option>11–50 camiones</option>
@@ -397,36 +573,99 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label>Mensaje</label>
-            <textarea name="mensaje" placeholder="Cuéntanos sobre tu operación..." rows="4"></textarea>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>País <span class="req">*</span></label>
+              <input type="text" name="pais_operacion" placeholder="Ej. Chile, Perú, Australia..." required />
+            </div>
+            <div class="form-group">
+              <label>Ciudad o Región <span class="req">*</span></label>
+              <input type="text" name="ciudad" placeholder="Ej. Antofagasta, Atacama..." required />
+            </div>
           </div>
+
+          <div class="form-group">
+            <label>Descripción de necesidad <span class="req">*</span></label>
+            <textarea name="descripcion" placeholder="Cuéntanos sobre tu necesidad..." rows="4" required></textarea>
+          </div>
+
+          <div class="form-extras">
+            <p class="form-extras-title">Antecedentes adicionales</p>
+            <div class="form-group">
+              <label>Flota</label>
+              <div class="flota-btns">
+                <label class="flota-btn"><input type="radio" name="marca_flota" value="cat" /><span>CAT</span></label>
+                <label class="flota-btn"><input type="radio" name="marca_flota" value="komatsu" /><span>Komatsu</span></label>
+                <label class="flota-btn"><input type="radio" name="marca_flota" value="otra" /><span>Otra</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAPTCHA antibot -->
+          <div class="form-group captcha-group">
+            <label>Verificación antibot <span class="req">*</span></label>
+            <div class="captcha-wrap">
+              <span class="captcha-question" id="captchaQuestion"></span>
+              <input type="text" id="captchaAnswer" class="captcha-input" placeholder="Respuesta" autocomplete="off" inputmode="numeric" maxlength="3" />
+              <button type="button" class="captcha-refresh" id="captchaRefresh" title="Nueva pregunta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </button>
+            </div>
+            <span class="captcha-error" id="captchaError"></span>
+          </div>
+
+          <div class="form-footer">
+            <p class="form-privacy">Al hacer clic en el botón "Solicitar Evaluación Técnica", aceptas los términos de nuestra <a href="#">política de privacidad</a>.</p>
+            <button type="submit" class="btn-submit">
+              Solicitar Evaluación Técnica
+              <span class="btn-arrow-circle">→</span>
+            </button>
+          </div>
+
         </form>
       </div>
+
     </div>
+  </section>
+
+  <!-- ===================== BANNER CLIENTES (logos) ===================== -->
+  <section class="clients-banner">
+    <iframe
+      src="assets/clientes-banner.html"
+      class="clientes-iframe"
+      frameborder="0"
+      scrolling="no"
+      title="Clientes validados"
+    ></iframe>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
+    <div class="footer-watermark" aria-hidden="true">VIZUtire</div>
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <div class="footer-logo">VIZUtire</div>
-          <p>Diagnóstico estructural no destructivo para neumáticos OTR de minería.</p>
-          <p class="footer-loc">Antofagasta, Chile · contacto@vizutire.com</p>
+          <a href="#" class="footer-logo-link">
+            <img src="imagenes/logo.png" alt="VIZUtire" class="footer-logo-img" />
+          </a>
+          <p class="footer-brand-desc">Diagnóstico estructural no destructivo<br />para neumáticos OTR de minería.</p>
+          <a href="mailto:contacto@vizutire.com" class="footer-email">contacto@vizutire.com</a>
         </div>
         <div class="footer-nav">
           <div class="footer-col">
-            <h4>Servicios</h4>
+            <h4>SERVICIOS</h4>
             <a href="#problema">Inspección Ultrasónica</a>
             <a href="#problema">Análisis Tensional</a>
-            <a href="#problema">Analítica con IA</a>
-            <a href="#problema">Reportes de Diagnóstico</a>
+            <a href="#problema">Analítica Con IA</a>
+            <a href="#problema">Reportes De Diagnóstico</a>
           </div>
           <div class="footer-col">
-            <h4>Empresa</h4>
-            <a href="#problema">Tecnología</a>
-            <a href="#problema">Resultados</a>
+            <h4>EMPRESA</h4>
+            <a href="#problema">Problema</a>
+            <a href="#problema">Solución</a>
+            <a href="#tecnologia">Beneficios</a>
+            <a href="#historia">Hitos</a>
             <a href="#contacto">Contacto</a>
           </div>
         </div>

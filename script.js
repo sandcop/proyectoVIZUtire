@@ -232,11 +232,50 @@ if (bannerTrack) {
   bannerTrack.addEventListener('mouseleave', () => bannerTrack.style.animationPlayState = 'running');
 }
 
+// ========= CAPTCHA ANTIBOT =========
+(function () {
+  const qEl  = document.getElementById('captchaQuestion');
+  const aEl  = document.getElementById('captchaAnswer');
+  const rBtn = document.getElementById('captchaRefresh');
+  const errEl = document.getElementById('captchaError');
+  if (!qEl) return;
+
+  const ops = [
+    (a, b) => ({ q: `¿Cuánto es ${a} + ${b}?`, ans: a + b }),
+    (a, b) => ({ q: `¿Cuánto es ${a + b} − ${b}?`, ans: a }),
+    (a, b) => ({ q: `${a} × ${b} = ?`, ans: a * b }),
+  ];
+
+  function gen() {
+    const a = Math.floor(Math.random() * 9) + 1;
+    const b = Math.floor(Math.random() * 9) + 1;
+    const op = ops[Math.floor(Math.random() * ops.length)](a, b);
+    qEl.textContent = op.q;
+    window._captchaAns = op.ans;
+    if (aEl) aEl.value = '';
+    if (errEl) errEl.textContent = '';
+  }
+
+  gen();
+  if (rBtn) rBtn.addEventListener('click', gen);
+
+  window._captchaValid = function () {
+    const val = parseInt(aEl?.value, 10);
+    if (isNaN(val) || val !== window._captchaAns) {
+      if (errEl) errEl.textContent = 'Respuesta incorrecta. Intenta de nuevo.';
+      gen();
+      return false;
+    }
+    return true;
+  };
+})();
+
 // ========= FORMULARIO =========
 const form = document.getElementById('contactForm');
 if (form) {
   form.addEventListener('submit', e => {
     e.preventDefault();
+    if (!window._captchaValid || !window._captchaValid()) return;
     const btn = form.querySelector('button[type="submit"]');
     const orig = btn.textContent;
     btn.textContent = 'Enviando...';
@@ -270,3 +309,24 @@ if (form) {
     }, 1400);
   });
 }
+
+// ========= MARCADORES DE FALLA — hover interactivo =========
+(function () {
+  const markers = document.querySelectorAll('.fault-marker[data-fault]');
+  const cards   = document.querySelectorAll('.diag-info-card[data-card]');
+  if (!markers.length || !cards.length) return;
+
+  function activate(faultId) {
+    markers.forEach(m => {
+      const isActive = m.dataset.fault === faultId;
+      m.classList.toggle('fault-marker--active', isActive);
+    });
+    cards.forEach(c => {
+      c.classList.toggle('active', c.dataset.card === faultId);
+    });
+  }
+
+  markers.forEach(marker => {
+    marker.addEventListener('mouseenter', () => activate(marker.dataset.fault));
+  });
+})();
