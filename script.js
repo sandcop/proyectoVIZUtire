@@ -11,10 +11,14 @@ const lenis = new Lenis({
   requestAnimationFrame(rafLoop);
 })(0);
 
-// ========= DOT REVEAL =========
+// ========= DOT REVEAL — coordenadas locales por sección =========
+const dotSections = document.querySelectorAll('.hero, .scroll-story, .cta-section');
 document.addEventListener('mousemove', e => {
-  document.documentElement.style.setProperty('--dot-x', e.clientX + 'px');
-  document.documentElement.style.setProperty('--dot-y', e.clientY + 'px');
+  dotSections.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    sec.style.setProperty('--local-x', (e.clientX - r.left) + 'px');
+    sec.style.setProperty('--local-y', (e.clientY - r.top)  + 'px');
+  });
 }, { passive: true });
 
 // ========= NAVBAR SCROLL =========
@@ -93,12 +97,9 @@ appleNavItems.forEach((item, i) => {
   item.addEventListener('click', () => {
     if (window.innerWidth <= 900) {
       if (window.carouselGoTo) window.carouselGoTo(i);
-      return;
+    } else {
+      setActiveCard(i);
     }
-    if (!scrollStory) return;
-    const total = scrollStory.offsetHeight - window.innerHeight;
-    const segment = total / storyCards.length;
-    lenis.scrollTo(scrollStory.offsetTop + segment * i + segment * 0.5);
   });
 });
 
@@ -234,25 +235,25 @@ if (bannerTrack) {
 
 // ========= CAPTCHA ANTIBOT =========
 (function () {
-  const qEl  = document.getElementById('captchaQuestion');
-  const aEl  = document.getElementById('captchaAnswer');
-  const rBtn = document.getElementById('captchaRefresh');
+  const qEl   = document.getElementById('captchaQuestion');
+  const aEl   = document.getElementById('captchaAnswer');
+  const rBtn  = document.getElementById('captchaRefresh');
   const errEl = document.getElementById('captchaError');
   if (!qEl) return;
 
   const ops = [
-    (a, b) => ({ q: `¿Cuánto es ${a} + ${b}?`, ans: a + b }),
+    (a, b) => ({ q: `¿Cuánto es ${a} + ${b}?`,     ans: a + b }),
     (a, b) => ({ q: `¿Cuánto es ${a + b} − ${b}?`, ans: a }),
-    (a, b) => ({ q: `${a} × ${b} = ?`, ans: a * b }),
+    (a, b) => ({ q: `${a} × ${b} = ?`,              ans: a * b }),
   ];
 
   function gen() {
-    const a = Math.floor(Math.random() * 9) + 1;
-    const b = Math.floor(Math.random() * 9) + 1;
+    const a  = Math.floor(Math.random() * 9) + 1;
+    const b  = Math.floor(Math.random() * 9) + 1;
     const op = ops[Math.floor(Math.random() * ops.length)](a, b);
     qEl.textContent = op.q;
     window._captchaAns = op.ans;
-    if (aEl) aEl.value = '';
+    if (aEl)   aEl.value = '';
     if (errEl) errEl.textContent = '';
   }
 
@@ -276,39 +277,101 @@ if (form) {
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (!window._captchaValid || !window._captchaValid()) return;
-    const btn = form.querySelector('button[type="submit"]');
-    const orig = btn.textContent;
-    btn.textContent = 'Enviando...';
-    btn.disabled = true;
 
     const data = Object.fromEntries(new FormData(form));
-    const lead = {
-      id: Date.now(),
-      fecha: new Date().toISOString(),
+
+    // Guardar datos básicos para pre-rellenar el formulario de captación
+    localStorage.setItem('vizutire_prefill', JSON.stringify({
       nombre:  data.nombre  || '',
       empresa: data.empresa || '',
-      email:   data.email   || '',
+      correo:  data.email   || '',
       flota:   data.flota   || '',
-      mensaje: data.mensaje || '',
-      estado:  'nuevo',
-      notas:   ''
-    };
-    const leads = JSON.parse(localStorage.getItem('vizutire_leads') || '[]');
-    leads.unshift(lead);
-    localStorage.setItem('vizutire_leads', JSON.stringify(leads));
+    }));
 
-    setTimeout(() => {
-      btn.textContent = '¡Solicitud enviada! Te contactamos pronto.';
-      btn.style.background = '#16a34a';
-      form.reset();
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.disabled = false;
-        btn.style.background = '';
-      }, 5000);
-    }, 1400);
+    // Abrir el formulario de captación en nueva página
+    window.open('formulario-captacion.html', '_blank');
   });
 }
+
+// ========= HERO TIRE — 3D tilt + cursor reveal =========
+(function () {
+  const stage = document.getElementById('heroStage');
+  const wrap  = document.getElementById('heroTireWrap');
+  if (!stage || !wrap) return;
+
+  const cfg = { tiltDeg: 7, floatPx: 12, revealRadius: 235, revealFeather: 78 };
+
+  let rafId = null;
+  let targetRX = 0, targetRY = 0, targetTX = 0, targetTY = 0;
+  let curRX = 0, curRY = 0, curTX = 0, curTY = 0;
+  let isHover = false;
+
+  function sv(n, v) { stage.style.setProperty(n, v); }
+
+  function onMove(e) {
+    const r  = stage.getBoundingClientRect();
+    const px = e.clientX - r.left;
+    const py = e.clientY - r.top;
+    const nx = (px / r.width)  * 2 - 1;
+    const ny = (py / r.height) * 2 - 1;
+    targetRY =  nx * cfg.tiltDeg;
+    targetRX = -ny * cfg.tiltDeg;
+    targetTX =  nx * cfg.floatPx * 0.4;
+    targetTY =  ny * cfg.floatPx * 0.4;
+    isHover  = true;
+    stage.classList.add('hovering');
+    sv('--htire-x', px + 'px');
+    sv('--htire-y', py + 'px');
+    sv('--htire-r', cfg.revealRadius + 'px');
+    sv('--htire-f', cfg.revealFeather + 'px');
+    schedule();
+  }
+
+  function onLeave() {
+    isHover = false;
+    targetRX = targetRY = targetTX = targetTY = 0;
+    sv('--htire-x', '-9999px');
+    sv('--htire-y', '-9999px');
+    stage.classList.remove('hovering');
+    schedule();
+  }
+
+  function schedule() {
+    if (rafId != null) return;
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function tick() {
+    rafId = null;
+    const k = 0.12;
+    curRX += (targetRX - curRX) * k;
+    curRY += (targetRY - curRY) * k;
+    curTX += (targetTX - curTX) * k;
+    curTY += (targetTY - curTY) * k;
+    wrap.style.transform =
+      `translate3d(${curTX.toFixed(2)}px,${curTY.toFixed(2)}px,0) ` +
+      `rotateX(${curRX.toFixed(2)}deg) rotateY(${curRY.toFixed(2)}deg)`;
+    const d = Math.abs(targetRX - curRX) + Math.abs(targetRY - curRY) +
+              Math.abs(targetTX - curTX) + Math.abs(targetTY - curTY);
+    if (d > 0.02) schedule();
+  }
+
+  stage.addEventListener('pointermove',  onMove);
+  stage.addEventListener('pointerenter', onMove);
+  stage.addEventListener('pointerleave', onLeave);
+
+  // Respiración idle suave
+  const t0 = performance.now();
+  (function idle() {
+    if (!isHover) {
+      const t = (performance.now() - t0) / 1000;
+      targetRX = Math.sin(t * 0.6) * 1.2;
+      targetRY = Math.cos(t * 0.5) * 1.6;
+      schedule();
+    }
+    requestAnimationFrame(idle);
+  })();
+})();
 
 // ========= MARCADORES DE FALLA — hover interactivo =========
 (function () {
@@ -316,17 +379,17 @@ if (form) {
   const cards   = document.querySelectorAll('.diag-info-card[data-card]');
   if (!markers.length || !cards.length) return;
 
+  let hoverTimer = null;
+
   function activate(faultId) {
-    markers.forEach(m => {
-      const isActive = m.dataset.fault === faultId;
-      m.classList.toggle('fault-marker--active', isActive);
-    });
-    cards.forEach(c => {
-      c.classList.toggle('active', c.dataset.card === faultId);
-    });
+    markers.forEach(m => m.classList.toggle('fault-marker--active', m.dataset.fault === faultId));
+    cards.forEach(c => c.classList.toggle('active', c.dataset.card === faultId));
   }
 
   markers.forEach(marker => {
-    marker.addEventListener('mouseenter', () => activate(marker.dataset.fault));
+    marker.addEventListener('mouseenter', () => {
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(() => activate(marker.dataset.fault), 80);
+    });
   });
 })();

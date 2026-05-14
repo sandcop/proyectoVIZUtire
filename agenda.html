@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita — VISUtire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --red:        #E1443A;
+            --red-dark:   #c73930;
+            --bg:         #09090B;
+            --surface:    #111113;
+            --surface-2:  #18181B;
+            --border:     #27272A;
+            --text:       #FAFAFA;
+            --text-sub:   #A1A1AA;
+            --text-muted: #71717A;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ─── Header ─────────────────────────── */
+        .header {
+            padding: 18px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
+        .logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
+        .logo-text em { color: var(--red); font-style: normal; }
+
+        /* ─── Layout ─────────────────────────── */
+        .page { display: flex; justify-content: center; padding: 48px 24px 80px; }
+        .wrap { width: 100%; max-width: 540px; }
+
+        /* ─── Progress ───────────────────────── */
+        .progress { display: flex; align-items: center; margin-bottom: 44px; }
+        .prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .prog-num {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: var(--text-muted);
+            transition: all 0.3s;
+        }
+        .prog-label { font-size: 12px; font-weight: 500; color: var(--text-muted); white-space: nowrap; transition: color 0.3s; }
+        .prog-line { flex: 1; height: 1px; background: var(--border); margin: 0 12px; transition: background 0.4s; }
+        .prog-step.done  .prog-num   { border-color: var(--red); color: var(--red); }
+        .prog-step.done  .prog-label { color: var(--text-sub); }
+        .prog-step.active .prog-num  { border-color: var(--red); background: var(--red); color: #fff; }
+        .prog-step.active .prog-label { color: var(--text); }
+        .prog-line.done { background: var(--red); }
+
+        /* ─── Steps ──────────────────────────── */
+        .step { display: none; }
+        .step.visible { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Form head ──────────────────────── */
+        .form-head { margin-bottom: 32px; }
+        .form-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px; }
+        .form-desc { font-size: 14px; color: var(--text-sub); line-height: 1.6; }
+
+        /* ─── Calendario ─────────────────────── */
+        .cal-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .cal-nav {
+            width: 32px; height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-sub);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.15s, color 0.15s;
+            font-size: 16px;
+        }
+        .cal-nav:hover:not(:disabled) { border-color: var(--text-muted); color: var(--text); }
+        .cal-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+        .cal-month { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 16px;
+            gap: 4px;
+        }
+        .cal-dow {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 0 8px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: default;
+            transition: background 0.15s, color 0.15s;
+            border: 1px solid transparent;
+        }
+        .cal-day.empty  { }
+        .cal-day.past   { color: var(--border); }
+        .cal-day.weekend { color: var(--text-muted); opacity: 0.4; }
+        .cal-day.available {
+            color: var(--text-sub);
+            cursor: pointer;
+        }
+        .cal-day.available:hover {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border);
+        }
+        .cal-day.selected {
+            background: var(--red) !important;
+            color: #fff !important;
+            border-color: var(--red) !important;
+            font-weight: 700;
+        }
+        .cal-day.today-mark { border-color: var(--border); }
+
+        /* ─── Slots ──────────────────────────── */
+        .slots-section {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeUp 0.25s ease;
+        }
+        .slots-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .slots-date::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+        }
+        .slots-group-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .slots-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .slots-grid:last-child { margin-bottom: 0; }
+        .slot-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-sub);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+        .slot-btn:hover { border-color: rgba(225,68,58,0.4); color: var(--text); }
+        .slot-btn.selected { background: rgba(225,68,58,0.1); border-color: var(--red); color: var(--text); }
+        .slot-btn.taken { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+
+        /* ─── Resumen de reserva ─────────────── */
+        .booking-summary {
+            background: rgba(225,68,58,0.07);
+            border: 1px solid rgba(225,68,58,0.25);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .booking-icon {
+            width: 40px; height: 40px;
+            border-radius: 8px;
+            background: rgba(225,68,58,0.12);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .booking-main { font-size: 15px; font-weight: 700; color: var(--text); }
+        .booking-sub  { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+
+        /* ─── Tarjeta de contacto pre-cargado ── */
+        .contacto-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .contacto-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(225,68,58,0.12);
+            border: 1px solid rgba(225,68,58,0.3);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px; font-weight: 700; color: var(--red);
+        }
+        .contacto-info { flex: 1; }
+        .contacto-nombre { font-size: 14px; font-weight: 700; color: var(--text); }
+        .contacto-sub    { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+        .btn-editar {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .btn-editar:hover { border-color: var(--text-muted); color: var(--text); }
+
+        .form-editar { animation: fadeUp 0.2s ease; }
+
+        /* ─── Fields ─────────────────────────── */
+        .section { margin-bottom: 24px; }
+        .section-title {
+            font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+            text-transform: uppercase; color: var(--text-muted);
+            margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+        }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .col-full { grid-column: 1 / -1; }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field label { font-size: 12px; font-weight: 500; color: var(--text-sub); }
+        .req { color: var(--red); margin-left: 2px; }
+
+        input, textarea {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            padding: 11px 14px;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            resize: none;
+        }
+        input::placeholder, textarea::placeholder { color: var(--text-muted); }
+        input:focus, textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
+        input.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+
+        /* ─── Nav buttons ────────────────────── */
+        .nav-row { display: flex; gap: 10px; margin-top: 4px; }
+        .btn-back {
+            flex: 0 0 auto;
+            background: transparent; border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-sub); font-family: inherit; font-size: 14px; font-weight: 500;
+            padding: 12px 18px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .btn-back:hover { border-color: var(--text-muted); color: var(--text); }
+        .btn-next {
+            flex: 1;
+            background: var(--red); border: none; border-radius: 8px;
+            color: #fff; font-family: inherit; font-size: 15px; font-weight: 600;
+            padding: 13px 20px; cursor: pointer; transition: background 0.15s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-next:hover  { background: var(--red-dark); }
+        .btn-next:active { transform: scale(0.99); }
+        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .spin { animation: spin 0.8s linear infinite; }
+
+        /* ─── Confirmación ───────────────────── */
+        .confirm-head { text-align: center; margin-bottom: 32px; }
+        .check-anim {
+            width: 68px; height: 68px; border-radius: 50%;
+            background: rgba(225,68,58,0.10); border: 2px solid var(--red);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
+        .confirm-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 10px; }
+        .confirm-sub { font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+        .confirm-sub strong { color: var(--text); }
+
+        .cita-card {
+            background: var(--surface-2);
+            border: 1px solid rgba(225,68,58,0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .cita-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 9px 0; border-bottom: 1px solid var(--border); gap: 12px;
+        }
+        .cita-row:last-child { border-bottom: none; }
+        .c-key { font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
+        .c-val { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
+
+        .btn-home {
+            display: block; width: 100%;
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-sub); font-family: inherit; font-size: 14px; font-weight: 500;
+            padding: 13px; text-align: center; text-decoration: none;
+            cursor: pointer; transition: border-color 0.15s, color 0.15s;
+        }
+        .btn-home:hover { border-color: var(--text-muted); color: var(--text); }
+
+        /* ─── Botones añadir calendario ─────────── */
+        .cal-add { margin-bottom: 16px; }
+        .cal-add-label {
+            font-size: 12px; color: var(--text-muted);
+            text-align: center; margin-bottom: 10px;
+        }
+        .cal-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-cal {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text-sub);
+            font-family: inherit; font-size: 13px; font-weight: 500;
+            padding: 11px 14px; cursor: pointer; text-decoration: none;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .btn-cal:hover { border-color: rgba(225,68,58,0.4); color: var(--text); }
+
+        /* ─── Responsive ─────────────────────── */
+        @media (max-width: 540px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .slots-grid { grid-template-columns: repeat(3, 1fr); }
+            .form-title { font-size: 22px; }
+            .page { padding: 32px 16px 64px; }
+            .prog-label { display: none; }
+            .header { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a class="logo" href="formulario-captacion.html">
+        <div class="logo-dot"></div>
+        <span class="logo-text">VISU<em>tire</em></span>
+    </a>
+</header>
+
+<div class="page">
+<div class="wrap">
+
+    <!-- Progress -->
+    <div class="progress">
+        <div class="prog-step active" id="ps1">
+            <div class="prog-num">1</div>
+            <span class="prog-label">Fecha y hora</span>
+        </div>
+        <div class="prog-line" id="pl1"></div>
+        <div class="prog-step" id="ps2">
+            <div class="prog-num">2</div>
+            <span class="prog-label">Tus datos</span>
+        </div>
+        <div class="prog-line" id="pl2"></div>
+        <div class="prog-step" id="ps3">
+            <div class="prog-num">3</div>
+            <span class="prog-label">Confirmado</span>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 1 — Calendario ══════════════════ -->
+    <div id="step-1" class="step visible">
+
+        <div class="form-head">
+            <h1 class="form-title">Elige fecha<br>y hora</h1>
+            <p class="form-desc">Selecciona un día y horario disponible para tu reunión con un especialista VISUtire.</p>
+        </div>
+
+        <!-- Calendario -->
+        <div class="cal-card">
+            <div class="cal-header">
+                <button class="cal-nav" id="btn-prev" onclick="prevMonth()">&#8249;</button>
+                <span class="cal-month" id="cal-title">—</span>
+                <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+        </div>
+
+        <!-- Slots de horario (aparece al seleccionar día) -->
+        <div class="slots-section" id="slots-section" style="display:none">
+            <div class="slots-date" id="slots-date">—</div>
+
+            <div class="slots-group-label">Mañana</div>
+            <div class="slots-grid" id="slots-manana"></div>
+
+            <div class="slots-group-label">Tarde</div>
+            <div class="slots-grid" id="slots-tarde"></div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-next" id="btn-continuar-1" onclick="goStep2()" disabled>
+                Continuar
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 2 — Datos de contacto ═══════════ -->
+    <div id="step-2" class="step">
+
+        <div class="form-head">
+            <h1 class="form-title" id="step2-title">Confirma<br>tu reserva</h1>
+            <p class="form-desc" id="step2-desc">Revisa los datos y confirma tu cita.</p>
+        </div>
+
+        <!-- Resumen de la cita seleccionada -->
+        <div class="booking-summary">
+            <div class="booking-icon">
+                <svg width="20" height="20" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8"  y1="2" x2="8"  y2="6"/>
+                    <line x1="3"  y1="10" x2="21" y2="10"/>
+                </svg>
+            </div>
+            <div>
+                <div class="booking-main" id="summary-datetime">—</div>
+                <div class="booking-sub">Reunión con especialista VISUtire · 45 min</div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de contacto: visible si los datos vienen del formulario -->
+        <div class="contacto-card" id="contacto-card" style="display:none">
+            <div class="contacto-avatar" id="contacto-inicial">—</div>
+            <div class="contacto-info">
+                <div class="contacto-nombre" id="contacto-nombre">—</div>
+                <div class="contacto-sub"    id="contacto-sub">—</div>
+            </div>
+            <button class="btn-editar" onclick="toggleEditar()">Editar</button>
+        </div>
+
+        <!-- Campos de contacto: ocultos si hay datos pre-cargados, visibles si no -->
+        <div class="form-editar" id="form-editar">
+            <div class="section">
+                <div class="section-title">Contacto</div>
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Nombre completo <span class="req">*</span></label>
+                        <input type="text" id="c-nombre" placeholder="Juan Pérez">
+                    </div>
+                    <div class="field">
+                        <label>Cargo <span class="req">*</span></label>
+                        <input type="text" id="c-cargo" placeholder="Jefe de Mantención">
+                    </div>
+                    <div class="field">
+                        <label>Correo electrónico <span class="req">*</span></label>
+                        <input type="email" id="c-correo" placeholder="juan@empresa.cl">
+                    </div>
+                    <div class="field">
+                        <label>Teléfono <span class="req">*</span></label>
+                        <input type="tel" id="c-tel" placeholder="+56 9 1234 5678">
+                    </div>
+                    <div class="field col-full">
+                        <label>Empresa <span class="req">*</span></label>
+                        <input type="text" id="c-empresa" placeholder="Minera Ejemplo S.A.">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje siempre visible -->
+        <div class="field" style="margin-bottom:20px">
+            <label>¿Sobre qué quieres hablar? <span style="color:var(--text-muted);font-weight:400">(opcional)</span></label>
+            <textarea id="c-mensaje" rows="3" placeholder="Descripción breve de tu flota, desafíos actuales o preguntas..."></textarea>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-back" onclick="goStep1()">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Volver
+            </button>
+            <button class="btn-next" id="btn-confirmar" onclick="confirmar()">
+                Confirmar reserva
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 3 — Confirmación ════════════════ -->
+    <div id="step-3" class="step">
+
+        <div class="confirm-head">
+            <div class="check-anim">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                     stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h1 class="confirm-title">¡Cita confirmada!</h1>
+            <p class="confirm-sub">
+                Hemos enviado los detalles a <strong id="conf-email"></strong>.<br>
+                Un especialista VISUtire estará contigo en el horario acordado.
+            </p>
+        </div>
+
+        <div class="cita-card">
+            <div class="cita-row">
+                <span class="c-key">Fecha y hora</span>
+                <span class="c-val" id="conf-datetime">—</span>
+            </div>
+            <div class="cita-row">
+                <span class="c-key">Contacto</span>
+                <span class="c-val" id="conf-nombre">—</span>
+            </div>
+            <div class="cita-row">
+                <span class="c-key">Empresa</span>
+                <span class="c-val" id="conf-empresa">—</span>
+            </div>
+            <div class="cita-row">
+                <span class="c-key">Duración</span>
+                <span class="c-val">45 minutos</span>
+            </div>
+            <div class="cita-row">
+                <span class="c-key">Modalidad</span>
+                <span class="c-val">Videollamada · Enlace por correo</span>
+            </div>
+        </div>
+
+        <!-- Botones de calendario (se activan tras confirmar) -->
+        <div class="cal-add" id="cal-add" style="display:none">
+            <p class="cal-add-label">Añade esta cita a tu calendario</p>
+            <div class="cal-btn-row">
+                <a id="btn-gcal" href="#" target="_blank" rel="noopener" class="btn-cal">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8"  y1="2" x2="8"  y2="6"/>
+                        <line x1="3"  y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Google Calendar
+                </a>
+                <button onclick="downloadICS()" class="btn-cal">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Apple / iCal
+                </button>
+            </div>
+        </div>
+
+        <a href="formulario-captacion.html" class="btn-home">← Volver al inicio</a>
+
+    </div>
+
+</div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   CONFIGURACIÓN
+   ══════════════════════════════════════════════════ */
+const CONFIG = {
+    sheetsUrl: 'https://script.google.com/macros/s/AKfycbw4toIrPwabjTs6bThC_ScYlfm-xidPvYITinAa2ASdlwulYIeaqGoPlea2-9WuUcE/exec',  // mismo URL que el formulario
+    adminEmail: 'sander.rojasc@gmail.com'
+};
+
+const MESES   = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DIAS    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const DOWS    = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+
+const SLOTS_MANANA = ['09:00','10:00','11:00'];
+const SLOTS_TARDE  = ['14:00','15:00','16:00','17:00'];
+
+const today  = new Date(); today.setHours(0,0,0,0);
+const minDay = new Date(today); minDay.setDate(today.getDate() + 1);
+
+let viewYear  = today.getFullYear();
+let viewMonth = today.getMonth();
+let selDay    = null;
+let selSlot   = null;
+const cita    = {};
+
+/* ── Calendario ──────────────────────────────────── */
+function renderCal() {
+    const title = document.getElementById('cal-title');
+    title.textContent = MESES[viewMonth] + ' ' + viewYear;
+
+    const grid = document.getElementById('cal-grid');
+
+    // Headers días de semana
+    if (!grid.querySelector('.cal-dow')) {
+        DOWS.forEach(d => {
+            const h = document.createElement('div');
+            h.className = 'cal-dow';
+            h.textContent = d;
+            grid.appendChild(h);
+        });
+    } else {
+        // Limpiar sólo los días (no los headers)
+        [...grid.children].forEach(c => { if (!c.classList.contains('cal-dow')) c.remove(); });
+    }
+
+    const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mo=0
+    const lastDate = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDow; i++) {
+        const e = document.createElement('div');
+        e.className = 'cal-day empty';
+        grid.appendChild(e);
+    }
+
+    for (let d = 1; d <= lastDate; d++) {
+        const date = new Date(viewYear, viewMonth, d);
+        const dow  = date.getDay(); // 0=Do,6=Sa
+        const cell = document.createElement('div');
+        cell.textContent = d;
+        cell.className = 'cal-day';
+
+        if (dow === 0 || dow === 6) {
+            cell.classList.add('weekend');
+        } else if (date < minDay) {
+            cell.classList.add('past');
+        } else {
+            cell.classList.add('available');
+            if (selDay && date.toDateString() === selDay.toDateString()) {
+                cell.classList.add('selected');
+            }
+            cell.onclick = () => clickDay(date);
+        }
+
+        if (date.toDateString() === today.toDateString()) {
+            cell.classList.add('today-mark');
+        }
+        grid.appendChild(cell);
+    }
+
+    // Bloquear previo al mes actual
+    const isPrevBlocked = viewYear < today.getFullYear() ||
+        (viewYear === today.getFullYear() && viewMonth <= today.getMonth());
+    document.getElementById('btn-prev').disabled = isPrevBlocked;
+}
+
+function prevMonth() {
+    viewMonth === 0 ? (viewMonth = 11, viewYear--) : viewMonth--;
+    renderCal();
+}
+function nextMonth() {
+    viewMonth === 11 ? (viewMonth = 0, viewYear++) : viewMonth++;
+    renderCal();
+}
+
+function clickDay(date) {
+    selDay  = date;
+    selSlot = null;
+    document.getElementById('btn-continuar-1').disabled = true;
+    renderCal();
+    renderSlots(date);
+}
+
+/* ── Slots ───────────────────────────────────────── */
+function renderSlots(date) {
+    const label = DIAS[date.getDay()] + ' ' + date.getDate() + ' de ' + MESES[date.getMonth()];
+    document.getElementById('slots-date').textContent = label;
+
+    const manana = document.getElementById('slots-manana');
+    const tarde  = document.getElementById('slots-tarde');
+    manana.innerHTML = '';
+    tarde.innerHTML  = '';
+
+    SLOTS_MANANA.forEach(s => manana.appendChild(slotBtn(s)));
+    SLOTS_TARDE.forEach(s  => tarde.appendChild(slotBtn(s)));
+
+    const sec = document.getElementById('slots-section');
+    sec.style.display = 'block';
+    sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function slotBtn(time) {
+    const btn = document.createElement('button');
+    btn.className   = 'slot-btn';
+    btn.textContent = time;
+    btn.onclick = () => {
+        selSlot = time;
+        document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('btn-continuar-1').disabled = false;
+    };
+    return btn;
+}
+
+/* ── Paso 1 → 2 ──────────────────────────────────── */
+function goStep2() {
+    if (!selDay || !selSlot) return;
+    const label = DIAS[selDay.getDay()] + ', ' + selDay.getDate() + ' de ' + MESES[selDay.getMonth()] + ' · ' + selSlot;
+    document.getElementById('summary-datetime').textContent = label;
+    cita.cita_fecha = label;
+
+    // Adaptar título según si los datos ya vienen del formulario
+    if (datosPreCargados) {
+        document.getElementById('step2-title').innerHTML = 'Confirma<br>tu reserva';
+        document.getElementById('step2-desc').textContent = 'Tus datos están listos. Solo confirma la cita o agrégale un mensaje.';
+    } else {
+        document.getElementById('step2-title').innerHTML = 'Tus datos';
+        document.getElementById('step2-desc').textContent = 'Completa la información para confirmar tu reserva.';
+    }
+
+    showStep(2);
+}
+
+/* ── Paso 2 → 3 ──────────────────────────────────── */
+async function confirmar() {
+    const fields = ['c-nombre','c-cargo','c-correo','c-tel','c-empresa'];
+    let ok = true;
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+    });
+    if (!ok) { document.querySelector('#step-2 .error')?.focus(); return; }
+
+    cita.nombre  = document.getElementById('c-nombre').value.trim();
+    cita.cargo   = document.getElementById('c-cargo').value.trim();
+    cita.correo  = document.getElementById('c-correo').value.trim();
+    cita.telefono= document.getElementById('c-tel').value.trim();
+    cita.empresa = document.getElementById('c-empresa').value.trim();
+    cita.mensaje = document.getElementById('c-mensaje').value.trim();
+
+    // Fechas ISO para links de calendario
+    const y  = selDay.getFullYear();
+    const mo = String(selDay.getMonth() + 1).padStart(2, '0');
+    const da = String(selDay.getDate()).padStart(2, '0');
+    const [sh, sm] = selSlot.split(':').map(Number);
+    const endMins  = sh * 60 + sm + 45;
+    cita.cita_iso_start = `${y}${mo}${da}T${String(sh).padStart(2,'0')}${String(sm).padStart(2,'0')}00`;
+    cita.cita_iso_end   = `${y}${mo}${da}T${String(Math.floor(endMins/60)).padStart(2,'0')}${String(endMins%60).padStart(2,'0')}00`;
+
+    // Loading
+    const btn = document.getElementById('btn-confirmar');
+    btn.disabled = true;
+    btn.innerHTML = `Enviando… <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+
+    await guardarCita();
+
+    // Render confirmación
+    document.getElementById('conf-email').textContent    = cita.correo;
+    document.getElementById('conf-datetime').textContent = cita.cita_fecha;
+    document.getElementById('conf-nombre').textContent   = cita.nombre + ' · ' + cita.cargo;
+    document.getElementById('conf-empresa').textContent  = cita.empresa;
+
+    // Activar botones de calendario
+    document.getElementById('btn-gcal').href = buildGCalUrl();
+    document.getElementById('cal-add').style.display = 'block';
+
+    btn.disabled = false;
+    showStep(3);
+}
+
+/* ── Enviar al Apps Script ───────────────────────── */
+function guardarCita() {
+    if (!CONFIG.sheetsUrl || CONFIG.sheetsUrl.startsWith('REEMPLAZAR')) return Promise.resolve();
+    const payload = { type: 'cita', fecha: new Date().toISOString(), ...cita };
+    const url = CONFIG.sheetsUrl + '?data=' + encodeURIComponent(JSON.stringify(payload));
+    return fetch(url, { method: 'GET', mode: 'no-cors' });
+}
+
+/* ── Navegación ──────────────────────────────────── */
+function goStep1() { showStep(1); }
+
+function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('step-' + n).classList.add('visible');
+    [1,2,3].forEach(i => {
+        const ps = document.getElementById('ps' + i);
+        ps.classList.remove('active','done');
+        if (i < n)  ps.classList.add('done');
+        if (i === n) ps.classList.add('active');
+    });
+    [1,2].forEach(i => document.getElementById('pl' + i).classList.toggle('done', i < n));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Cargar contexto del formulario ─────────────── */
+let datosPreCargados = false;
+
+function cargarContexto() {
+    try {
+        const raw = localStorage.getItem('vizutire_contacto');
+        if (!raw) return;
+        const d = JSON.parse(raw);
+        if (!d.nombre || !d.correo) return;
+
+        // Pre-llenar campos
+        document.getElementById('c-nombre').value  = d.nombre  || '';
+        document.getElementById('c-cargo').value   = d.cargo   || '';
+        document.getElementById('c-correo').value  = d.correo  || '';
+        document.getElementById('c-tel').value     = d.telefono || '';
+        document.getElementById('c-empresa').value = d.empresa || '';
+
+        // Mostrar tarjeta de contacto, ocultar form
+        const inicial = d.nombre.trim().charAt(0).toUpperCase();
+        document.getElementById('contacto-inicial').textContent = inicial;
+        document.getElementById('contacto-nombre').textContent  = d.nombre + (d.cargo ? ' · ' + d.cargo : '');
+        document.getElementById('contacto-sub').textContent     = d.empresa + (d.correo ? ' · ' + d.correo : '');
+        document.getElementById('contacto-card').style.display  = 'flex';
+        document.getElementById('form-editar').style.display    = 'none';
+
+        datosPreCargados = true;
+    } catch (e) { /* sin datos guardados, mostrar form normal */ }
+}
+
+function toggleEditar() {
+    const form = document.getElementById('form-editar');
+    const btn  = document.querySelector('.btn-editar');
+    const visible = form.style.display !== 'none';
+    form.style.display = visible ? 'none' : 'block';
+    btn.textContent    = visible ? 'Editar' : 'Cerrar';
+}
+
+/* ── Google Calendar URL ─────────────────────────── */
+function buildGCalUrl() {
+    if (!cita.cita_iso_start || !cita.cita_iso_end) return '#';
+    const title   = encodeURIComponent('Reunión con especialista VISUtire');
+    const details = encodeURIComponent('Reunión de 45 minutos con especialista VISUtire.\nRecibirás el enlace de videollamada antes de la reunión.');
+    const loc     = encodeURIComponent('Videollamada VISUtire');
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + title
+        + '&dates=' + cita.cita_iso_start + '/' + cita.cita_iso_end
+        + '&details=' + details
+        + '&location=' + loc;
+}
+
+/* ── Descargar ICS (Apple Calendar / Outlook) ─────── */
+function downloadICS() {
+    if (!cita.cita_iso_start || !cita.cita_iso_end) return;
+    const uid      = Date.now() + '@visutire.cl';
+    const dtstamp  = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
+    const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//VISUtire//Citas//ES',
+        'BEGIN:VEVENT',
+        'UID:' + uid,
+        'DTSTAMP:' + dtstamp,
+        'DTSTART:' + cita.cita_iso_start,
+        'DTEND:' + cita.cita_iso_end,
+        'SUMMARY:Reunión con especialista VISUtire',
+        'DESCRIPTION:Reunión de 45 minutos.\\nTe enviaremos el enlace de videollamada antes de la reunión.',
+        'LOCATION:Videollamada VISUtire',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'cita-visutire.ics'; a.click();
+    URL.revokeObjectURL(url);
+}
+
+/* ── Limpiar errores ─────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('input, textarea').forEach(el =>
+        el.addEventListener('input', () => el.classList.remove('error'))
+    );
+    cargarContexto();
+    renderCal();
+});
+</script>
+
+</body>
+</html>

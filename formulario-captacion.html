@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Técnica — VISUtire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --red:        #E1443A;
+            --red-dark:   #c73930;
+            --bg:         #09090B;
+            --surface:    #111113;
+            --surface-2:  #18181B;
+            --border:     #27272A;
+            --text:       #FAFAFA;
+            --text-sub:   #A1A1AA;
+            --text-muted: #71717A;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ─── Header ────────────────────────────── */
+        .header {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
+        .logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+        .logo-text em { color: var(--red); font-style: normal; }
+
+        /* ─── Layout ─────────────────────────────── */
+        .page { display: flex; justify-content: center; padding: 48px 24px 80px; }
+        .form-wrap { width: 100%; max-width: 520px; }
+
+        /* ─── Progress Bar ───────────────────────── */
+        .progress { display: flex; align-items: center; margin-bottom: 48px; }
+        .prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .prog-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+        .prog-label { font-size: 12px; font-weight: 500; color: var(--text-muted); transition: color 0.3s; white-space: nowrap; }
+        .prog-line { flex: 1; height: 1px; background: var(--border); margin: 0 12px; transition: background 0.4s ease; }
+
+        .prog-step.done  .prog-num   { border-color: var(--red); color: var(--red); }
+        .prog-step.done  .prog-label { color: var(--text-sub); }
+        .prog-step.active .prog-num  { border-color: var(--red); background: var(--red); color: #fff; }
+        .prog-step.active .prog-label { color: var(--text); }
+        .prog-line.done { background: var(--red); }
+
+        /* ─── Steps ──────────────────────────────── */
+        .step { display: none; }
+        .step.visible { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Form Header ────────────────────────── */
+        .form-head { margin-bottom: 36px; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(225,68,58,0.10); border: 1px solid rgba(225,68,58,0.28);
+            color: var(--red); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            padding: 5px 11px; border-radius: 4px; margin-bottom: 18px;
+        }
+        .badge-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: blink 2s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .form-title { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 10px; }
+        .form-desc { font-size: 14px; color: var(--text-sub); line-height: 1.65; }
+
+        /* ─── Section ────────────────────────────── */
+        .section { margin-bottom: 28px; }
+        .section-title {
+            font-size: 11px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 14px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* ─── Grid + Fields ──────────────────────── */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .col-full { grid-column: 1 / -1; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field label { font-size: 12px; font-weight: 500; color: var(--text-sub); }
+        .req { color: var(--red); margin-left: 2px; }
+
+        input, select {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            padding: 11px 14px;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input::placeholder { color: var(--text-muted); }
+        input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
+        input.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+        select option { background: #1a1a1c; }
+        select.error { border-color: #f87171 !important; }
+
+        /* ─── Nav Buttons ────────────────────────── */
+        .nav-row { display: flex; gap: 10px; margin-top: 8px; }
+
+        .btn-back {
+            flex: 0 0 auto;
+            background: transparent; border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-sub); font-family: inherit; font-size: 14px; font-weight: 500;
+            padding: 12px 18px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .btn-back:hover { border-color: var(--text-muted); color: var(--text); }
+
+        .btn-next {
+            flex: 1;
+            background: var(--red); border: none; border-radius: 8px;
+            color: #fff; font-family: inherit; font-size: 15px; font-weight: 600;
+            padding: 13px 20px; cursor: pointer; transition: background 0.15s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-next:hover  { background: var(--red-dark); }
+        .btn-next:active { transform: scale(0.99); }
+        .btn-next:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .spin { animation: spin 0.8s linear infinite; }
+
+        /* ─── Category Buttons ───────────────────── */
+        .cat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .cat-btn {
+            background: var(--surface-2); border: 2px solid var(--border); border-radius: 12px;
+            padding: 22px 16px; cursor: pointer; text-align: center;
+            transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .cat-btn:hover { border-color: rgba(225,68,58,0.4); }
+        .cat-btn.active { border-color: var(--red); background: rgba(225,68,58,0.07); }
+
+        .cat-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--border); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .cat-btn.active .cat-icon { background: rgba(225,68,58,0.18); }
+        .cat-icon svg { stroke: var(--text-muted); transition: stroke 0.2s; }
+        .cat-btn.active .cat-icon svg { stroke: var(--red); }
+        .cat-name { font-size: 15px; font-weight: 600; color: var(--text-sub); transition: color 0.2s; }
+        .cat-btn.active .cat-name { color: var(--text); }
+        .cat-sub { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+        /* ─── PDF Cards ──────────────────────────── */
+        .check-set { display: none; flex-direction: column; gap: 8px; }
+        .check-set.visible { display: flex; animation: fadeUp 0.25s ease; }
+
+        .pdf-card {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 16px; background: var(--surface-2);
+            border: 1px solid var(--border); border-radius: 8px;
+            cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none;
+        }
+        .pdf-card:hover { border-color: rgba(225,68,58,0.35); background: rgba(225,68,58,0.03); }
+        .pdf-card:has(input:checked) { border-color: var(--red); background: rgba(225,68,58,0.08); }
+
+        .pdf-icon { width: 38px; height: 38px; border-radius: 7px; background: rgba(225,68,58,0.10); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pdf-info { flex: 1; }
+        .pdf-name { font-size: 14px; font-weight: 600; color: var(--text-sub); transition: color 0.15s; }
+        .pdf-card:has(input:checked) .pdf-name { color: var(--text); }
+        .pdf-tag { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .pdf-check { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--red); cursor: pointer; }
+
+        .hint { font-size: 12px; color: #f87171; margin-bottom: 12px; display: none; }
+        .hint.visible { display: block; }
+
+        /* ─── Confirmation ───────────────────────── */
+        .confirm-head { text-align: center; margin-bottom: 36px; }
+        .check-anim {
+            width: 68px; height: 68px; border-radius: 50%;
+            background: rgba(225,68,58,0.10); border: 2px solid var(--red);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 22px;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
+        .confirm-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .confirm-sub { font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+        .confirm-sub strong { color: var(--text); }
+
+        .summary-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+        .summary-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+        .summary-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+        .summary-row:last-child { border-bottom: none; }
+        .s-key { font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
+        .s-val { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
+
+        /* ─── CTA Cards ──────────────────────────── */
+        .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .cta-card {
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px;
+            padding: 22px 16px; text-align: center; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s; text-decoration: none;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .cta-card:hover { border-color: rgba(225,68,58,0.45); background: rgba(225,68,58,0.05); }
+        .cta-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(225,68,58,0.12); display: flex; align-items: center; justify-content: center; }
+        .cta-name { font-size: 14px; font-weight: 600; color: var(--text); }
+        .cta-desc { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+        .note { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px; line-height: 1.6; }
+        .note a { color: var(--text-sub); }
+
+        /* ─── Error banner ───────────────────────── */
+        .error-banner {
+            background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
+            border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
+            font-size: 13px; color: #f87171; display: none;
+        }
+        .error-banner.visible { display: block; }
+
+        /* ─── Tel wrap (código país + número) ───────── */
+        .tel-wrap {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--surface-2);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .tel-wrap:focus-within {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(225,68,58,0.14);
+        }
+        .tel-wrap.error {
+            border-color: #f87171 !important;
+            box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important;
+        }
+        .tel-code {
+            border: none !important;
+            border-right: 1px solid var(--border) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            width: 118px !important;
+            flex-shrink: 0;
+            font-size: 13px;
+            background: transparent;
+        }
+        .tel-num {
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            flex: 1;
+            min-width: 0;
+            background: transparent !important;
+        }
+
+        /* ─── Responsive ─────────────────────────── */
+        @media (max-width: 540px) {
+            .grid-2, .cta-grid, .cat-row { grid-template-columns: 1fr; }
+            .form-title { font-size: 22px; }
+            .page { padding: 32px 16px 64px; }
+            .prog-label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo-dot"></div>
+    <span class="logo-text">VISU<em>tire</em></span>
+</header>
+
+<div class="page">
+<div class="form-wrap">
+
+    <!-- Progress -->
+    <div class="progress">
+        <div class="prog-step active" id="ps1">
+            <div class="prog-num">1</div>
+            <span class="prog-label">Datos básicos</span>
+        </div>
+        <div class="prog-line" id="pl1"></div>
+        <div class="prog-step" id="ps2">
+            <div class="prog-num">2</div>
+            <span class="prog-label">Información</span>
+        </div>
+        <div class="prog-line" id="pl2"></div>
+        <div class="prog-step" id="ps3">
+            <div class="prog-num">3</div>
+            <span class="prog-label">Confirmación</span>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 1 — Datos básicos ═══════════════ -->
+    <div id="step-1" class="step visible">
+
+        <div class="form-head">
+            <div class="badge"><span class="badge-dot"></span>Evaluación técnica gratuita</div>
+            <h1 class="form-title">Solicita el diagnóstico<br>de tu flota OTR</h1>
+            <p class="form-desc">Completa el formulario y un especialista se comunicará<br>contigo en menos de 24 horas.</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Datos de contacto</div>
+            <div class="grid-2">
+                <div class="field">
+                    <label>Nombre completo <span class="req">*</span></label>
+                    <input type="text" id="nombre" placeholder="Juan Pérez">
+                </div>
+                <div class="field">
+                    <label>Cargo <span class="req">*</span></label>
+                    <input type="text" id="cargo" placeholder="Jefe de Mantención">
+                </div>
+                <div class="field">
+                    <label>Correo electrónico <span class="req">*</span></label>
+                    <input type="email" id="correo" placeholder="juan@empresa.cl">
+                </div>
+                <div class="field">
+                    <label>Teléfono <span class="req">*</span></label>
+                    <div class="tel-wrap" id="tel-wrap">
+                        <select id="tel-codigo" class="tel-code">
+                            <option value="+56">🇨🇱 +56</option>
+                            <option value="+51">🇵🇪 +51</option>
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+54">🇦🇷 +54</option>
+                            <option value="+55">🇧🇷 +55</option>
+                            <option value="+57">🇨🇴 +57</option>
+                            <option value="+58">🇻🇪 +58</option>
+                            <option value="+591">🇧🇴 +591</option>
+                            <option value="+593">🇪🇨 +593</option>
+                            <option value="+595">🇵🇾 +595</option>
+                            <option value="+598">🇺🇾 +598</option>
+                            <option value="+507">🇵🇦 +507</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+34">🇪🇸 +34</option>
+                        </select>
+                        <input type="tel" id="telefono" class="tel-num" placeholder="9 1234 5678">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Datos de la operación</div>
+            <div class="grid-2">
+                <div class="field col-full">
+                    <label>Empresa / Compañía <span class="req">*</span></label>
+                    <input type="text" id="empresa" placeholder="Minera Ejemplo S.A.">
+                </div>
+                <div class="field">
+                    <label>País <span class="req">*</span></label>
+                    <select id="pais">
+                        <option value="" disabled selected>Selecciona el país</option>
+                        <option value="Chile">Chile</option>
+                        <option value="Perú">Perú</option>
+                        <option value="México">México</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="España">España</option>
+                        <option value="Estados Unidos">Estados Unidos</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Ciudad <span class="req">*</span></label>
+                    <input type="text" id="ciudad" placeholder="Antofagasta">
+                </div>
+                <div class="field col-full">
+                    <label>Flota OTR aproximada <span class="req">*</span></label>
+                    <select id="flota">
+                        <option value="" disabled selected>Selecciona un rango</option>
+                        <option value="1-10">1 – 10 neumáticos</option>
+                        <option value="11-50">11 – 50 neumáticos</option>
+                        <option value="51-200">51 – 200 neumáticos</option>
+                        <option value="200+">Más de 200 neumáticos</option>
+                    </select>
+                </div>
+                <div class="field col-full">
+                    <label>Tipo de equipo principal</label>
+                    <select id="equipo">
+                        <option value="" disabled selected>Selecciona el equipo</option>
+                        <option value="Camiones de arrastre">Camiones de arrastre</option>
+                        <option value="Cargadores frontales">Cargadores frontales</option>
+                        <option value="Perforadoras">Perforadoras</option>
+                        <option value="Bulldozers / Tractores">Bulldozers / Tractores</option>
+                        <option value="Mixto">Mixto (varios tipos)</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-next" onclick="goStep2()">
+                Continuar
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 2 — Selección de información ════ -->
+    <div id="step-2" class="step">
+
+        <div class="form-head">
+            <h1 class="form-title">¿Qué información<br>necesitas?</h1>
+            <p class="form-desc">Elige la categoría y selecciona los documentos<br>que quieres recibir en tu correo.</p>
+        </div>
+
+        <div class="cat-row">
+            <div class="cat-btn" id="cat-tecnica" onclick="selectCat('tecnica')">
+                <div class="cat-icon">
+                    <svg width="22" height="22" fill="none" stroke-width="1.7" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="cat-name">Técnica</div>
+                    <div class="cat-sub">Inspección, ultrasonido<br>y análisis predictivo</div>
+                </div>
+            </div>
+            <div class="cat-btn" id="cat-beneficios" onclick="selectCat('beneficios')">
+                <div class="cat-icon">
+                    <svg width="22" height="22" fill="none" stroke-width="1.7" viewBox="0 0 24 24">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="cat-name">Beneficios</div>
+                    <div class="cat-sub">Impacto operativo,<br>ROI y seguridad</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="hint" id="hint-pdf">Selecciona al menos un documento para continuar.</p>
+
+        <!-- PDFs Técnica -->
+        <div class="check-set" id="checks-tecnica">
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Monitoreo estructural</div>
+                    <div class="pdf-tag">Informe técnico · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Monitoreo estructural">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Ultrasonido</div>
+                    <div class="pdf-tag">Metodología diagnóstica · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Ultrasonido">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">IA — Momento de rotación</div>
+                    <div class="pdf-tag">Modelo predictivo · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="IA — Momento de rotación">
+            </label>
+        </div>
+
+        <!-- PDFs Beneficios -->
+        <div class="check-set" id="checks-beneficios">
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Beneficios operativos</div>
+                    <div class="pdf-tag">Eficiencia y continuidad · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios operativos">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Beneficios productivos</div>
+                    <div class="pdf-tag">ROI y métricas de rendimiento · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios productivos">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Seguridad</div>
+                    <div class="pdf-tag">Protocolos y prevención · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Seguridad">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon">
+                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+                    </svg>
+                </div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Supply / Abastecimiento</div>
+                    <div class="pdf-tag">Gestión de inventario y cadena · PDF</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Supply / Abastecimiento">
+            </label>
+        </div>
+
+        <div id="error-envio" class="error-banner">
+            Hubo un problema al enviar. Intenta nuevamente o escríbenos directamente.
+        </div>
+
+        <div class="nav-row" style="margin-top: 28px;">
+            <button class="btn-back" onclick="goStep1()">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Volver
+            </button>
+            <button class="btn-next" id="btn-enviar" onclick="goStep3()">
+                Enviar solicitud
+                <svg id="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ PASO 3 — Confirmación ════════════════ -->
+    <div id="step-3" class="step">
+
+        <div class="confirm-head">
+            <div class="check-anim">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                     stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h1 class="confirm-title">¡Solicitud enviada!</h1>
+            <p class="confirm-sub">
+                Hemos enviado los documentos a <strong id="confirm-email"></strong>.<br>
+                Un especialista revisará tu caso en menos de 24 horas.
+            </p>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-label">Resumen de tu solicitud</div>
+            <div class="summary-row">
+                <span class="s-key">Contacto</span>
+                <span class="s-val" id="sum-contacto">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Empresa</span>
+                <span class="s-val" id="sum-empresa">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Operación</span>
+                <span class="s-val" id="sum-operacion">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Documentos</span>
+                <span class="s-val" id="sum-pdfs">—</span>
+            </div>
+        </div>
+
+        <div class="cta-grid">
+            <a href="calculadora.html" class="cta-card">
+                <div class="cta-icon">
+                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="4" y="2" width="16" height="20" rx="2"/>
+                        <line x1="8" y1="6" x2="16" y2="6"/>
+                        <line x1="8" y1="10" x2="16" y2="10"/>
+                        <line x1="8" y1="14" x2="13" y2="14"/>
+                    </svg>
+                </div>
+                <div class="cta-name">Calcular beneficios</div>
+                <div class="cta-desc">Estima el ROI para<br>tu operación</div>
+            </a>
+            <a href="agenda.html" class="cta-card">
+                <div class="cta-icon">
+                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8"  y1="2" x2="8"  y2="6"/>
+                        <line x1="3"  y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <div class="cta-name">Agendar una cita</div>
+                <div class="cta-desc">Habla con un especialista<br>técnico VISUtire</div>
+            </a>
+        </div>
+
+        <p class="note">
+            También hemos notificado a nuestro equipo comercial.<br>
+            ¿Preguntas? <a href="mailto:contacto@visutire.cl">contacto@visutire.cl</a>
+        </p>
+    </div>
+
+</div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   CONFIGURACIÓN — Solo necesitas pegar la URL del script
+   ══════════════════════════════════════════════════════ */
+const CONFIG = {
+    sheets: {
+        url: 'https://script.google.com/macros/s/AKfycbw4toIrPwabjTs6bThC_ScYlfm-xidPvYITinAa2ASdlwulYIeaqGoPlea2-9WuUcE/exec'
+        // Google Apps Script > Implementar > URL de la app web
+    }
+};
+/* ══════════════════════════════════════════════════════ */
+
+/* ─── State ─────────────────────────────────────────── */
+const state = {};
+
+/* ─── Step navigation ───────────────────────────────── */
+function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('step-' + n).classList.add('visible');
+    updateProgress(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(n) {
+    [1, 2, 3].forEach(i => {
+        const ps = document.getElementById('ps' + i);
+        ps.classList.remove('active', 'done');
+        if (i < n)  ps.classList.add('done');
+        if (i === n) ps.classList.add('active');
+    });
+    [1, 2].forEach(i =>
+        document.getElementById('pl' + i).classList.toggle('done', i < n)
+    );
+}
+
+/* ─── Paso 1 → 2 ────────────────────────────────────── */
+function goStep2() {
+    const fields = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'flota'];
+    let ok = true;
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (id === 'telefono') document.getElementById('tel-wrap').classList.remove('error');
+        if (!el.value.trim()) {
+            el.classList.add('error');
+            if (id === 'telefono') document.getElementById('tel-wrap').classList.add('error');
+            ok = false;
+        }
+    });
+    if (!ok) { document.querySelector('.error')?.focus(); return; }
+
+    state.nombre   = document.getElementById('nombre').value.trim();
+    state.cargo    = document.getElementById('cargo').value.trim();
+    state.correo   = document.getElementById('correo').value.trim();
+    state.telefono = document.getElementById('tel-codigo').value + ' ' + document.getElementById('telefono').value.trim();
+    state.empresa  = document.getElementById('empresa').value.trim();
+    state.pais     = document.getElementById('pais').value;
+    state.ciudad   = document.getElementById('ciudad').value.trim();
+    state.flota    = document.getElementById('flota').value;
+    state.equipo   = document.getElementById('equipo').value || 'No especificado';
+
+    // Guardar contexto para la agenda — no volver a pedir datos
+    localStorage.setItem('vizutire_contacto', JSON.stringify({
+        nombre:   state.nombre,
+        cargo:    state.cargo,
+        correo:   state.correo,
+        telefono: state.telefono,
+        empresa:  state.empresa
+    }));
+
+    showStep(2);
+}
+
+/* ─── Categorías ────────────────────────────────────── */
+function selectCat(cat) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('cat-' + cat).classList.add('active');
+    document.querySelectorAll('.check-set').forEach(s => s.classList.remove('visible'));
+    document.getElementById('checks-' + cat).classList.add('visible');
+    document.getElementById('hint-pdf').classList.remove('visible');
+}
+
+/* ─── Paso 2 → 3 ────────────────────────────────────── */
+async function goStep3() {
+    const checked = [...document.querySelectorAll('input[name="pdf"]:checked')];
+    if (checked.length === 0) {
+        document.getElementById('hint-pdf').classList.add('visible');
+        return;
+    }
+
+    state.pdfs  = checked.map(c => c.value).join(' · ');
+    state.fecha = new Date().toLocaleString('es-CL', {
+        dateStyle: 'long', timeStyle: 'short'
+    });
+
+    // Loading state
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = true;
+    btn.innerHTML = `Enviando…
+        <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>`;
+
+    document.getElementById('error-envio').classList.remove('visible');
+
+    // Una sola llamada: el script guarda en Sheets Y envía el correo
+    const results = await Promise.allSettled([
+        guardarEnSheets()
+    ]);
+
+    // Restaurar botón
+    btn.disabled = false;
+    btn.innerHTML = `Enviar solicitud
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+
+    // Si ambos fallaron, mostrar error pero continuar
+    const todosOk = results.every(r => r.status === 'fulfilled');
+    if (!todosOk) {
+        console.warn('Advertencia en envío:', results);
+        // Seguimos al paso 3 de todas formas — el lead no se pierde
+    }
+
+    renderResumen();
+    showStep(3);
+}
+
+/* ─── Guardar en Google Sheets ──────────────────────── */
+function guardarEnSheets() {
+    if (!CONFIG.sheets.url || CONFIG.sheets.url.startsWith('REEMPLAZAR')) return Promise.resolve();
+
+    const payload = {
+        fecha:    state.fecha,
+        nombre:   state.nombre,
+        cargo:    state.cargo,
+        correo:   state.correo,
+        telefono: state.telefono,
+        empresa:  state.empresa,
+        pais:     state.pais,
+        ciudad:   state.ciudad,
+        flota:    state.flota,
+        equipo:   state.equipo,
+        pdfs:     state.pdfs
+    };
+
+    const url = CONFIG.sheets.url + '?data=' + encodeURIComponent(JSON.stringify(payload));
+    return fetch(url, { method: 'GET', mode: 'no-cors' });
+}
+
+/* ─── Renderizar resumen ────────────────────────────── */
+function renderResumen() {
+    document.getElementById('confirm-email').textContent  = state.correo;
+    document.getElementById('sum-contacto').textContent   = state.nombre + ' · ' + state.cargo;
+    document.getElementById('sum-empresa').textContent    = state.empresa;
+    document.getElementById('sum-operacion').textContent  = state.pais + ' · ' + state.ciudad + ' · ' + state.flota + ' neumáticos';
+    document.getElementById('sum-pdfs').textContent       = state.pdfs;
+}
+
+/* ─── Volver al paso 1 ──────────────────────────────── */
+function goStep1() { showStep(1); }
+
+/* ─── Pre-rellenar desde formulario web ─────────────── */
+(function () {
+    try {
+        const pre = JSON.parse(localStorage.getItem('vizutire_prefill') || '{}');
+        if (pre.nombre)  document.getElementById('nombre').value  = pre.nombre;
+        if (pre.empresa) document.getElementById('empresa').value = pre.empresa;
+        if (pre.correo)  document.getElementById('correo').value  = pre.correo;
+        if (pre.flota)   document.getElementById('flota').value   = pre.flota;
+    } catch (_) {}
+})();
+
+/* ─── Limpiar errores al escribir ──────────────────── */
+document.querySelectorAll('input, select').forEach(el =>
+    el.addEventListener('input', () => el.classList.remove('error'))
+);
+document.getElementById('telefono').addEventListener('input', () =>
+    document.getElementById('tel-wrap').classList.remove('error')
+);
+</script>
+
+</body>
+</html>
