@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Neumatico — Hero</title>
+<style>
+  :root{
+    --reveal-radius:165px;
+    --reveal-feather:30px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;min-height:100vh;overflow:hidden}
+  body{
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;
+  }
+
+  .stage{
+    position:relative;
+    width:min(92vw, 92vh);
+    aspect-ratio:1/1;
+    perspective:1600px;
+    perspective-origin:50% 50%;
+  }
+  .tire-wrap{
+    position:absolute;inset:0;
+    transform-style:preserve-3d;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1);
+    will-change:transform;
+  }
+  .tire-img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:contain;
+    user-select:none;-webkit-user-drag:none;pointer-events:none;
+  }
+  /* The full tire is ALWAYS visible underneath. */
+  .tire-outer{}
+
+  /* The cutaway (internal construction) is hidden by default
+     and only painted inside a soft circle around the cursor. */
+  .tire-inner{
+    -webkit-mask-image:radial-gradient(
+       circle var(--reveal-radius) at var(--mx,-9999px) var(--my,-9999px),
+       #000 calc(100% - var(--reveal-feather)),
+       transparent 100%
+    );
+    mask-image:radial-gradient(
+       circle var(--reveal-radius) at var(--mx,-9999px) var(--my,-9999px),
+       #000 calc(100% - var(--reveal-feather)),
+       transparent 100%
+    );
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .stage.hovering .tire-inner{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="tire-wrap" id="tireWrap">
+    <img class="tire-img tire-outer" src="assets/tire-inner.png" alt="Neumático" />
+    <img class="tire-img tire-inner" src="assets/tire-outer.png" alt="Construcción interna" />
+  </div>
+</div>
+
+<!-- React + Tweaks panel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script>
+/* ── Interactive 3D tilt + cursor reveal ─────────────────────────── */
+(function(){
+  const stage = document.getElementById('stage');
+  const wrap  = document.getElementById('tireWrap');
+
+  let rafId = null;
+  let targetRX = 0, targetRY = 0, targetTX = 0, targetTY = 0;
+  let curRX = 0, curRY = 0, curTX = 0, curTY = 0;
+  let mx = -9999, my = -9999;
+  let isHover = false;
+
+  window.__heroSettings = {
+    tiltDeg: 7,
+    floatPx: 12,
+    revealRadius: 165,
+    revealFeather: 30,
+  };
+
+  function setVar(name, v){ stage.style.setProperty(name, v); }
+  function applySettings(){
+    setVar('--reveal-radius', window.__heroSettings.revealRadius + 'px');
+    setVar('--reveal-feather', window.__heroSettings.revealFeather + 'px');
+  }
+  applySettings();
+  window.__applyHeroSettings = applySettings;
+
+  function onMove(e){
+    const r = stage.getBoundingClientRect();
+    const px = (e.clientX - r.left);
+    const py = (e.clientY - r.top);
+    mx = px; my = py;
+    const nx = (px / r.width) * 2 - 1;
+    const ny = (py / r.height) * 2 - 1;
+    const s = window.__heroSettings;
+    targetRY =  nx * s.tiltDeg;
+    targetRX = -ny * s.tiltDeg;
+    targetTX =  nx * s.floatPx * 0.4;
+    targetTY =  ny * s.floatPx * 0.4;
+    isHover = true;
+    stage.classList.add('hovering');
+    setVar('--mx', mx + 'px');
+    setVar('--my', my + 'px');
+    schedule();
+  }
+  function onLeave(){
+    isHover = false;
+    targetRX = targetRY = targetTX = targetTY = 0;
+    mx = my = -9999;
+    setVar('--mx', '-9999px');
+    setVar('--my', '-9999px');
+    stage.classList.remove('hovering');
+    schedule();
+  }
+
+  function schedule(){
+    if (rafId != null) return;
+    rafId = requestAnimationFrame(tick);
+  }
+  function tick(){
+    rafId = null;
+    const k = 0.12;
+    curRX += (targetRX - curRX) * k;
+    curRY += (targetRY - curRY) * k;
+    curTX += (targetTX - curTX) * k;
+    curTY += (targetTY - curTY) * k;
+    wrap.style.transform =
+      `translate3d(${curTX.toFixed(2)}px, ${curTY.toFixed(2)}px, 0) ` +
+      `rotateX(${curRX.toFixed(2)}deg) rotateY(${curRY.toFixed(2)}deg)`;
+
+    const settling = Math.abs(targetRX-curRX)+Math.abs(targetRY-curRY)+Math.abs(targetTX-curTX)+Math.abs(targetTY-curTY) > 0.02;
+    if (settling) schedule();
+  }
+
+  stage.addEventListener('pointermove', onMove);
+  stage.addEventListener('pointerenter', onMove);
+  stage.addEventListener('pointerleave', onLeave);
+
+  // gentle idle breathing
+  let t0 = performance.now();
+  function idle(){
+    if (!isHover){
+      const t = (performance.now() - t0) / 1000;
+      targetRX = Math.sin(t * 0.6) * 1.2;
+      targetRY = Math.cos(t * 0.5) * 1.6;
+      schedule();
+    }
+    requestAnimationFrame(idle);
+  }
+  requestAnimationFrame(idle);
+})();
+</script>
+
+<!-- Tweaks app -->
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "revealRadius": 235,
+  "revealFeather": 78,
+  "tiltDeg": 7,
+  "floatPx": 12
+}/*EDITMODE-END*/;
+
+function HeroTweaks(){
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(()=>{
+    Object.assign(window.__heroSettings, {
+      revealRadius: t.revealRadius,
+      revealFeather: t.revealFeather,
+      tiltDeg: t.tiltDeg,
+      floatPx: t.floatPx,
+    });
+    window.__applyHeroSettings();
+  }, [t.revealRadius, t.revealFeather, t.tiltDeg, t.floatPx]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Revelado" />
+      <TweakSlider label="Radio" value={t.revealRadius} min={20} max={400} step={5} unit="px"
+        onChange={(v)=>setTweak('revealRadius', v)} />
+      <TweakSlider label="Suavizado" value={t.revealFeather} min={0} max={120} step={2} unit="px"
+        onChange={(v)=>setTweak('revealFeather', v)} />
+      <TweakSection label="Movimiento 3D" />
+      <TweakSlider label="Inclinación" value={t.tiltDeg} min={0} max={20} step={.5} unit="°"
+        onChange={(v)=>setTweak('tiltDeg', v)} />
+      <TweakSlider label="Flotación" value={t.floatPx} min={0} max={40} step={1} unit="px"
+        onChange={(v)=>setTweak('floatPx', v)} />
+    </TweaksPanel>
+  );
+}
+
+const mount = document.createElement('div');
+document.body.appendChild(mount);
+ReactDOM.createRoot(mount).render(<HeroTweaks />);
+</script>
+</body>
+</html>
