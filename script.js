@@ -386,10 +386,17 @@ if (form) {
     cards.forEach(c => c.classList.toggle('active', c.dataset.card === faultId));
   }
 
+  // Mostrar primera tarjeta por defecto al cargar
+  window.addEventListener('load', () => {
+    if (markers[0]) activate(markers[0].dataset.fault);
+  });
+
   markers.forEach(marker => {
     marker.addEventListener('mouseenter', () => {
       clearTimeout(hoverTimer);
       hoverTimer = setTimeout(() => activate(marker.dataset.fault), 80);
     });
+    // Soporte táctil
+    marker.addEventListener('touchstart', () => activate(marker.dataset.fault), { passive: true });
   });
 })();

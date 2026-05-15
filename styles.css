@@ -1678,11 +1678,6 @@ section[id].in-view::after {
   .hero-visual { position: relative; width: 100%; top: auto; bottom: auto; right: auto; padding-right: 0; justify-content: center; align-items: center; margin-top: 40px; }
   .hero-stage { height: 56vw; width: 56vw; max-height: 420px; max-width: 420px; }
   .hero-cards-left, .hero-cards-right { display: none; }
-  .diag-two-col { grid-template-columns: 1fr; gap: 32px; }
-  .diag-main { padding: 72px 24px; }
-  .diag-tire-wrap { transform: none; justify-content: center; align-items: center; }
-  .diag-tire-img { margin-bottom: 0; }
-
   /* Scroll story → carrusel horizontal */
   .scroll-story { height: auto; }
   .story-sticky { position: relative; top: auto; height: auto; padding: 60px 0 48px; }
@@ -2112,10 +2107,15 @@ section[id].in-view::after {
 }
 .cta-contact-val { font-size: 0.83rem; color: var(--text-2); line-height: 1.55; }
 
-/* Responsive: nuevas secciones */
+/* Responsive: SISTEMA DE DIAGNÓSTICO */
 @media (max-width: 900px) {
   .diag-solution { padding: 72px 0; }
   .diag-pillars { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .diag-two-col { grid-template-columns: 1fr; gap: 32px; }
+  .diag-main { padding: 72px 24px; }
+  .diag-tire-wrap { transform: none; justify-content: center; align-items: center; }
+  .diag-tire-img { margin-bottom: 0; max-width: 380px; }
+  .diag-cards-area { min-height: 320px; }
 }
 @media (max-width: 600px) {
   .diag-main { padding: 60px 20px; }
