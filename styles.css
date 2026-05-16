@@ -279,8 +279,8 @@ section[id].in-view::after {
 .hero {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  padding: 72px 200px 60px 200px;
+  align-items: flex-end;
+  padding: 72px 200px 80px 200px;
   position: relative;
   background: var(--bg);
   overflow: hidden;
@@ -1690,7 +1690,7 @@ section[id].in-view::after {
 
 @media (max-width: 900px) {
   /* Hero collapses to single column */
-  .hero { padding: 110px 24px 60px; flex-direction: column; justify-content: center; }
+  .hero { padding: 110px 24px 60px; flex-direction: column; justify-content: center; align-items: center; }
   .hero-layout { max-width: 100%; }
   .hero-text { align-items: center; text-align: center; }
   .hero-actions { justify-content: center; }
