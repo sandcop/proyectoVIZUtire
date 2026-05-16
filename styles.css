@@ -316,10 +316,10 @@ section[id].in-view::after {
 
 /* ========= HERO TIRE ANIMATION ========= */
 .hero-stage {
-  height: min(70vh, 46vw);
-  max-height: 900px;
-  width: min(70vh, 46vw);
-  max-width: 900px;
+  height: min(58vh, 44vw);
+  max-height: 800px;
+  width: min(58vh, 44vw);
+  max-width: 800px;
   position: relative;
   perspective: 1600px;
   perspective-origin: 50% 50%;
@@ -1661,10 +1661,10 @@ section[id].in-view::after {
   .hero { padding: 110px 60px 60px; }
   .hero-visual { padding-right: 60px; overflow: hidden; }
   .hero-stage {
-    height: min(80vh, 46vw);
-    width:  min(80vh, 46vw);
-    max-height: 700px;
-    max-width:  700px;
+    height: min(55vh, 40vw);
+    width:  min(55vh, 40vw);
+    max-height: 540px;
+    max-width:  540px;
   }
   .container { padding: 0 60px; }
   .header { padding: 16px 60px; }
