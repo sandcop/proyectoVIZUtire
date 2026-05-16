@@ -291,6 +291,7 @@ section[id].in-view::after {
   width: 100%;
   z-index: 2;
   position: relative;
+  margin-top: 100px;
 }
 
 .hero-text {
