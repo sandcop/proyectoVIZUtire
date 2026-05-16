@@ -1659,7 +1659,13 @@ section[id].in-view::after {
    ============================================= */
 @media (max-width: 1100px) {
   .hero { padding: 110px 60px 60px; }
-  .hero-visual { padding-right: 60px; }
+  .hero-visual { padding-right: 60px; overflow: hidden; }
+  .hero-stage {
+    height: min(80vh, 46vw);
+    width:  min(80vh, 46vw);
+    max-height: 700px;
+    max-width:  700px;
+  }
   .container { padding: 0 60px; }
   .header { padding: 16px 60px; }
   .hero-layout { gap: 24px; }
