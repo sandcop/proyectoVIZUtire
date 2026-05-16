@@ -307,7 +307,7 @@ section[id].in-view::after {
   top: 0;
   width: 55%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
   padding-right: 120px;
   overflow: hidden;
