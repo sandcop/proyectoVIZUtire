@@ -1657,14 +1657,27 @@ section[id].in-view::after {
 /* =============================================
    RESPONSIVE
    ============================================= */
+
+/* Hero padding/tire fix for medium-wide screens that are short */
+@media (max-width: 1400px) {
+  .hero { padding: 110px 80px 60px; }
+  .hero-visual { padding-right: 80px; overflow: hidden; }
+  .hero-stage {
+    height: min(55vh, 42vw);
+    width:  min(55vh, 42vw);
+    max-height: 600px;
+    max-width:  600px;
+  }
+}
+
 @media (max-width: 1100px) {
   .hero { padding: 110px 60px 60px; }
   .hero-visual { padding-right: 60px; overflow: hidden; }
   .hero-stage {
-    height: min(55vh, 40vw);
-    width:  min(55vh, 40vw);
-    max-height: 540px;
-    max-width:  540px;
+    height: min(52vh, 38vw);
+    width:  min(52vh, 38vw);
+    max-height: 480px;
+    max-width:  480px;
   }
   .container { padding: 0 60px; }
   .header { padding: 16px 60px; }
