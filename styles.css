@@ -278,7 +278,7 @@ section[id].in-view::after {
    ============================================= */
 .hero {
   height: 92vh;
-  max-height: 960px;
+  max-height: 760px;
   display: flex;
   align-items: center;
   padding: 72px 200px 60px 200px;
