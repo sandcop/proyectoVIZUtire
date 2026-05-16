@@ -316,10 +316,10 @@ section[id].in-view::after {
 
 /* ========= HERO TIRE ANIMATION ========= */
 .hero-stage {
-  height: 92vh;
-  max-height: 960px;
-  width: 92vh;
-  max-width: 92vh;
+  height: min(70vh, 46vw);
+  max-height: 900px;
+  width: min(70vh, 46vw);
+  max-width: 900px;
   position: relative;
   perspective: 1600px;
   perspective-origin: 50% 50%;
