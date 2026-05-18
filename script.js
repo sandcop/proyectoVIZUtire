@@ -2,8 +2,7 @@
 
 // ========= LENIS SMOOTH SCROLL =========
 const lenis = new Lenis({
-  duration: 1.2,
-  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  lerp: 0.1,
   smoothWheel: true,
 });
 (function rafLoop(time) {
@@ -20,6 +19,40 @@ document.addEventListener('mousemove', e => {
     sec.style.setProperty('--local-y', (e.clientY - r.top)  + 'px');
   });
 }, { passive: true });
+
+// ========= CUSTOM SELECT — Flota OTR =========
+(function () {
+  const wrap    = document.getElementById('flotaSelect');
+  const trigger = document.getElementById('flotaTrigger');
+  const valueEl = document.getElementById('flotaValue');
+  const hidden  = document.getElementById('flota');
+  if (!wrap) return;
+
+  function open()  { wrap.classList.add('open');    trigger.setAttribute('aria-expanded', 'true'); }
+  function close() { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    wrap.classList.contains('open') ? close() : open();
+  });
+
+  wrap.querySelectorAll('.cs-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const val   = opt.dataset.value;
+      const range = opt.querySelector('.cs-opt-range').textContent;
+      hidden.value       = val;
+      valueEl.textContent = range + ' neumáticos';
+      trigger.classList.add('has-value');
+      wrap.querySelectorAll('.cs-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      close();
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) close();
+  }, { passive: true });
+})();
 
 // ========= NAVBAR SCROLL =========
 const navbar = document.getElementById('navbar');
@@ -303,7 +336,7 @@ if (form) {
   const wrap  = document.getElementById('heroTireWrap');
   if (!stage || !wrap) return;
 
-  const cfg = { tiltDeg: 7, floatPx: 12, revealRadius: 235, revealFeather: 78 };
+  const cfg = { tiltDeg: 7, floatPx: 12, revealRadius: 120, revealFeather: 38 };
 
   let rafId = null;
   let targetRX = 0, targetRY = 0, targetTX = 0, targetTY = 0;
@@ -405,24 +438,3 @@ if (form) {
   });
 })();
 
-// ========= FLOTA DROPDOWN (sección contacto) =========
-(function () {
-  const group   = document.getElementById('flotaGroup');
-  const trigger = document.getElementById('flotaTrigger');
-  const labelEl = document.getElementById('flotaLabel');
-  if (!group || !trigger) return;
-
-  trigger.addEventListener('click', () => group.classList.toggle('open'));
-
-  document.querySelectorAll('input[name="flota"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      labelEl.textContent = radio.closest('.flota-btn').textContent.trim();
-      trigger.classList.add('selected');
-      group.classList.remove('open');
-    });
-  });
-
-  document.addEventListener('click', e => {
-    if (!group.contains(e.target)) group.classList.remove('open');
-  }, { passive: true });
-})();

@@ -531,13 +531,46 @@
               <label for="email">Correo electrónico <span class="req">*</span></label>
               <input type="email" id="email" name="email" placeholder="juan@empresa.cl" autocomplete="email">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="flotaGroup">
               <label>Flota OTR aproximada <span class="req">*</span></label>
-              <div class="flota-btns">
-                <label class="flota-btn"><input type="radio" name="flota" value="1-10">1–10</label>
-                <label class="flota-btn"><input type="radio" name="flota" value="11-50">11–50</label>
-                <label class="flota-btn"><input type="radio" name="flota" value="51-200">51–200</label>
-                <label class="flota-btn"><input type="radio" name="flota" value="200+">+200</label>
+              <input type="hidden" name="flota" id="flota">
+              <div class="cs-wrap" id="flotaSelect">
+                <button type="button" class="cs-trigger" id="flotaTrigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="flotaValue">Seleccionar rango</span>
+                  <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <div class="cs-panel" id="flotaPanel" role="listbox">
+                  <button type="button" class="cs-opt" data-value="1-10" role="option">
+                    <span class="cs-opt-range">1 – 10</span>
+                    <span class="cs-opt-unit">neumáticos</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button type="button" class="cs-opt" data-value="11-50" role="option">
+                    <span class="cs-opt-range">11 – 50</span>
+                    <span class="cs-opt-unit">neumáticos</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button type="button" class="cs-opt" data-value="51-200" role="option">
+                    <span class="cs-opt-range">51 – 200</span>
+                    <span class="cs-opt-unit">neumáticos</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button type="button" class="cs-opt" data-value="200+" role="option">
+                    <span class="cs-opt-range">+200</span>
+                    <span class="cs-opt-unit">neumáticos</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

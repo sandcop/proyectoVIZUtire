@@ -217,8 +217,8 @@ section[id].in-view::after {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .historia-frame { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
-.hitos-iframe { width: 100%; height: 760px; border: none; display: block; }
-.hitos-iframe-mobile { width: 100%; height: 700px; border: none; display: none; }
+.hitos-iframe { width: 100%; height: 760px; border: none; display: block; pointer-events: none; }
+.hitos-iframe-mobile { width: 100%; height: 700px; border: none; display: none; pointer-events: none; }
 
 @media (max-width: 768px) {
   .hitos-iframe { display: none; }
@@ -277,11 +277,11 @@ section[id].in-view::after {
    HERO — 3-column original layout
    ============================================= */
 .hero {
-  height: 92vh;
+  min-height: max(92vh, 720px);
   max-height: 900px;
   display: flex;
   align-items: flex-start;
-  padding: 120px 200px 60px 200px;
+  padding: 155px 200px 60px 200px;
   position: relative;
   background: var(--bg);
   overflow: hidden;
@@ -346,19 +346,29 @@ section[id].in-view::after {
 }
 .hero-tire-reveal {
   -webkit-mask-image: radial-gradient(
-    circle var(--htire-r, 200px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
-    #000 calc(100% - var(--htire-f, 60px)),
-    transparent 100%
+    circle var(--htire-r, 120px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
+    #000 25%, transparent 100%
   );
   mask-image: radial-gradient(
-    circle var(--htire-r, 200px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
-    #000 calc(100% - var(--htire-f, 60px)),
-    transparent 100%
+    circle var(--htire-r, 120px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
+    #000 25%, transparent 100%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 .hero-stage.hovering .hero-tire-reveal { opacity: 1; }
+
+/* Ocultar la capa base donde la reveal es visible — offset de 5% elimina el halo */
+.hero-stage.hovering .hero-tire-base {
+  -webkit-mask-image: radial-gradient(
+    circle var(--htire-r, 120px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
+    transparent 30%, #000 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--htire-r, 120px) at var(--htire-x, -9999px) var(--htire-y, -9999px),
+    transparent 30%, #000 100%
+  );
+}
 
 .hero-cards-left,
 .hero-cards-right {
@@ -842,13 +852,13 @@ section[id].in-view::after {
 
 .hero-title {
   font-family: var(--font);
-  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-size: clamp(2.2rem, 4.2vw, 4rem);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.05em;
   color: var(--text);
   margin-bottom: 20px;
-  max-width: 700px;
+  max-width: 520px;
 }
 .hero-title em { font-style: italic; font-weight: 300; color: var(--text-2); }
 
@@ -1283,6 +1293,70 @@ section[id].in-view::after {
 }
 .form-group select option { background: #fff; color: #1b3c6e; }
 
+/* ── Custom select — Flota OTR ── */
+.cs-wrap { position: relative; }
+
+.cs-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; background: transparent; border: none; padding: 4px 0;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 400;
+  color: rgba(100,130,180,0.45); cursor: pointer; text-align: left;
+  transition: color 0.2s;
+}
+.cs-trigger.has-value { color: #1b3c6e; font-weight: 500; }
+
+.cs-arrow {
+  color: rgba(27,60,110,0.35); flex-shrink: 0;
+  transition: transform 0.35s var(--ease), color 0.2s;
+}
+.cs-wrap.open .cs-arrow { transform: rotate(180deg); color: #1b3c6e; }
+
+/* Panel desplegable */
+.cs-panel {
+  position: absolute; top: calc(100% + 10px); left: -20px; right: -20px;
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid rgba(27,60,110,0.1);
+  box-shadow: 0 12px 40px rgba(27,60,110,0.13), 0 2px 8px rgba(0,0,0,0.05);
+  padding: 6px; z-index: 200; overflow: hidden;
+  opacity: 0; transform: translateY(-8px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+}
+.cs-wrap.open .cs-panel {
+  opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
+}
+
+/* Opciones */
+@keyframes csOptIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cs-opt {
+  display: flex; align-items: center; width: 100%; gap: 10px;
+  background: transparent; border: none; border-radius: var(--radius-sm);
+  padding: 11px 14px; cursor: pointer; text-align: left;
+  transition: background 0.15s; opacity: 0;
+}
+.cs-wrap.open .cs-opt { animation: csOptIn 0.22s var(--ease) forwards; }
+.cs-wrap.open .cs-opt:nth-child(1) { animation-delay: 0.04s; }
+.cs-wrap.open .cs-opt:nth-child(2) { animation-delay: 0.09s; }
+.cs-wrap.open .cs-opt:nth-child(3) { animation-delay: 0.14s; }
+.cs-wrap.open .cs-opt:nth-child(4) { animation-delay: 0.19s; }
+.cs-opt:hover { background: rgba(27,60,110,0.05); }
+.cs-opt.selected { background: rgba(27,60,110,0.07); }
+
+.cs-opt-range {
+  font-family: var(--font); font-size: 0.95rem; font-weight: 600; color: #1b3c6e; flex-shrink: 0;
+}
+.cs-opt-unit {
+  font-family: var(--font-body); font-size: 0.78rem; color: rgba(27,60,110,0.45); flex: 1;
+}
+.cs-opt-check {
+  color: #1b3c6e; flex-shrink: 0; opacity: 0;
+  transform: scale(0.6); transition: opacity 0.2s, transform 0.2s var(--ease);
+}
+.cs-opt.selected .cs-opt-check { opacity: 1; transform: scale(1); }
+
 /* Campo de teléfono — underline, sin caja */
 .phone-input-wrap {
   display: flex;
@@ -1336,21 +1410,6 @@ section[id].in-view::after {
 .flota-btn:has(input:checked) { border-color: #1b3c6e; background: rgba(27,60,110,0.06); font-weight: 600; }
 .flota-btn:hover { border-color: #1b3c6e; }
 
-/* Flota — trigger colapsable */
-.flota-trigger {
-  display: flex; align-items: center; justify-content: space-between;
-  background: transparent; border: none; padding: 4px 0; width: 100%;
-  font-family: var(--font-body); font-size: 0.95rem; font-weight: 400;
-  color: rgba(100,130,180,0.45); cursor: pointer; text-align: left;
-}
-.flota-trigger.selected { color: #1b3c6e; font-weight: 500; }
-.flota-chevron { color: rgba(27,60,110,0.35); transition: transform 0.32s var(--ease); flex-shrink: 0; }
-#flotaGroup.open .flota-chevron { transform: rotate(180deg); }
-#flotaGroup .flota-btns {
-  max-height: 0; overflow: hidden; margin-top: 0;
-  transition: max-height 0.38s var(--ease), margin-top 0.38s var(--ease);
-}
-#flotaGroup.open .flota-btns { max-height: 120px; margin-top: 12px; }
 
 /* CAPTCHA — estilo underline coherente con el formulario */
 .captcha-group { margin-top: 4px; }
