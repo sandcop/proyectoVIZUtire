@@ -1336,6 +1336,22 @@ section[id].in-view::after {
 .flota-btn:has(input:checked) { border-color: #1b3c6e; background: rgba(27,60,110,0.06); font-weight: 600; }
 .flota-btn:hover { border-color: #1b3c6e; }
 
+/* Flota — trigger colapsable */
+.flota-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  background: transparent; border: none; padding: 4px 0; width: 100%;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 400;
+  color: rgba(100,130,180,0.45); cursor: pointer; text-align: left;
+}
+.flota-trigger.selected { color: #1b3c6e; font-weight: 500; }
+.flota-chevron { color: rgba(27,60,110,0.35); transition: transform 0.32s var(--ease); flex-shrink: 0; }
+#flotaGroup.open .flota-chevron { transform: rotate(180deg); }
+#flotaGroup .flota-btns {
+  max-height: 0; overflow: hidden; margin-top: 0;
+  transition: max-height 0.38s var(--ease), margin-top 0.38s var(--ease);
+}
+#flotaGroup.open .flota-btns { max-height: 120px; margin-top: 12px; }
+
 /* CAPTCHA — estilo underline coherente con el formulario */
 .captcha-group { margin-top: 4px; }
 .captcha-wrap {

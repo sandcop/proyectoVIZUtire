@@ -404,3 +404,25 @@ if (form) {
     marker.addEventListener('touchstart', () => activate(marker.dataset.fault), { passive: true });
   });
 })();
+
+// ========= FLOTA DROPDOWN (sección contacto) =========
+(function () {
+  const group   = document.getElementById('flotaGroup');
+  const trigger = document.getElementById('flotaTrigger');
+  const labelEl = document.getElementById('flotaLabel');
+  if (!group || !trigger) return;
+
+  trigger.addEventListener('click', () => group.classList.toggle('open'));
+
+  document.querySelectorAll('input[name="flota"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      labelEl.textContent = radio.closest('.flota-btn').textContent.trim();
+      trigger.classList.add('selected');
+      group.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!group.contains(e.target)) group.classList.remove('open');
+  }, { passive: true });
+})();
