@@ -67,6 +67,8 @@ const scrollStory = document.querySelector('.scroll-story');
 const storyCards = document.querySelectorAll('.story-card');
 const appleNavItems = document.querySelectorAll('.apple-nav-item');
 
+let activeCardIndex = -1;
+
 function setActiveCard(index) {
   storyCards.forEach((card, i) => {
     card.classList.remove('active', 'past');
@@ -74,23 +76,21 @@ function setActiveCard(index) {
     else if (i === index) card.classList.add('active');
   });
   appleNavItems.forEach((item, i) => item.classList.toggle('active', i === index));
+  activeCardIndex = index;
+}
+
+function clearActiveCard() {
+  storyCards.forEach(card => card.classList.remove('active', 'past'));
+  appleNavItems.forEach(item => item.classList.remove('active'));
+  activeCardIndex = -1;
 }
 
 function updateScrollStory() {
-  if (!scrollStory || window.innerWidth < 900) return;
-  const rect = scrollStory.getBoundingClientRect();
-  const scrolled = -rect.top;
-  const total = rect.height - window.innerHeight;
-  if (total <= 0) return;
-  const clamp = Math.max(0, Math.min(total, scrolled));
-  const index = Math.min(Math.floor((clamp / total) * storyCards.length), storyCards.length - 1);
-  setActiveCard(index);
+  // scroll-driven card switching disabled
 }
 
-window.addEventListener('scroll', updateScrollStory, { passive: true });
 window.addEventListener('load', () => {
   setActiveCard(0);
-  updateScrollStory();
 });
 
 appleNavItems.forEach((item, i) => {
@@ -98,7 +98,11 @@ appleNavItems.forEach((item, i) => {
     if (window.innerWidth <= 900) {
       if (window.carouselGoTo) window.carouselGoTo(i);
     } else {
-      setActiveCard(i);
+      if (activeCardIndex === i) {
+        clearActiveCard();
+      } else {
+        setActiveCard(i);
+      }
     }
   });
 });

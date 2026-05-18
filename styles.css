@@ -30,7 +30,7 @@
 
 /* ========= RESET ========= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: auto; }
+html { scroll-behavior: auto; scroll-padding-top: 90px; }
 body {
   font-family: var(--font-body);
   background: var(--bg);
@@ -278,10 +278,10 @@ section[id].in-view::after {
    ============================================= */
 .hero {
   height: 92vh;
-  max-height: 760px;
+  max-height: 900px;
   display: flex;
-  align-items: center;
-  padding: 72px 200px 60px 200px;
+  align-items: flex-start;
+  padding: 120px 200px 60px 200px;
   position: relative;
   background: var(--bg);
   overflow: hidden;
@@ -458,7 +458,7 @@ section[id].in-view::after {
   max-width: 1560px;
   width: 100%;
   padding: 0 200px;
-  align-items: center;
+  align-items: start;
   z-index: 1;
   position: relative;
 }
@@ -577,10 +577,10 @@ section[id].in-view::after {
   margin-top: 8px;
 }
 
-/* Right — cards animadas */
+/* Right — tarjeta activa según click en nav */
 .story-right {
   position: relative;
-  height: 700px;
+  min-height: 520px;
 }
 
 /* Carrusel — oculto en desktop, activo en móvil */
@@ -606,8 +606,8 @@ section[id].in-view::after {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   opacity: 0;
-  transform: translateX(28px) scale(0.98);
-  transition: opacity 0.52s var(--ease), transform 0.52s var(--ease);
+  transform: translateY(14px) scale(0.99);
+  transition: opacity 0.42s var(--ease), transform 0.42s var(--ease);
   pointer-events: none;
 }
 
@@ -741,13 +741,14 @@ section[id].in-view::after {
 
 .story-card.active {
   opacity: 1;
-  transform: translateX(0) scale(1);
+  transform: none;
   pointer-events: auto;
 }
 
 .story-card.past {
   opacity: 0;
-  transform: translateX(-24px) scale(0.98);
+  transform: translateY(-8px) scale(0.99);
+  pointer-events: none;
 }
 
 .sc-num {
@@ -1178,7 +1179,7 @@ section[id].in-view::after {
 /* =============================================
    CONTACTO — formulario limpio
    ============================================= */
-.cta-section { background: var(--bg); padding: 100px 0; position: relative; }
+.cta-section { background: var(--bg); padding: 100px 0; position: relative; scroll-margin-top: 90px; }
 .cta-section .container {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 80px; align-items: start;
@@ -1212,7 +1213,13 @@ section[id].in-view::after {
 }
 
 /* ── Formulario estilo underline ── */
-.cta-form-area { background: #fff; padding: 40px 0 0; }
+.cta-form-area {
+  background: #fff;
+  padding: 40px 40px 48px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
 .cta-form { display: flex; flex-direction: column; gap: 0; }
 
 /* Filas de 2 columnas con gap horizontal generoso */
@@ -1820,7 +1827,7 @@ section[id].in-view::after {
 }
 
 @media (max-width: 768px) {
-  .cta-form-area { padding: 32px 20px 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .cta-form-area { padding: 32px 24px 48px; border-radius: var(--radius-lg); }
   .container { padding: 0 20px; }
   .section { padding: 72px 0; }
   .header { padding: 14px 16px; }
@@ -1922,6 +1929,8 @@ section[id].in-view::after {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
+  width: 100%;
+  max-width: 520px;
 }
 .diag-tire-img {
   width: 100%;
@@ -2116,7 +2125,7 @@ section[id].in-view::after {
   font-size: 0.7rem;
   color: var(--text-3);
   line-height: 1.5;
-  text-align: center;
+  flex: 1;
 }
 
 /* Etiqueta y valor de tarjetas de contacto */
@@ -2134,12 +2143,13 @@ section[id].in-view::after {
   .diag-pillars { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .diag-two-col { grid-template-columns: 1fr; gap: 32px; }
   .diag-main { padding: 72px 24px; }
-  .diag-tire-wrap { transform: none; justify-content: center; align-items: center; }
+  .diag-tire-wrap { transform: none; justify-content: center; align-items: center; max-width: 380px; margin: 0 auto; }
   .diag-tire-img { margin-bottom: 0; max-width: 380px; }
   .diag-cards-area { min-height: 320px; }
 }
 @media (max-width: 600px) {
   .diag-main { padding: 60px 20px; }
+  .diag-tire-wrap { max-width: 100%; }
   .diag-card-thumb img { height: 140px; }
   .diag-pillars { grid-template-columns: 1fr; }
   .flota-btns { gap: 8px; }
