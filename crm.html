@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM — VIZUtire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --red:       #E1443A;
+            --red-dark:  #c73930;
+            --bg:        #09090B;
+            --surface:   #111113;
+            --surface-2: #18181B;
+            --border:    #27272A;
+            --text:      #FAFAFA;
+            --text-sub:  #A1A1AA;
+            --text-muted:#71717A;
+            --green:     #22c55e;
+            --blue:      #3b82f6;
+            --amber:     #f59e0b;
+            --purple:    #a855f7;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* ─── Header ─── */
+        .header { padding: 16px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+        .logo em { color: var(--red); font-style: normal; }
+        .header-badge { font-size: 11px; font-weight: 600; background: rgba(225,68,58,0.12); border: 1px solid rgba(225,68,58,0.28); color: var(--red); padding: 4px 10px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+        /* ─── Layout ─── */
+        .page { padding: 28px; max-width: 1400px; margin: 0 auto; }
+
+        /* ─── Métricas ─── */
+        .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+        .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .metric-card.highlight { border-color: rgba(225,68,58,0.3); background: rgba(225,68,58,0.05); }
+        .metric-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+        .metric-value { font-size: 32px; font-weight: 800; letter-spacing: -0.04em; color: var(--text); }
+        .metric-card.highlight .metric-value { color: var(--red); }
+        .metric-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        /* ─── Filtros ─── */
+        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        .search-wrap { position: relative; flex: 1; min-width: 220px; }
+        .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 13px; padding: 9px 14px 9px 38px; outline: none; transition: border-color 0.15s; }
+        .search-input:focus { border-color: var(--red); }
+        .search-input::placeholder { color: var(--text-muted); }
+        select.filter { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 13px; padding: 9px 32px 9px 12px; outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; transition: border-color 0.15s; }
+        select.filter:focus { border-color: var(--red); }
+        select.filter option { background: #18181b; }
+        .btn-refresh { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text-sub); font-family: inherit; font-size: 13px; padding: 9px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: border-color 0.15s, color 0.15s; }
+        .btn-refresh:hover { border-color: var(--text-muted); color: var(--text); }
+        .btn-refresh.loading svg { animation: spin 0.8s linear infinite; }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+        /* ─── Tabla ─── */
+        .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .table-head { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .table-title { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+        .table-count { font-size: 12px; color: var(--text-muted); }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; cursor: pointer; user-select: none; }
+        thead th:hover { color: var(--text-sub); }
+        thead th .sort-arrow { opacity: 0.4; margin-left: 4px; }
+        thead th.sorted .sort-arrow { opacity: 1; color: var(--red); }
+        tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,0.03); }
+        tbody td { font-size: 13px; padding: 13px 16px; color: var(--text-sub); vertical-align: middle; }
+        .td-nombre strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+        .td-nombre span { font-size: 11px; color: var(--text-muted); margin-top: 1px; display: block; }
+        .td-empresa strong { display: block; font-size: 13px; color: var(--text); }
+        .td-empresa span { font-size: 11px; color: var(--text-muted); }
+
+        /* Score bar */
+        .score-wrap { display: flex; align-items: center; gap: 8px; }
+        .score-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; min-width: 50px; }
+        .score-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+        .score-num { font-size: 12px; font-weight: 700; min-width: 24px; }
+
+        /* Estado badge */
+        .badge-estado { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+        .estado-nuevo            { background: rgba(113,113,122,0.15); color: #a1a1aa; }
+        .estado-validado         { background: rgba(59,130,246,0.12); color: #60a5fa; }
+        .estado-en-seguimiento   { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .estado-interesado       { background: rgba(168,85,247,0.12); color: #c084fc; }
+        .estado-calificado       { background: rgba(34,197,94,0.12); color: #4ade80; }
+        .estado-reunion-agendada { background: rgba(34,197,94,0.18); color: #22c55e; }
+        .estado-propuesta-enviada{ background: rgba(249,115,22,0.12); color: #fb923c; }
+        .estado-cerrado          { background: rgba(34,197,94,0.22); color: #16a34a; }
+
+        /* ─── Empty / Loading ─── */
+        .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty svg { margin: 0 auto 16px; display: block; opacity: 0.3; }
+        .empty p { font-size: 14px; }
+        .skeleton td { background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        /* ─── Modal ─── */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
+        .overlay.open { display: flex; }
+        .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.2s ease; }
+        @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+        .modal-head { padding: 22px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .modal-title { font-size: 16px; font-weight: 700; }
+        .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 6px; transition: color 0.15s; }
+        .modal-close:hover { color: var(--text); }
+        .modal-body { padding: 24px; }
+        .modal-section { margin-bottom: 22px; }
+        .modal-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .modal-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+        .detail-row:last-child { border-bottom: none; }
+        .d-key { font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+        .d-val { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
+        .modal-calc { background: rgba(225,68,58,0.07); border: 1px solid rgba(225,68,58,0.22); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+        .calc-total { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: var(--red); }
+        .calc-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .estado-select { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 14px; padding: 10px 14px; outline: none; cursor: pointer; }
+        .estado-select:focus { border-color: var(--red); }
+        .btn-save { width: 100%; background: var(--red); border: none; border-radius: 8px; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; padding: 12px; cursor: pointer; margin-top: 12px; transition: background 0.15s; }
+        .btn-save:hover { background: var(--red-dark); }
+        .contact-grid { display: flex; flex-direction: column; gap: 10px; }
+        .contact-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; }
+        .contact-item.preferred { border-color: var(--red); background: rgba(225,68,58,0.06); }
+        .contact-item-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .contact-item-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); }
+        .contact-item-value { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .contact-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; background: var(--red); color: #fff; letter-spacing: 0.04em; white-space: nowrap; }
+        .btn-contact { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; text-decoration: none; white-space: nowrap; background: var(--surface-2); color: var(--text-sub); transition: background 0.18s, border-color 0.18s, color 0.18s; }
+        .btn-wa:hover   { background: rgba(34,197,94,0.10);  border-color: rgba(34,197,94,0.35);  color: #22c55e; }
+        .btn-mail:hover { background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.35); color: #60a5fa; }
+        .btn-tel:hover  { background: rgba(99,102,241,0.10); border-color: rgba(99,102,241,0.35); color: #818cf8; }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            .metrics { grid-template-columns: 1fr 1fr; }
+            .col-hide { display: none; }
+        }
+        @media (max-width: 600px) {
+            .metrics { grid-template-columns: 1fr 1fr; }
+            .page { padding: 16px; }
+        }
+
+        /* ─── Light mode ─── */
+        :root.light {
+            --bg:        #F4F4F5;
+            --surface:   #FFFFFF;
+            --surface-2: #F1F1F3;
+            --border:    #E4E4E7;
+            --text:      #09090B;
+            --text-sub:  #3F3F46;
+            --text-muted:#71717A;
+        }
+        :root.light tbody tr:hover { background: rgba(0,0,0,0.025); }
+        :root.light .skeleton td { background: linear-gradient(90deg,#E4E4E7 25%,#D4D4D8 50%,#E4E4E7 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
+        :root.light select.filter option,
+        :root.light .estado-select option { background: #fff; }
+        :root.light .overlay { background: rgba(0,0,0,0.45); }
+
+        /* ─── Botón tema ─── */
+        .theme-toggle { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text-muted); padding: 7px 10px; cursor: pointer; display: flex; align-items: center; transition: border-color 0.15s, color 0.15s, background 0.2s; }
+        .theme-toggle:hover { border-color: var(--text-muted); color: var(--text); }
+    </style>
+    <script>
+        /* Aplicar tema antes de renderizar para evitar flash */
+        (function() { if (localStorage.getItem('crm_theme') === 'light') document.documentElement.classList.add('light'); })();
+    </script>
+</head>
+<body>
+
+<!-- ─── Login ─── -->
+<div id="login-screen" style="position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div style="width:100%;max-width:380px;">
+        <div style="text-align:center;margin-bottom:36px;">
+            <div style="font-size:22px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">VIZU<span style="color:var(--red);">tire</span></div>
+            <div style="font-size:13px;color:var(--text-muted);">Acceso restringido — Panel CRM</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;">
+            <div style="font-size:12px;font-weight:500;color:var(--text-sub);margin-bottom:8px;">Correo</div>
+            <input id="login-email" type="email" placeholder="correo@empresa.com"
+                style="width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:14px;padding:11px 14px;outline:none;transition:border-color 0.15s;margin-bottom:14px;"
+                onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'"
+                onkeydown="if(event.key==='Enter')document.getElementById('login-pwd').focus()">
+            <div style="font-size:12px;font-weight:500;color:var(--text-sub);margin-bottom:8px;">Contraseña</div>
+            <input id="login-pwd" type="password" placeholder="••••••••••"
+                style="width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:14px;padding:11px 14px;outline:none;transition:border-color 0.15s;margin-bottom:12px;"
+                onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'"
+                onkeydown="if(event.key==='Enter')intentarLogin()">
+            <div id="login-err" style="display:none;font-size:12px;color:#f87171;margin-bottom:12px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);border-radius:6px;padding:8px 12px;">
+                Correo o contraseña incorrectos.
+            </div>
+            <button id="login-btn" onclick="intentarLogin()"
+                style="width:100%;background:var(--red);border:none;border-radius:8px;color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:12px;cursor:pointer;transition:background 0.15s;"
+                onmouseover="this.style.background='var(--red-dark)'" onmouseout="this.style.background='var(--red)'">
+                Acceder →
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ─── App ─── -->
+<div id="app">
+
+<header class="header">
+    <div class="logo">VIZU<em>tire</em> <span style="font-size:12px;font-weight:400;color:var(--text-muted);margin-left:8px;">CRM</span></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <div class="header-badge">Panel interno</div>
+        <span id="header-email" style="font-size:12px;color:var(--text-muted);"></span>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Modo día / noche"></button>
+        <button onclick="cerrarSesion()" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-family:inherit;font-size:12px;padding:5px 11px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--text-muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+            Cerrar sesión
+        </button>
+    </div>
+</header>
+
+<div class="page">
+
+    <!-- Métricas -->
+    <div class="metrics" id="metrics">
+        <div class="metric-card"><div class="metric-label">Total leads</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">registrados</div></div>
+        <div class="metric-card highlight"><div class="metric-label">Calificados</div><div class="metric-value" id="m-cal">—</div><div class="metric-sub">score ≥ 60</div></div>
+        <div class="metric-card"><div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">sobre 100</div></div>
+        <div class="metric-card"><div class="metric-label">Con calculadora</div><div class="metric-value" id="m-calc">—</div><div class="metric-sub">usaron la herramienta</div></div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg width="14" height="14" fill="none" stroke="var(--text-muted)" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" class="search-input" id="search" placeholder="Buscar por nombre, empresa, correo…">
+        </div>
+        <select class="filter" id="f-estado">
+            <option value="">Todos los estados</option>
+            <option>Nuevo</option>
+            <option>Validado</option>
+            <option>En seguimiento</option>
+            <option>Interesado</option>
+            <option>Calificado</option>
+            <option>Reunión agendada</option>
+            <option>Propuesta enviada</option>
+            <option>Cerrado</option>
+        </select>
+        <select class="filter" id="f-pais">
+            <option value="">Todos los países</option>
+        </select>
+        <select class="filter" id="f-flota">
+            <option value="">Toda la flota</option>
+            <option value="1-10">1 – 10</option>
+            <option value="11-50">11 – 50</option>
+            <option value="51-200">51 – 200</option>
+            <option value="200+">200+</option>
+        </select>
+        <button class="btn-refresh" id="btn-refresh" onclick="cargarLeads()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Actualizar
+        </button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrap">
+        <div class="table-head">
+            <div class="table-title">Leads registrados</div>
+            <div class="table-count" id="table-count">—</div>
+        </div>
+        <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortBy('nombre')">Contacto <span class="sort-arrow">↕</span></th>
+                    <th onclick="sortBy('empresa')">Empresa <span class="sort-arrow">↕</span></th>
+                    <th class="col-hide" onclick="sortBy('pais')">País <span class="sort-arrow">↕</span></th>
+                    <th class="col-hide" onclick="sortBy('flota')">Flota <span class="sort-arrow">↕</span></th>
+                    <th class="col-hide">Intereses</th>
+                    <th onclick="sortBy('lead_score')">Score <span class="sort-arrow">↕</span></th>
+                    <th onclick="sortBy('estado')">Estado <span class="sort-arrow">↕</span></th>
+                    <th class="col-hide" onclick="sortBy('fecha')">Fecha <span class="sort-arrow">↕</span></th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+        </div>
+    </div>
+
+</div>
+</div><!-- /page -->
+
+<!-- Modal detalle -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+        <div class="modal-head">
+            <div class="modal-title" id="modal-title">—</div>
+            <button class="modal-close" onclick="closeModalDirect()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
+    </div>
+</div><!-- /app -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8dWA6AdQI8Lq0g7gUCxlkUgtrj1GgPNSFvY9O1GNOseOKuY1bK1FBXEWnXsFqAKU/exec';
+const CRM_TOKEN  = 'MinераVizu2026!';
+
+/* ─── Firebase ─── */
+firebase.initializeApp({
+    apiKey:            "AIzaSyDAJvxajYVvUOKmTIIXgpBURa5OIVezK3M",
+    authDomain:        "vizutire-crm.firebaseapp.com",
+    projectId:         "vizutire-crm",
+    storageBucket:     "vizutire-crm.firebasestorage.app",
+    messagingSenderId: "191202109267",
+    appId:             "1:191202109267:web:0d2a6cfbbe400fce8823a6"
+});
+const auth = firebase.auth();
+
+auth.onAuthStateChanged(function(user) {
+    if (user) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = '';
+        document.getElementById('header-email').textContent = user.email;
+        cargarLeads();
+    } else {
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('app').style.display = 'none';
+    }
+});
+
+let allLeads    = [];
+let allCitas    = [];
+let sortCol     = 'fecha';
+let sortAsc     = false;
+let currentLead = null;
+
+/* ─── Login ─── */
+function intentarLogin() {
+    var email = document.getElementById('login-email').value.trim();
+    var pwd   = document.getElementById('login-pwd').value;
+    var err   = document.getElementById('login-err');
+    var btn   = document.getElementById('login-btn');
+    if (!email || !pwd) return;
+
+    btn.textContent = 'Verificando…';
+    btn.disabled = true;
+
+    auth.signInWithEmailAndPassword(email, pwd)
+        .catch(function(e) {
+            var msg = 'Error al iniciar sesión.';
+            if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Correo o contraseña incorrectos.';
+            if (e.code === 'auth/user-not-found')   msg = 'Usuario no encontrado.';
+            if (e.code === 'auth/too-many-requests') msg = 'Demasiados intentos. Espera unos minutos.';
+            if (e.code === 'auth/invalid-email')     msg = 'Correo no válido.';
+            err.textContent = msg;
+            err.style.display = 'block';
+            setTimeout(function() { err.style.display = 'none'; }, 4000);
+        })
+        .finally(function() {
+            btn.textContent = 'Acceder →';
+            btn.disabled = false;
+            document.getElementById('login-pwd').value = '';
+        });
+}
+
+function cerrarSesion() {
+    auth.signOut();
+}
+
+/* ─── Cargar ─── */
+async function cargarLeads() {
+    const btn = document.getElementById('btn-refresh');
+    btn.classList.add('loading');
+    showSkeleton();
+
+    try {
+        const [resL, resC] = await Promise.all([
+            fetch(SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({ type: 'getLeads', token: CRM_TOKEN }))),
+            fetch(SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({ type: 'getCitas', token: CRM_TOKEN })))
+        ]);
+        const dataL = await resL.json();
+        const dataC = await resC.json();
+        allLeads = dataL.leads || [];
+        allCitas = dataC.citas || [];
+        poblarFiltros();
+        renderTabla();
+        renderMetricas();
+    } catch (e) {
+        document.getElementById('tbody').innerHTML = `<tr><td colspan="8"><div class="empty"><p>Error al cargar datos. Verifica la URL del script.</p></div></td></tr>`;
+    } finally {
+        btn.classList.remove('loading');
+    }
+}
+
+/* ─── Filtrar ─── */
+function filteredLeads() {
+    const q      = document.getElementById('search').value.toLowerCase();
+    const estado = document.getElementById('f-estado').value;
+    const pais   = document.getElementById('f-pais').value;
+    const flota  = document.getElementById('f-flota').value;
+
+    return allLeads.filter(l => {
+        const matchQ = !q || [l.nombre, l.empresa, l.correo, l.ciudad].some(v => (v||'').toLowerCase().includes(q));
+        const matchE = !estado || l.estado === estado;
+        const matchP = !pais   || l.pais   === pais;
+        const matchF = !flota  || l.flota  === flota;
+        return matchQ && matchE && matchP && matchF;
+    });
+}
+
+/* ─── Ordenar ─── */
+function sortBy(col) {
+    if (sortCol === col) sortAsc = !sortAsc;
+    else { sortCol = col; sortAsc = true; }
+    document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+    renderTabla();
+}
+
+function sorted(leads) {
+    return [...leads].sort((a, b) => {
+        let va = a[sortCol] || '', vb = b[sortCol] || '';
+        if (sortCol === 'lead_score') { va = parseFloat(va)||0; vb = parseFloat(vb)||0; }
+        const r = va < vb ? -1 : va > vb ? 1 : 0;
+        return sortAsc ? r : -r;
+    });
+}
+
+/* ─── Render tabla ─── */
+function renderTabla() {
+    const leads = sorted(filteredLeads());
+    document.getElementById('table-count').textContent = `${leads.length} lead${leads.length !== 1 ? 's' : ''}`;
+    const tbody = document.getElementById('tbody');
+
+    if (leads.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty">
+            <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M10 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l4 4v5"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="16" x2="22" y2="16"/></svg>
+            <p>No hay leads que coincidan con los filtros.</p>
+        </div></td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = leads.map((l, i) => {
+        const score = parseFloat(l.lead_score) || 0;
+        const scoreColor = score >= 80 ? '#22c55e' : score >= 60 ? '#3b82f6' : score >= 30 ? '#f59e0b' : '#71717a';
+        const estadoClass = 'estado-' + (l.estado||'nuevo').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+        const intereses = (l.pdfs||'').split('·').map(s=>s.trim()).filter(Boolean).slice(0,2);
+        const fecha = l.fecha ? l.fecha.toString().slice(0,10) : '—';
+
+        return `<tr onclick="openModal(${i})">
+            <td class="td-nombre">
+                <strong>${l.nombre||'—'}</strong>
+                <span>${l.cargo||''}</span>
+            </td>
+            <td class="td-empresa">
+                <strong>${l.empresa||'—'}</strong>
+                <span>${l.correo||''}</span>
+            </td>
+            <td class="col-hide">${l.pais||'—'}</td>
+            <td class="col-hide">${l.flota||'—'}${l.num_caex ? ' · '+l.num_caex+' CAEX' : ''}</td>
+            <td class="col-hide" style="max-width:160px;">
+                ${intereses.map(p => `<span style="display:inline-block;font-size:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;margin:1px;">${p}</span>`).join('')}
+                ${(l.pdfs||'').split('·').length > 2 ? `<span style="font-size:11px;color:var(--text-muted)">+${(l.pdfs||'').split('·').length-2}</span>` : ''}
+            </td>
+            <td>
+                <div class="score-wrap">
+                    <div class="score-bar"><div class="score-fill" style="width:${score}%;background:${scoreColor};"></div></div>
+                    <span class="score-num" style="color:${scoreColor};">${score}</span>
+                </div>
+            </td>
+            <td><span class="badge-estado ${estadoClass}">${l.estado||'Nuevo'}</span></td>
+            <td class="col-hide" style="color:var(--text-muted);font-size:12px;">${fecha}</td>
+        </tr>`;
+    }).join('');
+
+    // marca columna ordenada
+    const ths = document.querySelectorAll('thead th');
+    const colMap = {nombre:0,empresa:1,pais:2,flota:3,lead_score:5,estado:6,fecha:7};
+    if (colMap[sortCol] !== undefined) ths[colMap[sortCol]]?.classList.add('sorted');
+}
+
+/* ─── Métricas ─── */
+function renderMetricas() {
+    const total  = allLeads.length;
+    const cal    = allLeads.filter(l => (parseFloat(l.lead_score)||0) >= 60).length;
+    const scores = allLeads.map(l => parseFloat(l.lead_score)||0);
+    const avg    = total ? Math.round(scores.reduce((a,b)=>a+b,0)/total) : 0;
+    const conCal = allLeads.filter(l => l.usa_calculadora === 'Sí').length;
+
+    document.getElementById('m-total').textContent  = total;
+    document.getElementById('m-cal').textContent    = cal;
+    document.getElementById('m-score').textContent  = avg;
+    document.getElementById('m-calc').textContent   = conCal;
+}
+
+/* ─── Filtros dinámicos ─── */
+function poblarFiltros() {
+    const paises = [...new Set(allLeads.map(l => l.pais).filter(Boolean))].sort();
+    const sel = document.getElementById('f-pais');
+    sel.innerHTML = '<option value="">Todos los países</option>' +
+        paises.map(p => `<option>${p}</option>`).join('');
+}
+
+/* ─── Sección agenda ─── */
+function buildAgendaSection(l) {
+    var citas = allCitas.filter(function(c) {
+        return String(c.correo).trim().toLowerCase() === String(l.correo).trim().toLowerCase();
+    });
+    if (!citas.length) return '';
+
+    var ahora = new Date();
+    var proximas = [];
+    var pasadas  = [];
+
+    citas.forEach(function(c) {
+        var iso = c.cita_iso_start ? String(c.cita_iso_start) : '';
+        var fecha = null;
+        if (iso) {
+            var p = new Date(iso);
+            if (!isNaN(p.getTime())) fecha = p;
+        }
+        // Solo marca como pasada si tenemos fecha válida Y ya ocurrió
+        // Si la fecha no se pudo parsear, se muestra como próxima por defecto
+        if (fecha && fecha <= ahora) {
+            pasadas.push({ cita: c, fecha: fecha });
+        } else {
+            proximas.push({ cita: c, fecha: fecha || new Date('9999-01-01') });
+        }
+    });
+
+    proximas.sort(function(a, b) { return a.fecha - b.fecha; });
+    pasadas.sort(function(a, b) { return b.fecha - a.fecha; });
+
+    var html = '<div class="modal-section"><div class="modal-section-label">Agenda</div>';
+
+    proximas.forEach(function(item) {
+        var c = item.cita;
+        html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.25);border-radius:10px;margin-bottom:8px;">';
+        html +=   '<div style="flex-shrink:0;margin-top:2px;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-top:6px;"></div>';
+        html +=   '<div style="flex:1;">';
+        html +=     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#22c55e;margin-bottom:3px;">Próxima reunión</div>';
+        html +=     '<div style="font-size:13px;font-weight:600;color:var(--text);">' + (c.cita_fecha || '—') + '</div>';
+        if (c.mensaje) html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">' + c.mensaje + '</div>';
+        html +=   '</div>';
+        html += '</div>';
+    });
+
+    pasadas.forEach(function(item) {
+        var c = item.cita;
+        html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">';
+        html +=   '<div style="flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--text-muted);margin-top:6px;"></div>';
+        html +=   '<div style="flex:1;">';
+        html +=     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:3px;">Reunión realizada</div>';
+        html +=     '<div style="font-size:13px;font-weight:600;color:var(--text);">' + (c.cita_fecha || '—') + '</div>';
+        if (c.mensaje) html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">' + c.mensaje + '</div>';
+        html +=   '</div>';
+        html += '</div>';
+    });
+
+    html += '</div>';
+    return html;
+}
+
+/* ─── Botones de contacto ─── */
+function buildContactButtons(l) {
+    var pref   = (l.pref_contacto || '').toLowerCase();
+    var telRaw = String(l.telefono || '').trim();
+    var tel    = telRaw.replace(/[\s\-\(\)\.]/g, '');           // para tel: link
+    var waNum  = tel.replace(/^\+/, '').replace(/[^\d]/g, '');  // solo dígitos para wa.me
+    var html   = '<div class="contact-grid" style="margin-top:4px;">';
+
+    if (l.correo) {
+        var isMailPref = pref.indexOf('correo') >= 0 || pref.indexOf('email') >= 0;
+        var badge = isMailPref ? ' &nbsp;<span class="contact-badge">Preferido</span>' : '';
+        html += '<div class="contact-item' + (isMailPref ? ' preferred' : '') + '">';
+        html +=   '<div class="contact-item-left">';
+        html +=     '<span class="contact-item-label">Correo' + badge + '</span>';
+        html +=     '<span class="contact-item-value">' + l.correo + '</span>';
+        html +=   '</div>';
+        html +=   '<a class="btn-contact btn-mail" href="mailto:' + l.correo + '"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Enviar email</a>';
+        html += '</div>';
+    }
+
+    if (l.telefono) {
+        var isWaPref  = pref.indexOf('whatsapp') >= 0;
+        var isTelPref = pref.indexOf('llamada') >= 0 || pref.indexOf('tel') >= 0;
+        var telBadge  = isWaPref ? ' &nbsp;<span class="contact-badge">WhatsApp preferido</span>'
+                      : isTelPref ? ' &nbsp;<span class="contact-badge">Llamada preferida</span>' : '';
+        html += '<div class="contact-item' + (isWaPref || isTelPref ? ' preferred' : '') + '">';
+        html +=   '<div class="contact-item-left">';
+        html +=     '<span class="contact-item-label">Teléfono' + telBadge + '</span>';
+        html +=     '<span class="contact-item-value">' + String(l.telefono) + '</span>';
+        html +=   '</div>';
+        html +=   '<div style="display:flex;gap:6px;flex-shrink:0;">';
+        if (waNum) {
+            html += '<a class="btn-contact btn-wa" href="https://wa.me/' + waNum + '" target="_blank"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> WhatsApp</a>';
+        }
+        html +=     '<a class="btn-contact btn-tel" href="tel:' + tel + '"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> Llamar</a>';
+        html +=   '</div>';
+        html += '</div>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+/* ─── Modal ─── */
+function openModal(idx) {
+    const leads = sorted(filteredLeads());
+    const l = leads[idx];
+    currentLead = l;
+    document.getElementById('modal-title').textContent = l.nombre + ' · ' + l.empresa;
+
+    const score = parseFloat(l.lead_score) || 0;
+    const scoreColor = score >= 80 ? '#22c55e' : score >= 60 ? '#3b82f6' : score >= 30 ? '#f59e0b' : '#71717a';
+    const tieneCalc  = l.usa_calculadora === 'Sí' && l.calc_total_ahorro;
+
+    const row = (k, v) => v ? `<div class="detail-row"><span class="d-key">${k}</span><span class="d-val">${v}</span></div>` : '';
+    const fmtUSD = n => { const x = parseInt(n)||0; return x >= 1000000 ? 'USD '+(x/1000000).toFixed(1)+'M' : x >= 1000 ? 'USD '+Math.round(x/1000)+'K' : 'USD '+x.toLocaleString('es-CL'); };
+
+    document.getElementById('modal-body').innerHTML = `
+        <!-- Score -->
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:22px;display:flex;align-items:center;gap:16px;">
+            <div style="text-align:center;min-width:64px;">
+                <div style="font-size:36px;font-weight:800;color:${scoreColor};letter-spacing:-0.04em;">${score}</div>
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Score</div>
+            </div>
+            <div style="flex:1;">
+                <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px;"><div style="height:100%;width:${score}%;background:${scoreColor};border-radius:3px;"></div></div>
+                <div style="font-size:12px;color:var(--text-muted);">Estado actual</div>
+                <select class="estado-select" id="modal-estado" style="margin-top:6px;">
+                    ${['Nuevo','Validado','En seguimiento','Interesado','Calificado','Reunión agendada','Propuesta enviada','Piloto / Negociación','Cerrado'].map(e =>
+                        `<option ${l.estado===e?'selected':''}>${e}</option>`).join('')}
+                </select>
+                <button class="btn-save" onclick="guardarEstado()">Guardar estado</button>
+            </div>
+        </div>
+
+        ${tieneCalc ? `<div class="modal-calc">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:6px;">Ahorro estimado</div>
+            <div class="calc-total">${fmtUSD(l.calc_total_ahorro)}<span style="font-size:14px;font-weight:400;color:var(--text-muted);"> / año</span></div>
+            <div class="calc-sub">${l.calc_caex||'—'} CAEX · ${l.calc_vida||'—'}h vida útil · ${l.calc_medida||''}</div>
+        </div>` : ''}
+
+        <div class="modal-section">
+            <div class="modal-section-label">Contacto</div>
+            ${row('Nombre', l.nombre + ' · ' + l.cargo)}
+            ${row('Empresa', l.empresa)}
+            ${row('Registro', l.fecha)}
+            ${buildContactButtons(l)}
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-label">Operación</div>
+            ${row('País / Ciudad', (l.pais||'') + ' — ' + (l.ciudad||''))}
+            ${row('Flota',        l.flota + (l.num_caex ? ' · ' + l.num_caex + ' CAEX' : ''))}
+            ${row('Equipo',       l.equipo)}
+            ${row('Intereses',    l.pdfs)}
+        </div>
+        ${tieneCalc ? `<div class="modal-section">
+            <div class="modal-section-label">Calculadora</div>
+            ${row('Costo neumático', fmtUSD(l.calc_costo))}
+            ${row('Scrap',           l.calc_scrap ? fmtUSD(l.calc_scrap) : null)}
+            ${row('Vida útil actual', l.calc_vida ? l.calc_vida + ' horas' : null)}
+            ${row('Fallas / año',    l.calc_fallas)}
+            ${row('Ahorro vida útil',  fmtUSD(l.calc_ahorro_vida))}
+            ${row('Ahorro fallas',     fmtUSD(l.calc_ahorro_fallas))}
+        </div>` : ''}
+        ${buildAgendaSection(l)}
+    `;
+
+    document.getElementById('overlay').classList.add('open');
+}
+
+async function guardarEstado() {
+    if (!currentLead) return;
+    const nuevoEstado = document.getElementById('modal-estado').value;
+    const btn = document.querySelector('.btn-save');
+    btn.textContent = 'Guardando…';
+    btn.disabled = true;
+
+    try {
+        const payload = { type: 'updateEstado', token: CRM_TOKEN, correo: currentLead.correo, fecha: currentLead.fecha, estado: nuevoEstado };
+        const url = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(payload));
+        await fetch(url);
+        currentLead.estado = nuevoEstado;
+        const lead = allLeads.find(l => l.correo === currentLead.correo && l.fecha === currentLead.fecha);
+        if (lead) lead.estado = nuevoEstado;
+        renderTabla();
+        renderMetricas();
+        btn.textContent = '✓ Guardado';
+        setTimeout(() => { btn.textContent = 'Guardar estado'; btn.disabled = false; }, 1800);
+    } catch {
+        btn.textContent = 'Error — intenta de nuevo';
+        btn.disabled = false;
+    }
+}
+
+function closeModal(e) { if (e.target === document.getElementById('overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('overlay').classList.remove('open'); currentLead = null; }
+
+/* ─── Skeleton ─── */
+function showSkeleton() {
+    document.getElementById('tbody').innerHTML = Array(5).fill(0).map(() =>
+        `<tr class="skeleton">${Array(8).fill('<td style="height:46px;">&nbsp;</td>').join('')}</tr>`).join('');
+}
+
+/* ─── Eventos ─── */
+document.getElementById('search').addEventListener('input', renderTabla);
+document.getElementById('f-estado').addEventListener('change', renderTabla);
+document.getElementById('f-pais').addEventListener('change', renderTabla);
+document.getElementById('f-flota').addEventListener('change', renderTabla);
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalDirect();
+    if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') intentarLogin();
+});
+
+/* ─── Tema día / noche ─── */
+const SVG_MOON = '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+const SVG_SUN  = '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light');
+    localStorage.setItem('crm_theme', isLight ? 'light' : 'dark');
+    updateThemeBtn();
+}
+function updateThemeBtn() {
+    const isLight = document.documentElement.classList.contains('light');
+    document.getElementById('theme-toggle').innerHTML = isLight ? SVG_MOON : SVG_SUN;
+}
+updateThemeBtn();
+
+/* ─── Inicio: mostrar login o app ─── */
+if (crmToken) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    cargarLeads();
+} else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+}
+</script>
+</body>
+</html>
