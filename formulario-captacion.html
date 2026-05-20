@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación Técnica — VISUtire</title>
+    <title>Evaluación Técnica — VIZUtire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,21 +20,10 @@
             --text-muted: #71717A;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
         /* ─── Header ────────────────────────────── */
-        .header {
-            padding: 20px 32px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .header { padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
         .logo-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
         .logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
         .logo-text em { color: var(--red); font-style: normal; }
@@ -48,30 +36,22 @@
         .progress { display: flex; align-items: center; margin-bottom: 48px; }
         .prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .prog-num {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
+            width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border);
             display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
+            font-size: 12px; font-weight: 700; color: var(--text-muted); transition: all 0.3s ease;
         }
         .prog-label { font-size: 12px; font-weight: 500; color: var(--text-muted); transition: color 0.3s; white-space: nowrap; }
-        .prog-line { flex: 1; height: 1px; background: var(--border); margin: 0 12px; transition: background 0.4s ease; }
-
+        .prog-line { flex: 1; height: 1px; background: var(--border); margin: 0 10px; transition: background 0.4s ease; }
         .prog-step.done  .prog-num   { border-color: var(--red); color: var(--red); }
         .prog-step.done  .prog-label { color: var(--text-sub); }
         .prog-step.active .prog-num  { border-color: var(--red); background: var(--red); color: #fff; }
         .prog-step.active .prog-label { color: var(--text); }
-        .prog-line.done { background: var(--red); }
+        .prog-line.done  { background: var(--red); }
 
         /* ─── Steps ──────────────────────────────── */
         .step { display: none; }
         .step.visible { display: block; animation: fadeUp 0.3s ease; }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ─── Form Header ────────────────────────── */
         .form-head { margin-bottom: 36px; }
@@ -104,16 +84,9 @@
         .req { color: var(--red); margin-left: 2px; }
 
         input, select {
-            width: 100%;
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 14px;
-            padding: 11px 14px;
-            outline: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
+            width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); font-family: inherit; font-size: 14px;
+            padding: 11px 14px; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
         }
         input::placeholder { color: var(--text-muted); }
         input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
@@ -122,21 +95,22 @@
         select option { background: #1a1a1c; }
         select.error { border-color: #f87171 !important; }
 
+        /* ─── Input con prefijo ───────────────────── */
+        .input-prefix-wrap { position: relative; }
+        .input-prefix-wrap .prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-muted); pointer-events: none; }
+        .input-prefix-wrap input { padding-left: 38px; }
+
         /* ─── Nav Buttons ────────────────────────── */
         .nav-row { display: flex; gap: 10px; margin-top: 8px; }
-
         .btn-back {
-            flex: 0 0 auto;
-            background: transparent; border: 1px solid var(--border); border-radius: 8px;
+            flex: 0 0 auto; background: transparent; border: 1px solid var(--border); border-radius: 8px;
             color: var(--text-sub); font-family: inherit; font-size: 14px; font-weight: 500;
             padding: 12px 18px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
             display: flex; align-items: center; gap: 6px;
         }
         .btn-back:hover { border-color: var(--text-muted); color: var(--text); }
-
         .btn-next {
-            flex: 1;
-            background: var(--red); border: none; border-radius: 8px;
+            flex: 1; background: var(--red); border: none; border-radius: 8px;
             color: #fff; font-family: inherit; font-size: 15px; font-weight: 600;
             padding: 13px 20px; cursor: pointer; transition: background 0.15s, transform 0.1s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -144,7 +118,6 @@
         .btn-next:hover  { background: var(--red-dark); }
         .btn-next:active { transform: scale(0.99); }
         .btn-next:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
         @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
         .spin { animation: spin 0.8s linear infinite; }
 
@@ -157,7 +130,6 @@
         }
         .cat-btn:hover { border-color: rgba(225,68,58,0.4); }
         .cat-btn.active { border-color: var(--red); background: rgba(225,68,58,0.07); }
-
         .cat-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--border); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .cat-btn.active .cat-icon { background: rgba(225,68,58,0.18); }
         .cat-icon svg { stroke: var(--text-muted); transition: stroke 0.2s; }
@@ -169,25 +141,77 @@
         /* ─── PDF Cards ──────────────────────────── */
         .check-set { display: none; flex-direction: column; gap: 8px; }
         .check-set.visible { display: flex; animation: fadeUp 0.25s ease; }
-
         .pdf-card {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 16px; background: var(--surface-2);
-            border: 1px solid var(--border); border-radius: 8px;
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
             cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none;
         }
         .pdf-card:hover { border-color: rgba(225,68,58,0.35); background: rgba(225,68,58,0.03); }
         .pdf-card:has(input:checked) { border-color: var(--red); background: rgba(225,68,58,0.08); }
-
         .pdf-icon { width: 38px; height: 38px; border-radius: 7px; background: rgba(225,68,58,0.10); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .pdf-info { flex: 1; }
         .pdf-name { font-size: 14px; font-weight: 600; color: var(--text-sub); transition: color 0.15s; }
         .pdf-card:has(input:checked) .pdf-name { color: var(--text); }
         .pdf-tag { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .pdf-check { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--red); cursor: pointer; }
-
         .hint { font-size: 12px; color: #f87171; margin-bottom: 12px; display: none; }
         .hint.visible { display: block; }
+
+        /* ─── Cargo banner (step 2) ──────────────── */
+        .cargo-banner {
+            display: none; background: rgba(225,68,58,0.06); border: 1px solid rgba(225,68,58,0.22);
+            border-radius: 12px; padding: 16px 20px; margin-bottom: 22px; animation: fadeUp 0.3s ease;
+        }
+        .cargo-banner.visible { display: block; }
+        .cargo-msg { font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 6px; }
+        .cargo-desc { font-size: 13px; color: var(--text-sub); line-height: 1.55; }
+
+        /* ─── Decisión calculadora ───────────────── */
+        .decision-banner {
+            background: linear-gradient(135deg, rgba(225,68,58,0.07), rgba(225,68,58,0.02));
+            border: 1px solid rgba(225,68,58,0.22); border-radius: 16px;
+            padding: 32px 28px; margin-bottom: 20px; text-align: center;
+        }
+        .decision-icon-wrap { width: 60px; height: 60px; border-radius: 16px; background: rgba(225,68,58,0.14); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+        .decision-q { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px; }
+        .decision-sub { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+        .decision-bullets { list-style: none; text-align: left; display: inline-block; margin-top: 14px; }
+        .decision-bullets li { font-size: 13px; color: var(--text-sub); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+        .decision-bullets li::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+        /* ─── Calculadora ────────────────────────── */
+        .calc-section { display: none; margin-top: 4px; }
+        .calc-section.visible { display: block; animation: fadeUp 0.3s ease; }
+        .calc-divider { display: flex; align-items: center; gap: 14px; margin: 28px 0 24px; }
+        .calc-divider span { font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        .calc-divider::before, .calc-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* ─── Resultados ─────────────────────────── */
+        .results-wrap { margin-bottom: 28px; }
+        .results-header { margin-bottom: 20px; }
+        .results-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+        .results-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .results-sub { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .metric-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; }
+        .metric-card.highlight { border-color: rgba(225,68,58,0.3); background: rgba(225,68,58,0.06); }
+        .metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+        .metric-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+        .metric-card.highlight .metric-value { color: var(--red); }
+        .metric-unit { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        .total-card {
+            background: linear-gradient(135deg, rgba(225,68,58,0.10), rgba(225,68,58,0.04));
+            border: 1px solid rgba(225,68,58,0.3); border-radius: 14px;
+            padding: 22px 20px; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+        }
+        .total-label { font-size: 14px; font-weight: 600; color: var(--text-sub); }
+        .total-label span { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+        .total-value { font-size: 32px; font-weight: 800; letter-spacing: -0.04em; color: var(--red); }
+
+        .disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.6; font-style: italic; padding: 10px 0; }
 
         /* ─── Confirmation ───────────────────────── */
         .confirm-head { text-align: center; margin-bottom: 36px; }
@@ -195,8 +219,7 @@
             width: 68px; height: 68px; border-radius: 50%;
             background: rgba(225,68,58,0.10); border: 2px solid var(--red);
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 22px;
-            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin: 0 auto 22px; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes popIn { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
         .confirm-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
@@ -227,55 +250,27 @@
         .note a { color: var(--text-sub); }
 
         /* ─── Error banner ───────────────────────── */
-        .error-banner {
-            background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
-            border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
-            font-size: 13px; color: #f87171; display: none;
-        }
+        .error-banner { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #f87171; display: none; }
         .error-banner.visible { display: block; }
 
-        /* ─── Tel wrap (código país + número) ───────── */
-        .tel-wrap {
-            display: flex;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--surface-2);
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        .tel-wrap:focus-within {
-            border-color: var(--red);
-            box-shadow: 0 0 0 3px rgba(225,68,58,0.14);
-        }
-        .tel-wrap.error {
-            border-color: #f87171 !important;
-            box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important;
-        }
-        .tel-code {
-            border: none !important;
-            border-right: 1px solid var(--border) !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            width: 118px !important;
-            flex-shrink: 0;
-            font-size: 13px;
-            background: transparent;
-        }
-        .tel-num {
-            border: none !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            flex: 1;
-            min-width: 0;
-            background: transparent !important;
-        }
+        /* ─── Tel wrap ───────────────────────────── */
+        .tel-wrap { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface-2); transition: border-color 0.15s, box-shadow 0.15s; }
+        .tel-wrap:focus-within { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
+        .tel-wrap.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        .tel-code { border: none !important; border-right: 1px solid var(--border) !important; border-radius: 0 !important; box-shadow: none !important; width: 118px !important; flex-shrink: 0; font-size: 13px; background: transparent; }
+        .tel-num  { border: none !important; border-radius: 0 !important; box-shadow: none !important; flex: 1; min-width: 0; background: transparent !important; }
+
+        /* ─── Skip link ──────────────────────────── */
+        .skip-link { display: block; text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+        .skip-link:hover { color: var(--text-sub); }
 
         /* ─── Responsive ─────────────────────────── */
         @media (max-width: 540px) {
-            .grid-2, .cta-grid, .cat-row { grid-template-columns: 1fr; }
+            .grid-2, .cta-grid, .cat-row, .metrics-grid { grid-template-columns: 1fr; }
             .form-title { font-size: 22px; }
             .page { padding: 32px 16px 64px; }
             .prog-label { display: none; }
+            .total-value { font-size: 26px; }
         }
     </style>
 </head>
@@ -283,31 +278,38 @@
 
 <header class="header">
     <div class="logo-dot"></div>
-    <span class="logo-text">VISU<em>tire</em></span>
+    <span class="logo-text">VIZU<em>tire</em></span>
 </header>
 
 <div class="page">
 <div class="form-wrap">
 
-    <!-- Progress -->
+    <!-- ─── Progress 4 pasos ──────────────────────── -->
     <div class="progress">
         <div class="prog-step active" id="ps1">
             <div class="prog-num">1</div>
-            <span class="prog-label">Datos básicos</span>
+            <span class="prog-label">Datos</span>
         </div>
         <div class="prog-line" id="pl1"></div>
         <div class="prog-step" id="ps2">
             <div class="prog-num">2</div>
-            <span class="prog-label">Información</span>
+            <span class="prog-label">Intereses</span>
         </div>
         <div class="prog-line" id="pl2"></div>
         <div class="prog-step" id="ps3">
             <div class="prog-num">3</div>
-            <span class="prog-label">Confirmación</span>
+            <span class="prog-label">Evaluación</span>
+        </div>
+        <div class="prog-line" id="pl3"></div>
+        <div class="prog-step" id="ps4">
+            <div class="prog-num">4</div>
+            <span class="prog-label">Resultados</span>
         </div>
     </div>
 
-    <!-- ═══ PASO 1 — Datos básicos ═══════════════ -->
+    <!-- ══════════════════════════════════════════════
+         PASO 1 — Datos básicos
+    ══════════════════════════════════════════════════ -->
     <div id="step-1" class="step visible">
 
         <div class="form-head">
@@ -324,8 +326,13 @@
                     <input type="text" id="nombre" placeholder="Juan Pérez">
                 </div>
                 <div class="field">
-                    <label>Cargo <span class="req">*</span></label>
-                    <input type="text" id="cargo" placeholder="Jefe de Mantención">
+                    <label>Cargo / Área <span class="req">*</span></label>
+                    <select id="cargo">
+                        <option value="" disabled selected>Selecciona tu área</option>
+                        <option value="Gerencia de operaciones">Gerencia de operaciones</option>
+                        <option value="Encargado de mantenimiento">Encargado de mantenimiento</option>
+                        <option value="CFO / Finanzas">CFO / Finanzas</option>
+                    </select>
                 </div>
                 <div class="field">
                     <label>Correo electrónico <span class="req">*</span></label>
@@ -353,6 +360,16 @@
                         <input type="tel" id="telefono" class="tel-num" placeholder="9 1234 5678">
                     </div>
                 </div>
+                <div class="field">
+                    <label>Preferencia de contacto <span class="req">*</span></label>
+                    <select id="pref-contacto">
+                        <option value="" disabled selected>¿Cómo prefieres que te contactemos?</option>
+                        <option value="Correo electrónico">Correo electrónico</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Llamada telefónica">Llamada telefónica</option>
+                        <option value="Videollamada">Videollamada</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -360,54 +377,48 @@
             <div class="section-title">Datos de la operación</div>
             <div class="grid-2">
                 <div class="field col-full">
-                    <label>Empresa / Compañía <span class="req">*</span></label>
+                    <label>Empresa / Compañía minera <span class="req">*</span></label>
                     <input type="text" id="empresa" placeholder="Minera Ejemplo S.A.">
                 </div>
                 <div class="field">
                     <label>País <span class="req">*</span></label>
                     <select id="pais">
                         <option value="" disabled selected>Selecciona el país</option>
-                        <option value="Chile">Chile</option>
-                        <option value="Perú">Perú</option>
-                        <option value="México">México</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Brasil">Brasil</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Venezuela">Venezuela</option>
-                        <option value="Bolivia">Bolivia</option>
-                        <option value="Ecuador">Ecuador</option>
-                        <option value="Paraguay">Paraguay</option>
-                        <option value="Uruguay">Uruguay</option>
-                        <option value="Panamá">Panamá</option>
-                        <option value="España">España</option>
-                        <option value="Estados Unidos">Estados Unidos</option>
-                        <option value="Otro">Otro</option>
+                        <option>Chile</option><option>Perú</option><option>México</option>
+                        <option>Argentina</option><option>Brasil</option><option>Colombia</option>
+                        <option>Venezuela</option><option>Bolivia</option><option>Ecuador</option>
+                        <option>Paraguay</option><option>Uruguay</option><option>Panamá</option>
+                        <option>España</option><option>Estados Unidos</option><option>Otro</option>
                     </select>
                 </div>
                 <div class="field">
-                    <label>Ciudad <span class="req">*</span></label>
+                    <label>Ciudad / Faena <span class="req">*</span></label>
                     <input type="text" id="ciudad" placeholder="Antofagasta">
                 </div>
-                <div class="field col-full">
+                <div class="field">
                     <label>Flota OTR aproximada <span class="req">*</span></label>
                     <select id="flota">
-                        <option value="" disabled selected>Selecciona un rango</option>
+                        <option value="" disabled selected>Rango de neumáticos</option>
                         <option value="1-10">1 – 10 neumáticos</option>
                         <option value="11-50">11 – 50 neumáticos</option>
                         <option value="51-200">51 – 200 neumáticos</option>
                         <option value="200+">Más de 200 neumáticos</option>
                     </select>
                 </div>
+                <div class="field">
+                    <label>N.° de CAEX / camiones</label>
+                    <input type="number" id="num-caex-p1" placeholder="ej. 12" min="1" max="500">
+                </div>
                 <div class="field col-full">
                     <label>Tipo de equipo principal</label>
                     <select id="equipo">
                         <option value="" disabled selected>Selecciona el equipo</option>
-                        <option value="Camiones de arrastre">Camiones de arrastre</option>
-                        <option value="Cargadores frontales">Cargadores frontales</option>
-                        <option value="Perforadoras">Perforadoras</option>
-                        <option value="Bulldozers / Tractores">Bulldozers / Tractores</option>
-                        <option value="Mixto">Mixto (varios tipos)</option>
-                        <option value="Otro">Otro</option>
+                        <option>Camiones de arrastre</option>
+                        <option>Cargadores frontales</option>
+                        <option>Perforadoras</option>
+                        <option>Bulldozers / Tractores</option>
+                        <option>Mixto (varios tipos)</option>
+                        <option>Otro</option>
                     </select>
                 </div>
             </div>
@@ -416,20 +427,22 @@
         <div class="nav-row">
             <button class="btn-next" onclick="goStep2()">
                 Continuar
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
         </div>
     </div>
 
-    <!-- ═══ PASO 2 — Selección de información ════ -->
+    <!-- ══════════════════════════════════════════════
+         PASO 2 — Selector de información técnica
+    ══════════════════════════════════════════════════ -->
     <div id="step-2" class="step">
 
         <div class="form-head">
-            <h1 class="form-title">¿Qué información<br>necesitas?</h1>
-            <p class="form-desc">Elige la categoría y selecciona los documentos<br>que quieres recibir en tu correo.</p>
+            <h1 class="form-title" id="step2-title">¿Qué información<br>necesitas?</h1>
+            <p class="form-desc" id="step2-desc">Elige la categoría y selecciona los documentos<br>que quieres recibir en tu correo.</p>
         </div>
+
+        <div class="cargo-banner" id="cargo-banner"></div>
 
         <div class="cat-row">
             <div class="cat-btn" id="cat-tecnica" onclick="selectCat('tecnica')">
@@ -459,149 +472,240 @@
 
         <p class="hint" id="hint-pdf">Selecciona al menos un documento para continuar.</p>
 
-        <!-- PDFs Técnica -->
+        <!-- PDFs Técnica (placeholders — se activarán cuando haya archivos) -->
         <div class="check-set" id="checks-tecnica">
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
                     <div class="pdf-name">Monitoreo estructural</div>
-                    <div class="pdf-tag">Informe técnico · PDF</div>
+                    <div class="pdf-tag">Informe técnico · PDF próximamente</div>
                 </div>
                 <input type="checkbox" class="pdf-check" name="pdf" value="Monitoreo estructural">
             </label>
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
-                    <div class="pdf-name">Ultrasonido</div>
-                    <div class="pdf-tag">Metodología diagnóstica · PDF</div>
+                    <div class="pdf-name">Ultrasonido 2.4 MHz</div>
+                    <div class="pdf-tag">Metodología diagnóstica · PDF próximamente</div>
                 </div>
                 <input type="checkbox" class="pdf-check" name="pdf" value="Ultrasonido">
             </label>
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
                     <div class="pdf-name">IA — Momento de rotación</div>
-                    <div class="pdf-tag">Modelo predictivo · PDF</div>
+                    <div class="pdf-tag">Modelo predictivo · PDF próximamente</div>
                 </div>
-                <input type="checkbox" class="pdf-check" name="pdf" value="IA — Momento de rotación">
+                <input type="checkbox" class="pdf-check" name="pdf" value="IA Momento de rotación">
             </label>
         </div>
 
         <!-- PDFs Beneficios -->
         <div class="check-set" id="checks-beneficios">
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
                     <div class="pdf-name">Beneficios operativos</div>
-                    <div class="pdf-tag">Eficiencia y continuidad · PDF</div>
+                    <div class="pdf-tag">Eficiencia y continuidad · PDF próximamente</div>
                 </div>
                 <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios operativos">
             </label>
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
                     <div class="pdf-name">Beneficios productivos</div>
-                    <div class="pdf-tag">ROI y métricas de rendimiento · PDF</div>
+                    <div class="pdf-tag">ROI y métricas de rendimiento · PDF próximamente</div>
                 </div>
                 <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios productivos">
             </label>
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
-                    <div class="pdf-name">Seguridad</div>
-                    <div class="pdf-tag">Protocolos y prevención · PDF</div>
+                    <div class="pdf-name">Seguridad operacional</div>
+                    <div class="pdf-tag">Protocolos y prevención · PDF próximamente</div>
                 </div>
                 <input type="checkbox" class="pdf-check" name="pdf" value="Seguridad">
             </label>
             <label class="pdf-card">
-                <div class="pdf-icon">
-                    <svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
-                    </svg>
-                </div>
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                 <div class="pdf-info">
                     <div class="pdf-name">Supply / Abastecimiento</div>
-                    <div class="pdf-tag">Gestión de inventario y cadena · PDF</div>
+                    <div class="pdf-tag">Gestión de inventario y cadena · PDF próximamente</div>
                 </div>
-                <input type="checkbox" class="pdf-check" name="pdf" value="Supply / Abastecimiento">
+                <input type="checkbox" class="pdf-check" name="pdf" value="Supply Abastecimiento">
             </label>
         </div>
 
-        <div id="error-envio" class="error-banner">
-            Hubo un problema al enviar. Intenta nuevamente o escríbenos directamente.
-        </div>
-
         <div class="nav-row" style="margin-top: 28px;">
-            <button class="btn-back" onclick="goStep1()">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                    <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <button class="btn-back" onclick="showStep(1)">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Volver
             </button>
-            <button class="btn-next" id="btn-enviar" onclick="goStep3()">
-                Enviar solicitud
-                <svg id="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <button class="btn-next" onclick="goStep3()">
+                Continuar
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
         </div>
     </div>
 
-    <!-- ═══ PASO 3 — Confirmación ════════════════ -->
+    <!-- ══════════════════════════════════════════════
+         PASO 3 — Calculadora de beneficios
+    ══════════════════════════════════════════════════ -->
     <div id="step-3" class="step">
+
+        <!-- Decisión -->
+        <div class="decision-banner">
+            <div class="decision-icon-wrap">
+                <svg width="28" height="28" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+            </div>
+            <div class="decision-q">¿Desea obtener una estimación<br>preliminar de beneficios?</div>
+            <p class="decision-sub">Calcula el potencial de ahorro para tu operación en 2 minutos.</p>
+            <ul class="decision-bullets">
+                <li>Ahorro estimado por extensión de vida útil</li>
+                <li>Reducción de costos por reventones / fallas</li>
+                <li>Estimación de ROI para tu flota específica</li>
+            </ul>
+        </div>
+
+        <!-- Calculadora (se muestra al hacer clic en Sí) -->
+        <div class="calc-section" id="calc-section">
+            <div class="calc-divider"><span>Datos de tu operación</span></div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label>N.° de CAEX / camiones <span class="req">*</span></label>
+                    <input type="number" id="c-caex" placeholder="ej. 12" min="1" max="500">
+                </div>
+                <div class="field">
+                    <label>Neumáticos por CAEX <span class="req">*</span></label>
+                    <input type="number" id="c-neu" placeholder="ej. 6" value="6" min="1" max="20">
+                </div>
+                <div class="field col-full">
+                    <label>Medida del neumático</label>
+                    <input type="text" id="c-medida" placeholder="ej. 40.00R57 o 53/80R63">
+                </div>
+                <div class="field">
+                    <label>Horas operativas / día <span class="req">*</span></label>
+                    <input type="number" id="c-horas" placeholder="ej. 20" value="20" min="1" max="24">
+                </div>
+                <div class="field">
+                    <label>Días de operación / año <span class="req">*</span></label>
+                    <input type="number" id="c-dias" placeholder="ej. 330" value="330" min="1" max="365">
+                </div>
+                <div class="field">
+                    <label>Vida útil actual (horas) <span class="req">*</span></label>
+                    <input type="number" id="c-vida" placeholder="ej. 4000" min="100">
+                </div>
+                <div class="field">
+                    <label>Fallas / reventones al año</label>
+                    <input type="number" id="c-fallas" placeholder="ej. 3" min="0">
+                </div>
+                <div class="field">
+                    <label>Costo por neumático OTR (USD) <span class="req">*</span></label>
+                    <div class="input-prefix-wrap">
+                        <span class="prefix">USD</span>
+                        <input type="number" id="c-costo" placeholder="ej. 35000" min="1000">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Valor scrap por neumático (USD)</label>
+                    <div class="input-prefix-wrap">
+                        <span class="prefix">USD</span>
+                        <input type="number" id="c-scrap" placeholder="ej. 2000" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-calc" class="error-banner">Completa los campos obligatorios para calcular.</div>
+
+            <div class="nav-row" style="margin-top: 8px;">
+                <button class="btn-next" id="btn-calcular" onclick="goStep4calc()">
+                    Calcular estimación
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-row" id="dec-nav" style="margin-top: 20px;">
+            <button class="btn-back" onclick="showStep(2)">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Volver
+            </button>
+            <button class="btn-next" id="btn-si" onclick="mostrarCalculadora()">
+                Sí, calcular beneficios
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <span class="skip-link" onclick="goStep4sin()">No, continuar sin calculadora →</span>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         PASO 4 — Resultados + Confirmación
+    ══════════════════════════════════════════════════ -->
+    <div id="step-4" class="step">
 
         <div class="confirm-head">
             <div class="check-anim">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                     stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                 </svg>
             </div>
-            <h1 class="confirm-title">¡Solicitud enviada!</h1>
+            <h1 class="confirm-title" id="confirm-title">¡Solicitud enviada!</h1>
             <p class="confirm-sub">
-                Hemos enviado los documentos a <strong id="confirm-email"></strong>.<br>
-                Un especialista revisará tu caso en menos de 24 horas.
+                Hemos registrado tu solicitud para <strong id="confirm-email"></strong>.<br>
+                Un especialista te contactará en menos de 24 horas.
             </p>
         </div>
 
+        <!-- Resultados calculadora (condicional) -->
+        <div class="results-wrap" id="results-block" style="display:none;">
+            <div class="results-header">
+                <div class="results-tag">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg>
+                    Estimación preliminar
+                </div>
+                <div class="results-title">Potencial de ahorro para tu flota</div>
+                <div class="results-sub">Basado en los datos de tu operación. Resultados reales varían según condiciones específicas.</div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card highlight">
+                    <div class="metric-label">Ahorro por vida útil (+20%)</div>
+                    <div class="metric-value" id="r-vida">—</div>
+                    <div class="metric-unit">estimación anual</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Ahorro por reducción fallas (−50%)</div>
+                    <div class="metric-value" id="r-fallas">—</div>
+                    <div class="metric-unit">estimación anual</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Neumáticos en tu flota</div>
+                    <div class="metric-value" id="r-total-neum">—</div>
+                    <div class="metric-unit">unidades</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Reemplazos actuales / año</div>
+                    <div class="metric-value" id="r-reemplazos">—</div>
+                    <div class="metric-unit">neumáticos</div>
+                </div>
+            </div>
+
+            <div class="total-card">
+                <div class="total-label">
+                    Ahorro anual estimado
+                    <span>Para tu flota de <span id="r-caex">—</span> CAEX</span>
+                </div>
+                <div class="total-value" id="r-total">—</div>
+            </div>
+
+            <p class="disclaimer">* Estimación preliminar basada en benchmarks de operaciones mineras OTR similares. Los resultados reales dependen de condiciones operacionales específicas. Un especialista VIZUtire realizará un análisis detallado para tu operación.</p>
+        </div>
+
+        <!-- Resumen -->
         <div class="summary-card">
             <div class="summary-label">Resumen de tu solicitud</div>
             <div class="summary-row">
@@ -617,24 +721,24 @@
                 <span class="s-val" id="sum-operacion">—</span>
             </div>
             <div class="summary-row">
-                <span class="s-key">Documentos</span>
+                <span class="s-key">Flota</span>
+                <span class="s-val" id="sum-flota">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Interés</span>
                 <span class="s-val" id="sum-pdfs">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Contacto vía</span>
+                <span class="s-val" id="sum-pref">—</span>
             </div>
         </div>
 
+        <div id="error-envio" class="error-banner">
+            Hubo un problema al enviar. Intenta nuevamente o escríbenos directamente.
+        </div>
+
         <div class="cta-grid">
-            <a href="calculadora.html" class="cta-card">
-                <div class="cta-icon">
-                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
-                        <rect x="4" y="2" width="16" height="20" rx="2"/>
-                        <line x1="8" y1="6" x2="16" y2="6"/>
-                        <line x1="8" y1="10" x2="16" y2="10"/>
-                        <line x1="8" y1="14" x2="13" y2="14"/>
-                    </svg>
-                </div>
-                <div class="cta-name">Calcular beneficios</div>
-                <div class="cta-desc">Estima el ROI para<br>tu operación</div>
-            </a>
             <a href="agenda.html" class="cta-card">
                 <div class="cta-icon">
                     <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
@@ -644,14 +748,24 @@
                         <line x1="3"  y1="10" x2="21" y2="10"/>
                     </svg>
                 </div>
-                <div class="cta-name">Agendar una cita</div>
-                <div class="cta-desc">Habla con un especialista<br>técnico VISUtire</div>
+                <div class="cta-name">Agendar reunión técnica</div>
+                <div class="cta-desc">Habla con un especialista<br>VIZUtire directamente</div>
+            </a>
+            <a href="index.html" class="cta-card">
+                <div class="cta-icon">
+                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <div class="cta-name">Volver al inicio</div>
+                <div class="cta-desc">Conoce más sobre<br>la tecnología VIZUtire</div>
             </a>
         </div>
 
         <p class="note">
-            También hemos notificado a nuestro equipo comercial.<br>
-            ¿Preguntas? <a href="mailto:contacto@visutire.cl">contacto@visutire.cl</a>
+            Seguimiento automático a tu correo en los próximos días.<br>
+            ¿Preguntas? <a href="mailto:contacto@vizutire.cl">contacto@vizutire.cl</a>
         </p>
     </div>
 
@@ -660,20 +774,19 @@
 
 <script>
 /* ══════════════════════════════════════════════════════
-   CONFIGURACIÓN — Solo necesitas pegar la URL del script
-   ══════════════════════════════════════════════════════ */
+   CONFIG
+══════════════════════════════════════════════════════ */
 const CONFIG = {
     sheets: {
-        url: 'https://script.google.com/macros/s/AKfycbxKul97SHPeoWpd5RtsDS4RS4q5tABC764PJB78aOJz6bNLi1E8uOUZjMuhYmsVKTQ/exec'
-        // Google Apps Script > Implementar > URL de la app web
+        url: 'https://script.google.com/macros/s/AKfycbz8dWA6AdQI8Lq0g7gUCxlkUgtrj1GgPNSFvY9O1GNOseOKuY1bK1FBXEWnXsFqAKU/exec'
     }
 };
-/* ══════════════════════════════════════════════════════ */
 
-/* ─── State ─────────────────────────────────────────── */
+/* ─── State ──────────────────────────────────────────── */
 const state = {};
+let calcVisible = false;
 
-/* ─── Step navigation ───────────────────────────────── */
+/* ─── Navegación de pasos ────────────────────────────── */
 function showStep(n) {
     document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
     document.getElementById('step-' + n).classList.add('visible');
@@ -682,22 +795,24 @@ function showStep(n) {
 }
 
 function updateProgress(n) {
-    [1, 2, 3].forEach(i => {
+    [1, 2, 3, 4].forEach(i => {
         const ps = document.getElementById('ps' + i);
+        if (!ps) return;
         ps.classList.remove('active', 'done');
         if (i < n)  ps.classList.add('done');
         if (i === n) ps.classList.add('active');
     });
-    [1, 2].forEach(i =>
-        document.getElementById('pl' + i).classList.toggle('done', i < n)
-    );
+    [1, 2, 3].forEach(i => {
+        const pl = document.getElementById('pl' + i);
+        if (pl) pl.classList.toggle('done', i < n);
+    });
 }
 
-/* ─── Paso 1 → 2 ────────────────────────────────────── */
+/* ─── Paso 1 → 2 ─────────────────────────────────────── */
 function goStep2() {
-    const fields = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'flota'];
+    const required = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'flota', 'pref-contacto'];
     let ok = true;
-    fields.forEach(id => {
+    required.forEach(id => {
         const el = document.getElementById(id);
         el.classList.remove('error');
         if (id === 'telefono') document.getElementById('tel-wrap').classList.remove('error');
@@ -707,31 +822,70 @@ function goStep2() {
             ok = false;
         }
     });
-    if (!ok) { document.querySelector('.error')?.focus(); return; }
+    if (!ok) { document.querySelector('.error')?.scrollIntoView({ block: 'center' }); return; }
 
-    state.nombre   = document.getElementById('nombre').value.trim();
-    state.cargo    = document.getElementById('cargo').value.trim();
-    state.correo   = document.getElementById('correo').value.trim();
-    state.telefono = document.getElementById('tel-codigo').value + ' ' + document.getElementById('telefono').value.trim();
-    state.empresa  = document.getElementById('empresa').value.trim();
-    state.pais     = document.getElementById('pais').value;
-    state.ciudad   = document.getElementById('ciudad').value.trim();
-    state.flota    = document.getElementById('flota').value;
-    state.equipo   = document.getElementById('equipo').value || 'No especificado';
+    state.nombre        = document.getElementById('nombre').value.trim();
+    state.cargo         = document.getElementById('cargo').value.trim();
+    state.correo        = document.getElementById('correo').value.trim();
+    state.telefono      = document.getElementById('tel-codigo').value + ' ' + document.getElementById('telefono').value.trim();
+    state.prefContacto  = document.getElementById('pref-contacto').value;
+    state.empresa       = document.getElementById('empresa').value.trim();
+    state.pais          = document.getElementById('pais').value;
+    state.ciudad        = document.getElementById('ciudad').value.trim();
+    state.flota         = document.getElementById('flota').value;
+    state.numCaexP1     = document.getElementById('num-caex-p1').value || '';
+    state.equipo        = document.getElementById('equipo').value || 'No especificado';
 
-    // Guardar contexto para la agenda — no volver a pedir datos
     localStorage.setItem('vizutire_contacto', JSON.stringify({
-        nombre:   state.nombre,
-        cargo:    state.cargo,
-        correo:   state.correo,
-        telefono: state.telefono,
-        empresa:  state.empresa
+        nombre: state.nombre, cargo: state.cargo, correo: state.correo,
+        telefono: state.telefono, empresa: state.empresa
     }));
 
     showStep(2);
+    filtrarPorCargo(state.cargo);
 }
 
-/* ─── Categorías ────────────────────────────────────── */
+/* ─── Filtro por cargo ────────────────────────────────── */
+function filtrarPorCargo(cargo) {
+    var cfgMap = {
+        'Gerencia de operaciones': {
+            cat: 'beneficios',
+            pdfs: ['Beneficios operativos', 'Beneficios productivos'],
+            msg: 'Tu operación no necesita más alertas. Necesita menos interrupciones.',
+            desc: 'Contenido seleccionado para tu rol: continuidad operacional, disponibilidad de flota y throughput.'
+        },
+        'Encargado de mantenimiento': {
+            cat: 'tecnica',
+            pdfs: ['Monitoreo estructural', 'Ultrasonido', 'IA Momento de rotación'],
+            msg: 'Cada decisión respaldada por evidencia física real.',
+            desc: 'Contenido técnico recomendado: diagnóstico predictivo, ultrasonido y trazabilidad de mantenimiento.'
+        },
+        'CFO / Finanzas': {
+            cat: 'beneficios',
+            pdfs: ['Beneficios productivos', 'Supply Abastecimiento'],
+            msg: 'Degradación invisible convertida en control financiero predecible.',
+            desc: 'Métricas para tu rol: CAPEX, OPEX, EBITDA y ROI sobre flota OTR.'
+        }
+    };
+
+    var cfg = cfgMap[cargo];
+    if (!cfg) return;
+
+    // Uncheck all, then pre-check role-specific PDFs
+    document.querySelectorAll('input[name="pdf"]').forEach(function(cb) {
+        cb.checked = cfg.pdfs.indexOf(cb.value) !== -1;
+    });
+
+    // Auto-select category
+    selectCat(cfg.cat);
+
+    // Show contextual banner
+    var banner = document.getElementById('cargo-banner');
+    banner.innerHTML = '<div class="cargo-msg">' + cfg.msg + '</div><div class="cargo-desc">' + cfg.desc + '</div>';
+    banner.classList.add('visible');
+}
+
+/* ─── Categorías ──────────────────────────────────────── */
 function selectCat(cat) {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('cat-' + cat).classList.add('active');
@@ -740,87 +894,170 @@ function selectCat(cat) {
     document.getElementById('hint-pdf').classList.remove('visible');
 }
 
-/* ─── Paso 2 → 3 ────────────────────────────────────── */
-async function goStep3() {
+/* ─── Paso 2 → 3 ─────────────────────────────────────── */
+function goStep3() {
     const checked = [...document.querySelectorAll('input[name="pdf"]:checked')];
     if (checked.length === 0) {
         document.getElementById('hint-pdf').classList.add('visible');
         return;
     }
+    state.pdfs = checked.map(c => c.value).join(' · ');
 
-    state.pdfs  = checked.map(c => c.value).join(' · ');
-    state.fecha = new Date().toLocaleString('es-CL', {
-        dateStyle: 'long', timeStyle: 'short'
-    });
-
-    // Loading state
-    const btn = document.getElementById('btn-enviar');
-    btn.disabled = true;
-    btn.innerHTML = `Enviando…
-        <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        </svg>`;
-
-    document.getElementById('error-envio').classList.remove('visible');
-
-    // Una sola llamada: el script guarda en Sheets Y envía el correo
-    const results = await Promise.allSettled([
-        guardarEnSheets()
-    ]);
-
-    // Restaurar botón
-    btn.disabled = false;
-    btn.innerHTML = `Enviar solicitud
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`;
-
-    // Si ambos fallaron, mostrar error pero continuar
-    const todosOk = results.every(r => r.status === 'fulfilled');
-    if (!todosOk) {
-        console.warn('Advertencia en envío:', results);
-        // Seguimos al paso 3 de todas formas — el lead no se pierde
+    // Pre-rellenar CAEX en calculadora si ya lo pusieron en paso 1
+    if (state.numCaexP1) {
+        document.getElementById('c-caex').value = state.numCaexP1;
     }
 
-    renderResumen();
     showStep(3);
 }
 
-/* ─── Guardar en Google Sheets ──────────────────────── */
-function guardarEnSheets() {
-    if (!CONFIG.sheets.url || CONFIG.sheets.url.startsWith('REEMPLAZAR')) return Promise.resolve();
+/* ─── Mostrar/ocultar calculadora ────────────────────── */
+function mostrarCalculadora() {
+    if (calcVisible) return;
+    calcVisible = true;
+    document.getElementById('calc-section').classList.add('visible');
+    document.getElementById('dec-nav').style.display = 'none';
+    document.querySelector('.skip-link').style.display = 'none';
+    document.getElementById('calc-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-    const payload = {
-        fecha:    state.fecha,
-        nombre:   state.nombre,
-        cargo:    state.cargo,
-        correo:   state.correo,
-        telefono: state.telefono,
-        empresa:  state.empresa,
-        pais:     state.pais,
-        ciudad:   state.ciudad,
-        flota:    state.flota,
-        equipo:   state.equipo,
-        pdfs:     state.pdfs
+/* ─── Calculadora de beneficios ──────────────────────── */
+function calcular() {
+    const numCaex     = parseFloat(document.getElementById('c-caex').value)  || 0;
+    const neuPorCaex  = parseFloat(document.getElementById('c-neu').value)   || 6;
+    const horasDia    = parseFloat(document.getElementById('c-horas').value) || 20;
+    const diasAnio    = parseFloat(document.getElementById('c-dias').value)  || 330;
+    const vidaActual  = parseFloat(document.getElementById('c-vida').value)  || 0;
+    const fallasAnio  = parseFloat(document.getElementById('c-fallas').value)|| 0;
+    const costoPorNeum= parseFloat(document.getElementById('c-costo').value) || 0;
+    const scrapValor  = parseFloat(document.getElementById('c-scrap').value) || 0;
+    const medida      = document.getElementById('c-medida').value.trim();
+
+    if (!numCaex || !vidaActual || !costoPorNeum) return false;
+
+    const costoNeto           = costoPorNeum - scrapValor;
+    const totalNeum           = numCaex * neuPorCaex;
+    const horasAnio           = horasDia * diasAnio;
+    const reemplazosActuales  = (totalNeum * horasAnio) / vidaActual;
+    const reemplazosNuevos    = (totalNeum * horasAnio) / (vidaActual * 1.20);
+    const ahorroVida          = Math.round((reemplazosActuales - reemplazosNuevos) * costoNeto);
+    const ahorroFallas        = Math.round(fallasAnio * 0.50 * (costoNeto * 3));
+    const totalAhorro         = ahorroVida + ahorroFallas;
+
+    state.calc = {
+        numCaex, neuPorCaex, horasDia, diasAnio, vidaActual, fallasAnio,
+        costoPorNeum, scrapValor, costoNeto, medida,
+        ahorroVida, ahorroFallas, totalAhorro,
+        totalNeum: Math.round(totalNeum),
+        reemplazosActuales: Math.round(reemplazosActuales)
     };
+    return true;
+}
 
+function formatUSD(n) {
+    if (n >= 1000000) return 'US$' + (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000)    return 'US$' + Math.round(n / 1000) + 'K';
+    return 'US$' + n.toLocaleString('es-CL');
+}
+
+/* ─── Paso 3 → 4 con calculadora ────────────────────── */
+async function goStep4calc() {
+    const btn = document.getElementById('btn-calcular');
+    if (btn.disabled) return;
+
+    const calcOk = calcular();
+    if (!calcOk) {
+        document.getElementById('error-calc').classList.add('visible');
+        return;
+    }
+    document.getElementById('error-calc').classList.remove('visible');
+
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Calculando...';
+
+    state.usaCalculadora = true;
+    try {
+        await enviarYMostrar();
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Calcular estimación <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+}
+
+/* ─── Paso 3 → 4 sin calculadora ────────────────────── */
+async function goStep4sin() {
+    state.usaCalculadora = false;
+    await enviarYMostrar();
+}
+
+/* ─── Enviar y mostrar paso 4 ────────────────────────── */
+async function enviarYMostrar() {
+    state.fecha = new Date().toLocaleString('es-CL', { dateStyle: 'long', timeStyle: 'short' });
+
+    await guardarEnSheets().catch(() => {});
+
+    renderResumen();
+    showStep(4);
+}
+
+/* ─── Google Sheets ──────────────────────────────────── */
+function guardarEnSheets() {
+    if (!CONFIG.sheets.url) return Promise.resolve();
+    const c = state.calc || {};
+    const payload = {
+        fecha:         state.fecha,
+        nombre:        state.nombre,
+        cargo:         state.cargo,
+        correo:        state.correo,
+        telefono:      state.telefono,
+        pref_contacto: state.prefContacto,
+        empresa:       state.empresa,
+        pais:          state.pais,
+        ciudad:        state.ciudad,
+        flota:         state.flota,
+        num_caex:      state.numCaexP1 || (c.numCaex || ''),
+        equipo:        state.equipo,
+        pdfs:          state.pdfs,
+        usa_calculadora: state.usaCalculadora ? 'Sí' : 'No',
+        calc_caex:     c.numCaex      || '',
+        calc_vida:     c.vidaActual   || '',
+        calc_fallas:   c.fallasAnio   || '',
+        calc_costo:    c.costoPorNeum || '',
+        calc_scrap:    c.scrapValor   || '',
+        calc_medida:   c.medida       || '',
+        calc_ahorro_vida:   c.ahorroVida   || '',
+        calc_ahorro_fallas: c.ahorroFallas || '',
+        calc_total_ahorro:  c.totalAhorro  || '',
+    };
     const url = CONFIG.sheets.url + '?data=' + encodeURIComponent(JSON.stringify(payload));
     return fetch(url, { method: 'GET', mode: 'no-cors' });
 }
 
-/* ─── Renderizar resumen ────────────────────────────── */
+/* ─── Renderizar resultados y resumen ────────────────── */
 function renderResumen() {
-    document.getElementById('confirm-email').textContent  = state.correo;
-    document.getElementById('sum-contacto').textContent   = state.nombre + ' · ' + state.cargo;
-    document.getElementById('sum-empresa').textContent    = state.empresa;
-    document.getElementById('sum-operacion').textContent  = state.pais + ' · ' + state.ciudad + ' · ' + state.flota + ' neumáticos';
-    document.getElementById('sum-pdfs').textContent       = state.pdfs;
+    document.getElementById('confirm-email').textContent = state.correo;
+
+    if (state.usaCalculadora && state.calc) {
+        const c = state.calc;
+        document.getElementById('results-block').style.display = 'block';
+        document.getElementById('r-vida').textContent    = formatUSD(c.ahorroVida);
+        document.getElementById('r-fallas').textContent  = formatUSD(c.ahorroFallas);
+        document.getElementById('r-total-neum').textContent = c.totalNeum;
+        document.getElementById('r-reemplazos').textContent = c.reemplazosActuales;
+        document.getElementById('r-caex').textContent    = c.numCaex;
+        document.getElementById('r-total').textContent   = formatUSD(c.totalAhorro);
+        document.getElementById('confirm-title').textContent = '¡Excelente! Aquí está tu estimación';
+    }
+
+    document.getElementById('sum-contacto').textContent  = state.nombre + ' · ' + state.cargo;
+    document.getElementById('sum-empresa').textContent   = state.empresa;
+    document.getElementById('sum-operacion').textContent = state.pais + ' — ' + state.ciudad;
+    document.getElementById('sum-flota').textContent     = state.flota + (state.numCaexP1 ? ' · ' + state.numCaexP1 + ' CAEX' : '');
+    document.getElementById('sum-pdfs').textContent      = state.pdfs;
+    document.getElementById('sum-pref').textContent      = state.prefContacto;
 }
 
-/* ─── Volver al paso 1 ──────────────────────────────── */
-function goStep1() { showStep(1); }
-
-/* ─── Pre-rellenar desde formulario web ─────────────── */
+/* ─── Pre-rellenar desde formulario principal ────────── */
 (function () {
     try {
         const pre = JSON.parse(localStorage.getItem('vizutire_prefill') || '{}');
@@ -831,7 +1068,7 @@ function goStep1() { showStep(1); }
     } catch (_) {}
 })();
 
-/* ─── Limpiar errores al escribir ──────────────────── */
+/* ─── Limpiar errores al escribir ────────────────────── */
 document.querySelectorAll('input, select').forEach(el =>
     el.addEventListener('input', () => el.classList.remove('error'))
 );
