@@ -336,7 +336,7 @@ if (form) {
   const wrap  = document.getElementById('heroTireWrap');
   if (!stage || !wrap) return;
 
-  const cfg = { tiltDeg: 7, floatPx: 12, revealRadius: 120, revealFeather: 38 };
+  const cfg = { tiltDeg: 5.5, floatPx: 0, revealRadius: 235, revealFeather: 108 };
 
   let rafId = null;
   let targetRX = 0, targetRY = 0, targetTX = 0, targetTY = 0;
@@ -438,3 +438,12 @@ if (form) {
   });
 })();
 
+// ========= HERO SCANNER — aparece al terminar el vídeo =========
+(function () {
+  const video   = document.getElementById('heroVideo');
+  const scanner = document.getElementById('heroScanner');
+  if (!video || !scanner) return;
+  video.addEventListener('ended', () => {
+    scanner.classList.add('visible');
+  });
+})();

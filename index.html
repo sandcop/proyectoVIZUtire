@@ -22,9 +22,9 @@
     <!-- Pill a la derecha -->
     <nav class="navbar" id="navbar">
       <ul class="nav-links">
+        <li><a href="#alicanto" class="nav-highlight">Alicanto</a></li>
         <li><a href="#tecnologia">Tecnología</a></li>
-        <li><a href="#tecnologia">Servicios</a></li>
-        <li><a href="#tecnologia">Resultados</a></li>
+        <li><a href="#casos">Casos de éxito</a></li>
         <li><a href="#historia">Historia</a></li>
       </ul>
       <div class="nav-actions">
@@ -54,23 +54,24 @@
           Ultrasonido 2.4 MHz + IA. Diagnóstico en 48 horas.
         </p>
         <div class="hero-actions">
-          <a href="#contacto" class="hero-btn-dark">
-            Solicitar Diagnóstico <span class="btn-arrow-circle">→</span>
+          <a href="#alicanto" class="hero-btn-dark">
+            Explorar Alicanto <span class="btn-arrow-circle">→</span>
           </a>
           <a href="#tecnologia" class="hero-btn-light">
-            Ver como funciona
+            Ver tecnología
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Tire fuera del grid — posición absoluta al borde derecho -->
+    <!-- Vídeo hero + scanner al terminar -->
     <div class="hero-visual">
-      <div class="hero-stage" id="heroStage">
-        <div class="hero-tire-wrap" id="heroTireWrap">
-          <img class="hero-tire-layer hero-tire-base"   src="imagenes/tire-inner.png" alt="Neumático OTR" />
-          <img class="hero-tire-layer hero-tire-reveal" src="imagenes/tire-outer.png" alt="Construcción interna" />
-        </div>
+      <video class="hero-video" autoplay muted playsinline id="heroVideo">
+        <source src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
+      </video>
+      <div class="hero-scanner" id="heroScanner">
+        <img class="scanner-base" src="header vizu/assets/tire.png" alt="Neumático OTR" />
+        <img class="scanner-scan" src="header vizu/assets/tire.png" alt="" aria-hidden="true" />
       </div>
     </div>
 
@@ -90,7 +91,7 @@
         <div class="diag-two-col reveal delay-1">
           <!-- Neumático con 5 marcadores interactivos -->
           <div class="diag-tire-wrap">
-            <img src="imagenes/neumatico 2.png" alt="Fallas detectadas en neumático OTR" class="diag-tire-img" />
+            <img src="imagenes/tire-inner 2.png" alt="Fallas detectadas en neumático OTR" class="diag-tire-img" />
             <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
             <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
             <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
@@ -166,36 +167,46 @@
       </div>
     </div>
 
-    <!-- Parte 2: Solución — fondo claro -->
+    <!-- Parte 2: Los 3 Pilares -->
     <div class="diag-solution">
       <div class="container">
-        <div class="diag-sol-hdr reveal">
-          <div class="tag">Solución</div>
-          <h2 class="section-title">Ultrasonido + análisis tensional<br />+ IA para decidir por condición.</h2>
-          <p class="section-body center">Integramos inspección ultrasónica no destructiva, modelamiento tensional y analítica/IA para entregar criterios técnicos defendibles sobre operación, reparación, rotación o baja técnica.</p>
+        <div class="pilares-hdr reveal">
+          <div class="tag">Los 3 Pilares</div>
+          <h2 class="section-title">Predecir. Validar. Prescribir.</h2>
+          <p class="section-body center">La metodología que convierte degradación invisible en certeza operacional medible y auditable.</p>
         </div>
-        <div class="diag-pillars reveal delay-1">
-          <div class="diag-pillar">
-            <div class="pillar-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/><path d="M16 3.13a10 10 0 0 1 0 17.74"/></svg>
+        <div class="pilares-grid reveal delay-1">
+
+          <div class="pilar-card">
+            <div class="pilar-roman">I</div>
+            <h3>Visibilidad<br/>Predictiva</h3>
+            <p>VIZUtire modela cómo cada variable operacional se traduce en degradación del neumático. Procesamos 150 variables en tiempo real para predecir falla estructural 48–72 horas antes de que ocurra.</p>
+            <div class="pilar-metric-box">
+              <span class="pilar-met-num">48–72h</span>
+              <span class="pilar-met-lbl">antes de la falla</span>
             </div>
-            <h3>Ultrasonidos</h3>
-            <p>Detección y evaluación de discontinuidades internas.</p>
           </div>
-          <div class="diag-pillar">
-            <div class="pillar-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+
+          <div class="pilar-card pilar-card--accent">
+            <div class="pilar-roman">II</div>
+            <h3>Validación<br/>Empírica</h3>
+            <p>La predicción sin prueba es especulación. Nuestro ultrasonido actúa como scanner médico del neumático, validando lo que dice el algoritmo con evidencia física real.</p>
+            <div class="pilar-metric-box">
+              <span class="pilar-met-num">99%</span>
+              <span class="pilar-met-lbl">fidelidad estructural</span>
             </div>
-            <h3>Análisis tensional</h3>
-            <p>Relación entre operación y respuesta estructural del neumático.</p>
           </div>
-          <div class="diag-pillar">
-            <div class="pillar-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+
+          <div class="pilar-card">
+            <div class="pilar-roman">III</div>
+            <h3>Prescripción<br/>Optimizada</h3>
+            <p>No es una alerta. Es una decisión ya tomada: "Rota neumático #47 en 36 horas. Extensión de vida útil: 280 horas. Ahorro proyectado: $800.000." Justificada y auditable.</p>
+            <div class="pilar-metric-box">
+              <span class="pilar-met-num">$800K</span>
+              <span class="pilar-met-lbl">ahorro por decisión</span>
             </div>
-            <h3>IA / Analítica</h3>
-            <p>Priorización de riesgo, tendencia y recomendación operativa.</p>
           </div>
+
         </div>
       </div>
     </div>
@@ -464,6 +475,166 @@
     </div>
   </section>
 
+  <!-- ===================== ALICANTO ===================== -->
+  <section class="alicanto-section" id="alicanto">
+    <div class="container">
+      <div class="ali-layout">
+
+        <div class="ali-text reveal">
+          <div class="tag tag-light">Alicanto by VIZUtire</div>
+          <h2 class="ali-title">Donde la predicción<br/>se convierte en<br/><em>control operacional.</em></h2>
+          <p class="ali-body">No es un dashboard. No es una app de monitoreo. Alicanto es la infraestructura operacional centralizada donde análisis predictivo, validación ultrasónica y recomendaciones prescriptivas convergen.</p>
+          <p class="ali-myth">En la mitología minera, el Alicanto era el ave capaz de revelar las riquezas minerales que nadie más podía ver. Hoy, Alicanto revela lo que los operadores nunca pudieron ver: la realidad estructural dentro de cada neumático OTR.</p>
+        </div>
+
+        <div class="ali-visual reveal delay-1">
+          <div class="ali-card">
+            <div class="ali-card-hdr">
+              <div class="ali-status-dot"></div>
+              <span>Alicanto — Centro de Monitoreo Estructural</span>
+              <span class="ali-card-live">EN VIVO</span>
+            </div>
+            <div class="ali-alert-body">
+              <div class="ali-alert-tag">ALERTA ESTRUCTURAL</div>
+              <div class="ali-alert-tire">Neumático #47</div>
+              <div class="ali-alert-risk">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+                Riesgo estructural: ALTO
+              </div>
+              <div class="ali-alert-action">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Rotar a posición trasera derecha en 36 horas
+              </div>
+              <div class="ali-alert-metrics">
+                <div class="ali-alert-met">
+                  <span class="ali-met-val">+280h</span>
+                  <span class="ali-met-lbl">extensión de vida útil</span>
+                </div>
+                <div class="ali-alert-met ali-met-green">
+                  <span class="ali-met-val">$800.000</span>
+                  <span class="ali-met-lbl">ahorro proyectado</span>
+                </div>
+              </div>
+            </div>
+            <div class="ali-card-footer">
+              <span>50.000+ mediciones validadas</span>
+              <span class="ali-footer-dot">·</span>
+              <span>Verificado Michelin</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CASOS DE ÉXITO ===================== -->
+  <section class="casos-section section" id="casos">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <div class="tag">Casos de éxito</div>
+        <h2 class="section-title">Validado en operaciones<br/>mineras de clase mundial.</h2>
+        <p class="section-body center">Resultados documentados en Tier 1. No proyecciones.</p>
+      </div>
+
+      <div class="casos-grid reveal delay-1">
+
+        <div class="caso-card">
+          <div class="caso-mine-name">Escondida</div>
+          <div class="caso-op-name">BHP</div>
+          <div class="caso-metrics">
+            <div class="caso-metric">
+              <div class="caso-num">+8–12%</div>
+              <div class="caso-lbl">Disponibilidad de flota</div>
+            </div>
+            <div class="caso-metric">
+              <div class="caso-num">150+</div>
+              <div class="caso-lbl">Horas productivas adicionales / mes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="caso-card caso-card--dark">
+          <div class="caso-mine-name">Loma</div>
+          <div class="caso-op-name">RT</div>
+          <div class="caso-metrics">
+            <div class="caso-metric">
+              <div class="caso-num">10:1</div>
+              <div class="caso-lbl">ROI documentado</div>
+            </div>
+            <div class="caso-metric">
+              <div class="caso-num">&lt;9 meses</div>
+              <div class="caso-lbl">Payback</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="caso-card">
+          <div class="caso-mine-name">Spence</div>
+          <div class="caso-op-name">BHP</div>
+          <div class="caso-metrics">
+            <div class="caso-metric">
+              <div class="caso-num">0</div>
+              <div class="caso-lbl">Fallas mecánicas por neumático</div>
+            </div>
+            <div class="caso-metric">
+              <div class="caso-num">Michelin</div>
+              <div class="caso-lbl">Verificación OEM del rendimiento</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="val-strip reveal delay-2">
+        <div class="val-item">
+          <span class="val-num">50.000+</span>
+          <span class="val-lbl">Mediciones estructurales</span>
+        </div>
+        <div class="val-div"></div>
+        <div class="val-item">
+          <span class="val-num">99%</span>
+          <span class="val-lbl">Fidelidad ultrasónica</span>
+        </div>
+        <div class="val-div"></div>
+        <div class="val-item">
+          <span class="val-num">Michelin</span>
+          <span class="val-lbl">Verificación OEM</span>
+        </div>
+        <div class="val-div"></div>
+        <div class="val-item">
+          <span class="val-num">Tier 1</span>
+          <span class="val-lbl">Operaciones validadas</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== CIERRE NARRATIVO ===================== -->
+  <section class="cierre-section">
+    <div class="container">
+      <div class="cierre-inner reveal">
+        <div class="tag tag-light">Certeza Operacional</div>
+        <h2 class="cierre-title">La certeza operacional<br/>comienza con<br/><em>visibilidad estructural.</em></h2>
+        <div class="cierre-steps">
+          <div class="cierre-step">Ya gestionas combustible, despacho, carga y mantenimiento.</div>
+          <div class="cierre-step">Ahora gestiona lo que históricamente ha permanecido invisible.</div>
+        </div>
+        <div class="cierre-actions">
+          <div class="cierre-action-item">Ve la degradación antes.</div>
+          <div class="cierre-action-item">Actúa con evidencia.</div>
+          <div class="cierre-action-item">Opera con certeza.</div>
+        </div>
+        <div class="cierre-brand">Alicanto by VIZUtire</div>
+        <a href="#contacto" class="hero-btn-dark">
+          Solicitar evaluación técnica <span class="btn-arrow-circle">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== HISTORIA / HITOS ===================== -->
   <section class="section historia-section" id="historia">
     <div class="container">
@@ -639,9 +810,8 @@
           </div>
           <div class="footer-col">
             <h4>EMPRESA</h4>
-            <a href="#problema">Problema</a>
-            <a href="#problema">Solución</a>
-            <a href="#tecnologia">Beneficios</a>
+            <a href="#alicanto">Alicanto</a>
+            <a href="#casos">Casos de éxito</a>
             <a href="#historia">Hitos</a>
             <a href="#contacto">Contacto</a>
           </div>
