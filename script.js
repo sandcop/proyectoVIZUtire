@@ -438,6 +438,16 @@ if (form) {
   });
 })();
 
+// ========= LENIS — redirige wheel sobre el iframe de historia =========
+(function () {
+  const historiaFrame = document.querySelector('.historia-frame');
+  if (!historiaFrame) return;
+  historiaFrame.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    lenis.scrollBy(e.deltaY, { immediate: false });
+  }, { passive: false });
+})();
+
 // ========= HERO SCANNER — aparece al terminar el vídeo =========
 (function () {
   const video   = document.getElementById('heroVideo');
