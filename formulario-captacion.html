@@ -11,13 +11,13 @@
         :root {
             --red:        #E1443A;
             --red-dark:   #c73930;
-            --bg:         #09090B;
-            --surface:    #111113;
-            --surface-2:  #18181B;
-            --border:     #27272A;
-            --text:       #FAFAFA;
-            --text-sub:   #A1A1AA;
-            --text-muted: #71717A;
+            --bg:         #f0f1f3;
+            --surface:    #ffffff;
+            --surface-2:  #f4f4f5;
+            --border:     rgba(0,0,0,0.09);
+            --text:       #030712;
+            --text-sub:   #5d636f;
+            --text-muted: #aab0bb;
         }
 
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -92,7 +92,7 @@
         input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
         input.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
         select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
-        select option { background: #1a1a1c; }
+        select option { background: #fff; }
         select.error { border-color: #f87171 !important; }
 
         /* ─── Input con prefijo ───────────────────── */
@@ -272,9 +272,22 @@
             .prog-label { display: none; }
             .total-value { font-size: 26px; }
         }
+
+        /* ─── Cursor dot-reveal ──────────────────── */
+        .cursor-dots {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            -webkit-mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+            mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+        }
     </style>
 </head>
 <body>
+<div class="cursor-dots" aria-hidden="true"></div>
 
 <header class="header">
     <div class="logo-dot"></div>
@@ -778,7 +791,7 @@
 ══════════════════════════════════════════════════════ */
 const CONFIG = {
     sheets: {
-        url: 'https://script.google.com/macros/s/AKfycbz8dWA6AdQI8Lq0g7gUCxlkUgtrj1GgPNSFvY9O1GNOseOKuY1bK1FBXEWnXsFqAKU/exec'
+        url: 'https://script.google.com/macros/s/AKfycbxAaigYWnx9dPfH6mIB2dfmULtweW4Q8uelPlu4U04kZjzJ3oOLdC-QmujNceMm4IY/exec'
     }
 };
 
@@ -990,11 +1003,40 @@ async function goStep4sin() {
     await enviarYMostrar();
 }
 
+/* ─── Anti-spam cooldown ─────────────────────────────── */
+const SPAM_KEY = 'vizu_form_cooldown';
+const SPAM_COOLDOWN = 60000;
+function checkFormCooldown() {
+    const ts = parseInt(localStorage.getItem(SPAM_KEY) || '0');
+    if (Date.now() - ts < SPAM_COOLDOWN) {
+        const wait = Math.ceil((SPAM_COOLDOWN - (Date.now() - ts)) / 1000);
+        alert('Por favor espera ' + wait + ' segundos antes de enviar de nuevo.');
+        return false;
+    }
+    return true;
+}
+
+/* ─── Sanitizar campos del payload ──────────────────── */
+function sanitizePayloadField(v, maxLen) {
+    return String(v == null ? '' : v).trim().slice(0, maxLen);
+}
+
+/* ─── Validación de email ────────────────────────────── */
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
+}
+
 /* ─── Enviar y mostrar paso 4 ────────────────────────── */
 async function enviarYMostrar() {
+    if (!checkFormCooldown()) return;
+    if (!isValidEmail(state.correo)) {
+        alert('El correo electrónico ingresado no es válido.');
+        return;
+    }
     state.fecha = new Date().toLocaleString('es-CL', { dateStyle: 'long', timeStyle: 'short' });
 
     await guardarEnSheets().catch(() => {});
+    localStorage.setItem(SPAM_KEY, String(Date.now()));
 
     renderResumen();
     showStep(4);
@@ -1006,14 +1048,14 @@ function guardarEnSheets() {
     const c = state.calc || {};
     const payload = {
         fecha:         state.fecha,
-        nombre:        state.nombre,
-        cargo:         state.cargo,
-        correo:        state.correo,
-        telefono:      state.telefono,
-        pref_contacto: state.prefContacto,
-        empresa:       state.empresa,
-        pais:          state.pais,
-        ciudad:        state.ciudad,
+        nombre:        sanitizePayloadField(state.nombre,        200),
+        cargo:         sanitizePayloadField(state.cargo,         200),
+        correo:        sanitizePayloadField(state.correo,        200),
+        telefono:      sanitizePayloadField(state.telefono,       50),
+        pref_contacto: sanitizePayloadField(state.prefContacto,   50),
+        empresa:       sanitizePayloadField(state.empresa,       200),
+        pais:          sanitizePayloadField(state.pais,          100),
+        ciudad:        sanitizePayloadField(state.ciudad,        100),
         flota:         state.flota,
         num_caex:      state.numCaexP1 || (c.numCaex || ''),
         equipo:        state.equipo,
@@ -1075,6 +1117,16 @@ document.querySelectorAll('input, select').forEach(el =>
 document.getElementById('telefono').addEventListener('input', () =>
     document.getElementById('tel-wrap').classList.remove('error')
 );
+</script>
+
+<script>
+(function () {
+    var dot = document.querySelector('.cursor-dots');
+    document.addEventListener('mousemove', function (e) {
+        dot.style.setProperty('--dot-x', e.clientX + 'px');
+        dot.style.setProperty('--dot-y', e.clientY + 'px');
+    });
+}());
 </script>
 
 </body>

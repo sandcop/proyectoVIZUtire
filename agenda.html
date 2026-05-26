@@ -11,13 +11,13 @@
         :root {
             --red:        #E1443A;
             --red-dark:   #c73930;
-            --bg:         #09090B;
-            --surface:    #111113;
-            --surface-2:  #18181B;
-            --border:     #27272A;
-            --text:       #FAFAFA;
-            --text-sub:   #A1A1AA;
-            --text-muted: #71717A;
+            --bg:         #f0f1f3;
+            --surface:    #ffffff;
+            --surface-2:  #f4f4f5;
+            --border:     rgba(0,0,0,0.09);
+            --text:       #030712;
+            --text-sub:   #5d636f;
+            --text-muted: #aab0bb;
         }
 
         body {
@@ -389,9 +389,22 @@
             .prog-label { display: none; }
             .header { padding: 16px; }
         }
+
+        /* ─── Cursor dot-reveal ──────────────────── */
+        .cursor-dots {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            -webkit-mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+            mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+        }
     </style>
 </head>
 <body>
+<div class="cursor-dots" aria-hidden="true"></div>
 
 <header class="header">
     <a class="logo" href="formulario-captacion.html">
@@ -621,7 +634,7 @@
    CONFIGURACIÓN
    ══════════════════════════════════════════════════ */
 const CONFIG = {
-    sheetsUrl: 'https://script.google.com/macros/s/AKfycbz8dWA6AdQI8Lq0g7gUCxlkUgtrj1GgPNSFvY9O1GNOseOKuY1bK1FBXEWnXsFqAKU/exec',
+    sheetsUrl: 'https://script.google.com/macros/s/AKfycbxAaigYWnx9dPfH6mIB2dfmULtweW4Q8uelPlu4U04kZjzJ3oOLdC-QmujNceMm4IY/exec',
     adminEmail: 'sander.rojasc@gmail.com'
 };
 
@@ -768,8 +781,27 @@ function goStep2() {
     showStep(2);
 }
 
+/* ── Validación de email ─────────────────────────── */
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
+}
+
+/* ── Anti-spam cooldown ──────────────────────────── */
+const SPAM_KEY = 'vizu_form_cooldown';
+const SPAM_COOLDOWN = 60000;
+function checkFormCooldown() {
+    const ts = parseInt(localStorage.getItem(SPAM_KEY) || '0');
+    if (Date.now() - ts < SPAM_COOLDOWN) {
+        const wait = Math.ceil((SPAM_COOLDOWN - (Date.now() - ts)) / 1000);
+        alert('Por favor espera ' + wait + ' segundos antes de enviar de nuevo.');
+        return false;
+    }
+    return true;
+}
+
 /* ── Paso 2 → 3 ──────────────────────────────────── */
 async function confirmar() {
+    if (!checkFormCooldown()) return;
     const fields = ['c-nombre','c-cargo','c-correo','c-tel','c-empresa'];
     let ok = true;
     fields.forEach(id => {
@@ -779,9 +811,22 @@ async function confirmar() {
     });
     if (!ok) { document.querySelector('#step-2 .error')?.focus(); return; }
 
+    const mensajeEl = document.getElementById('c-mensaje');
+    if (mensajeEl && mensajeEl.value.length > 1000) {
+        alert('El mensaje no puede superar 1000 caracteres.');
+        mensajeEl.focus();
+        return;
+    }
+
     cita.nombre  = document.getElementById('c-nombre').value.trim();
     cita.cargo   = document.getElementById('c-cargo').value.trim();
     cita.correo  = document.getElementById('c-correo').value.trim();
+    if (!isValidEmail(cita.correo)) {
+        const el = document.getElementById('c-correo');
+        el.classList.add('error');
+        el.focus();
+        return;
+    }
     cita.telefono= document.getElementById('c-tel').value.trim();
     cita.empresa = document.getElementById('c-empresa').value.trim();
     cita.mensaje = document.getElementById('c-mensaje').value.trim();
@@ -801,6 +846,7 @@ async function confirmar() {
     btn.innerHTML = `Enviando… <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
 
     await guardarCita();
+    localStorage.setItem(SPAM_KEY, String(Date.now()));
 
     // Render confirmación
     document.getElementById('conf-email').textContent    = cita.correo;
@@ -849,6 +895,7 @@ function cargarContexto() {
         if (!raw) return;
         const d = JSON.parse(raw);
         if (!d.nombre || !d.correo) return;
+        localStorage.removeItem('vizutire_contacto');
 
         // Pre-llenar campos
         document.getElementById('c-nombre').value  = d.nombre  || '';
@@ -925,6 +972,16 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarContexto();
     renderCal();
 });
+</script>
+
+<script>
+(function () {
+    var dot = document.querySelector('.cursor-dots');
+    document.addEventListener('mousemove', function (e) {
+        dot.style.setProperty('--dot-x', e.clientX + 'px');
+        dot.style.setProperty('--dot-y', e.clientY + 'px');
+    });
+}());
 </script>
 
 </body>

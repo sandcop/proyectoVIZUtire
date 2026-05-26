@@ -442,8 +442,16 @@ if (form) {
 (function () {
   const video   = document.getElementById('heroVideo');
   const scanner = document.getElementById('heroScanner');
+  const hero    = document.querySelector('.hero');
   if (!video || !scanner) return;
   video.addEventListener('ended', () => {
     scanner.classList.add('visible');
   });
+})();
+
+// ========= HERO TEXT — vuelve a color legible en 4 s desde carga =========
+(function () {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  setTimeout(() => hero.classList.add('hero--ended'), 4000);
 })();
