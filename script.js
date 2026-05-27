@@ -61,26 +61,26 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ========= HAMBURGER =========
-const hamburger = document.getElementById('hamburger');
+const hamburgerCheck = document.getElementById('hamburgerCheck');
 const navLinks = document.querySelector('.nav-links');
-let navOpen = false;
 
 function closeMobileMenu() {
-  navOpen = false;
+  if (hamburgerCheck) hamburgerCheck.checked = false;
   navLinks.classList.remove('mobile-open');
 }
 
-hamburger.addEventListener('click', () => {
-  navOpen = !navOpen;
-  navLinks.classList.toggle('mobile-open', navOpen);
-});
+if (hamburgerCheck) {
+  hamburgerCheck.addEventListener('change', () => {
+    navLinks.classList.toggle('mobile-open', hamburgerCheck.checked);
+  });
+}
 
 document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => { if (navOpen) closeMobileMenu(); });
+  a.addEventListener('click', () => { if (hamburgerCheck?.checked) closeMobileMenu(); });
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 768 && navOpen) closeMobileMenu();
+  if (window.innerWidth > 900 && hamburgerCheck?.checked) closeMobileMenu();
 });
 
 // ========= SCROLL REVEAL =========
@@ -410,31 +410,69 @@ if (form) {
   })();
 })();
 
-// ========= MARCADORES DE FALLA — hover interactivo =========
+// ========= MARCADORES DE FALLA — hover (desktop) / tap con overlay (móvil) =========
 (function () {
   const markers = document.querySelectorAll('.fault-marker[data-fault]');
   const cards   = document.querySelectorAll('.diag-info-card[data-card]');
   if (!markers.length || !cards.length) return;
 
-  let hoverTimer = null;
+  let hoverTimer    = null;
+  let activeFaultId = null;
+
+  const isMobile = () => window.innerWidth <= 900;
 
   function activate(faultId) {
+    activeFaultId = faultId;
     markers.forEach(m => m.classList.toggle('fault-marker--active', m.dataset.fault === faultId));
     cards.forEach(c => c.classList.toggle('active', c.dataset.card === faultId));
   }
 
-  // Mostrar primera tarjeta por defecto al cargar
+  function deactivate() {
+    activeFaultId = null;
+    markers.forEach(m => m.classList.remove('fault-marker--active'));
+    cards.forEach(c => c.classList.remove('active'));
+  }
+
+  // ── Inicialización inmediata ──────────────────────────────────────────────
+  // Móvil: quitar la clase "active" del HTML antes de pintar — ninguna tarjeta visible al cargar
+  // Desktop: la primera tarjeta se activa al cargar
+  if (isMobile()) {
+    deactivate();
+  }
+
   window.addEventListener('load', () => {
-    if (markers[0]) activate(markers[0].dataset.fault);
+    if (!isMobile() && markers[0]) activate(markers[0].dataset.fault);
   });
 
+  // ── Interacciones ─────────────────────────────────────────────────────────
   markers.forEach(marker => {
+    // Desktop: hover activa la tarjeta
     marker.addEventListener('mouseenter', () => {
+      if (isMobile()) return;
       clearTimeout(hoverTimer);
       hoverTimer = setTimeout(() => activate(marker.dataset.fault), 80);
     });
-    // Soporte táctil
-    marker.addEventListener('touchstart', () => activate(marker.dataset.fault), { passive: true });
+
+    // Móvil: click (touch-action:manipulation en CSS elimina el delay de 300 ms)
+    // El mismo marcador cierra, otro marcador cambia
+    marker.addEventListener('click', (e) => {
+      if (!isMobile()) return;
+      e.stopPropagation();
+      if (activeFaultId === marker.dataset.fault) {
+        deactivate();
+      } else {
+        activate(marker.dataset.fault);
+      }
+    });
+  });
+
+  // Móvil: tap fuera de la tarjeta activa la cierra
+  document.addEventListener('click', (e) => {
+    if (!isMobile() || !activeFaultId) return;
+    const activeCard = document.querySelector('.diag-info-card.active');
+    if (activeCard && !activeCard.contains(e.target) && !e.target.closest('.fault-marker')) {
+      deactivate();
+    }
   });
 })();
 
@@ -446,6 +484,18 @@ if (form) {
     e.preventDefault();
     lenis.scrollBy(e.deltaY, { immediate: false });
   }, { passive: false });
+})();
+
+// ========= WAVE INPUTS — label arriba cuando textarea/input tiene contenido =========
+(function () {
+  document.querySelectorAll('.wave-group .input').forEach(el => {
+    const sync = () => el.value
+      ? el.classList.add('has-value')
+      : el.classList.remove('has-value');
+    el.addEventListener('input', sync);
+    el.addEventListener('blur',  sync);
+    sync(); // por si el navegador autocompletó
+  });
 })();
 
 // ========= HERO SCANNER — aparece al terminar el vídeo =========
@@ -460,8 +510,37 @@ if (form) {
 })();
 
 // ========= HERO TEXT — vuelve a color legible en 4 s desde carga =========
+// bfcache: pagehide limpia el estado antes del snapshot para que al restaurar
+// la página ya arranque en el estado blanco correcto (sin flash oscuro).
 (function () {
   const hero = document.querySelector('.hero');
   if (!hero) return;
-  setTimeout(() => hero.classList.add('hero--ended'), 4000);
+
+  let timer = null;
+
+  function startTimer() {
+    clearTimeout(timer);
+    hero.classList.remove('hero--skip-transition');
+    timer = setTimeout(() => hero.classList.add('hero--ended'), 4000);
+  }
+
+  function resetHero() {
+    clearTimeout(timer);
+    hero.classList.add('hero--skip-transition');
+    hero.classList.remove('hero--ended');
+    requestAnimationFrame(() => requestAnimationFrame(startTimer));
+  }
+
+  resetHero();
+
+  window.addEventListener('pagehide', (e) => {
+    if (!e.persisted) return;
+    clearTimeout(timer);
+    hero.classList.add('hero--skip-transition');
+    hero.classList.remove('hero--ended');
+  });
+
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) startTimer();
+  });
 })();

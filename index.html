@@ -25,9 +25,13 @@
         <a href="#contacto" class="nav-cta-btn">Demo</a>
         <button class="nav-lang-btn">ES</button>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Menú">
-        <span></span><span></span><span></span>
-      </button>
+      <label class="hamburger" id="hamburger" aria-label="Menú">
+        <input type="checkbox" id="hamburgerCheck">
+        <svg viewBox="0 0 32 32">
+          <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+          <path class="line" d="M7 16 27 16"></path>
+        </svg>
+      </label>
     </nav>
   </header>
 
@@ -35,7 +39,8 @@
   <section class="hero" id="inicio">
     <div class="hero-dots"></div>
     <a href="#" class="hero-logo">
-      <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="logo-img" />
+      <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" />
+      <img src="imagenes/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" />
     </a>
 
     <div class="hero-layout">
@@ -55,7 +60,17 @@
         </p>
         <div class="hero-actions">
           <a href="#alicanto" class="hero-btn-dark">
-            Explorar Alicanto <span class="btn-arrow-circle">→</span>
+            Explorar Alicanto
+            <span class="arr-btn">
+              <span class="arr-btn-box">
+                <span class="arr-btn-elem">
+                  <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg>
+                </span>
+                <span class="arr-btn-elem">
+                  <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg>
+                </span>
+              </span>
+            </span>
           </a>
           <a href="#tecnologia" class="hero-btn-light">
             Ver tecnología
@@ -688,20 +703,35 @@
         <form class="cta-form" id="contactForm" novalidate>
 
           <div class="form-row">
-            <div class="form-group">
-              <label for="nombre">Nombre completo <span class="req">*</span></label>
-              <input type="text" id="nombre" name="nombre" placeholder="Juan Pérez" autocomplete="name">
+            <div class="form-group wf">
+              <div class="wave-group">
+                <input required type="text" id="nombre" name="nombre" class="input" autocomplete="name">
+                <span class="bar"></span>
+                <label class="label" for="nombre">
+                  <span class="label-char" style="--index:0">N</span><span class="label-char" style="--index:1">o</span><span class="label-char" style="--index:2">m</span><span class="label-char" style="--index:3">b</span><span class="label-char" style="--index:4">r</span><span class="label-char" style="--index:5">e</span><span class="label-char" style="--index:6">&nbsp;</span><span class="label-char" style="--index:7">c</span><span class="label-char" style="--index:8">o</span><span class="label-char" style="--index:9">m</span><span class="label-char" style="--index:10">p</span><span class="label-char" style="--index:11">l</span><span class="label-char" style="--index:12">e</span><span class="label-char" style="--index:13">t</span><span class="label-char" style="--index:14">o</span>
+                </label>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="empresa">Empresa <span class="req">*</span></label>
-              <input type="text" id="empresa" name="empresa" placeholder="Minera Ejemplo S.A." autocomplete="organization">
+            <div class="form-group wf">
+              <div class="wave-group">
+                <input required type="text" id="empresa" name="empresa" class="input" autocomplete="organization">
+                <span class="bar"></span>
+                <label class="label" for="empresa">
+                  <span class="label-char" style="--index:0">E</span><span class="label-char" style="--index:1">m</span><span class="label-char" style="--index:2">p</span><span class="label-char" style="--index:3">r</span><span class="label-char" style="--index:4">e</span><span class="label-char" style="--index:5">s</span><span class="label-char" style="--index:6">a</span>
+                </label>
+              </div>
             </div>
           </div>
 
           <div class="form-row">
-            <div class="form-group">
-              <label for="email">Correo electrónico <span class="req">*</span></label>
-              <input type="email" id="email" name="email" placeholder="juan@empresa.cl" autocomplete="email">
+            <div class="form-group wf">
+              <div class="wave-group">
+                <input required type="email" id="email" name="email" class="input" autocomplete="email">
+                <span class="bar"></span>
+                <label class="label" for="email">
+                  <span class="label-char" style="--index:0">C</span><span class="label-char" style="--index:1">o</span><span class="label-char" style="--index:2">r</span><span class="label-char" style="--index:3">r</span><span class="label-char" style="--index:4">e</span><span class="label-char" style="--index:5">o</span><span class="label-char" style="--index:6">&nbsp;</span><span class="label-char" style="--index:7">e</span><span class="label-char" style="--index:8">l</span><span class="label-char" style="--index:9">e</span><span class="label-char" style="--index:10">c</span><span class="label-char" style="--index:11">t</span><span class="label-char" style="--index:12">r</span><span class="label-char" style="--index:13">ó</span><span class="label-char" style="--index:14">n</span><span class="label-char" style="--index:15">i</span><span class="label-char" style="--index:16">c</span><span class="label-char" style="--index:17">o</span>
+                </label>
+              </div>
             </div>
             <div class="form-group" id="flotaGroup">
               <label>Flota OTR aproximada <span class="req">*</span></label>
@@ -747,9 +777,14 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="mensaje">Mensaje (opcional)</label>
-            <textarea id="mensaje" name="mensaje" rows="3" placeholder="Cuéntanos sobre tu operación y neumáticos..."></textarea>
+          <div class="form-group wf">
+            <div class="wave-group">
+              <textarea id="mensaje" name="mensaje" rows="3" class="input"></textarea>
+              <span class="bar"></span>
+              <label class="label" for="mensaje">
+                <span class="label-char" style="--index:0">M</span><span class="label-char" style="--index:1">e</span><span class="label-char" style="--index:2">n</span><span class="label-char" style="--index:3">s</span><span class="label-char" style="--index:4">a</span><span class="label-char" style="--index:5">j</span><span class="label-char" style="--index:6">e</span>
+              </label>
+            </div>
           </div>
 
           <div class="form-group captcha-group">
@@ -766,9 +801,18 @@
 
           <div class="form-footer">
             <p class="form-privacy">Al enviar acepta nuestras condiciones de privacidad. Sus datos se usan exclusivamente para contactarle.</p>
-            <button type="submit" class="btn-submit">
+            <button type="submit" class="btn-submit hero-btn-dark">
               Solicitar evaluación
-              <span class="btn-arrow-circle">→</span>
+              <span class="arr-btn">
+                <span class="arr-btn-box">
+                  <span class="arr-btn-elem">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg>
+                  </span>
+                  <span class="arr-btn-elem">
+                    <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg>
+                  </span>
+                </span>
+              </span>
             </button>
           </div>
 

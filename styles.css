@@ -178,6 +178,8 @@ section[id].in-view::after {
   pointer-events: all;
   display: flex;
   align-items: center;
+  /* Necesario para posicionar logo-pos encima de logo-neg */
+  isolation: isolate;
 }
 .navbar {
   display: flex;
@@ -193,7 +195,18 @@ section[id].in-view::after {
 }
 .navbar.scrolled { box-shadow: var(--shadow-lg); }
 
-.logo-img { height: 60px; width: auto; display: block; }
+.logo-img  { height: 60px; width: auto; display: block; }
+
+/* Logo hero: crossfade negativo → positivo al mismo tiempo que el texto */
+.logo-neg { opacity: 1; transition: opacity 3s ease; }
+.logo-pos {
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+.hero--ended .logo-neg { opacity: 0; }
+.hero--ended .logo-pos { opacity: 1; }
 
 .nav-actions {
   display: flex;
@@ -279,15 +292,34 @@ section[id].in-view::after {
   font-size: 1rem;
 }
 
-.hamburger { display: none; flex-direction: column; gap: 5px; margin-left: 8px; }
-.hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+/* Hamburger — Uiverse.io / JulanDeAlb */
+.hamburger { display: none; cursor: pointer; margin-left: 8px; }
+.hamburger input { display: none; }
+.hamburger svg {
+  height: 2em;
+  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.line {
+  fill: none;
+  stroke: var(--text);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.line-top-bottom { stroke-dasharray: 12 63; }
+.hamburger input:checked + svg { transform: rotate(-45deg); }
+.hamburger input:checked + svg .line-top-bottom {
+  stroke-dasharray: 20 300;
+  stroke-dashoffset: -32.42;
+}
 
 /* =============================================
    HERO — 3-column original layout
    ============================================= */
 .hero {
-  min-height: max(92vh, 720px);
-  max-height: 900px;
+  height: clamp(720px, 100svh, 900px);
   display: flex;
   align-items: flex-start;
   padding: 155px 200px 60px 200px;
@@ -966,6 +998,15 @@ section[id].in-view::after {
   transition: background 3s ease, color 3s ease;
 }
 
+/* Reset instantáneo sin transición (para restauración desde bfcache) */
+.hero--skip-transition .hero-title,
+.hero--skip-transition .hero-title em,
+.hero--skip-transition .hero-sub,
+.hero--skip-transition .hero-body,
+.hero--skip-transition .tag,
+.hero--skip-transition .logo-neg,
+.hero--skip-transition .logo-pos { transition: none !important; }
+
 /* Al terminar el vídeo — vuelven a los colores originales */
 .hero--ended .hero-title { color: var(--text); }
 .hero--ended .hero-title em { color: var(--text-2); }
@@ -977,24 +1018,80 @@ section[id].in-view::after {
 .hero-actions { display: flex; align-items: center; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; justify-content: center; }
 
 .hero-btn-dark {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
   background: var(--text);
   color: #fff;
   font-family: var(--font);
   font-weight: 600; font-size: 0.95rem;
-  padding: 12px 12px 12px 24px;
+  line-height: 1;
+  padding: 0 14px 0 19px;
+  height: 56px;
   border-radius: var(--radius-xl);
   transition: background var(--t), box-shadow var(--t), transform var(--t);
 }
 .hero-btn-dark:hover { background: #1f2937; box-shadow: 0 8px 28px rgba(0,0,0,0.2); transform: translateY(-2px); }
+button.hero-btn-dark { border: none; cursor: pointer; }
 
-.btn-arrow-circle {
+/* ── Flecha animada Uiverse (arr-btn) ── */
+.arr-btn {
+  display: block;
+  position: relative;
   width: 36px; height: 36px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
+  overflow: hidden;
   flex-shrink: 0;
+}
+.arr-btn::before,
+.arr-btn::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 5px;
+}
+.arr-btn::before {
+  border: 3px solid rgba(255,255,255,0.45);
+  transition: opacity 0.4s cubic-bezier(0.77,0,0.175,1) 80ms,
+              transform 0.5s cubic-bezier(0.455,0.03,0.515,0.955) 80ms;
+}
+.arr-btn::after {
+  border: 3px solid var(--accent);
+  transform: scale(1.3);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.165,0.84,0.44,1),
+              transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.hero-btn-dark:hover .arr-btn::before {
+  opacity: 0; transform: scale(0.7);
+  transition: opacity 0.4s cubic-bezier(0.165,0.84,0.44,1),
+              transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.hero-btn-dark:hover .arr-btn::after {
+  opacity: 1; transform: scale(1);
+  transition: opacity 0.4s cubic-bezier(0.77,0,0.175,1) 80ms,
+              transform 0.5s cubic-bezier(0.455,0.03,0.515,0.955) 80ms;
+}
+.arr-btn-box {
+  display: flex;
+  position: absolute;
+  top: 0; left: 0;
+  transform: translateX(-36px);
+}
+.arr-btn-elem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.arr-btn-elem svg {
+  width: 13px;
+  height: 13px;
+  fill: #fff;
+  display: block;
+}
+.hero-btn-dark:hover .arr-btn-box {
+  transform: translateX(0);   /* arrow1 sale por derecha, arrow2 entra por izq */
+  transition: transform 0.4s cubic-bezier(0.455,0.03,0.515,0.955);
 }
 
 .hero-btn-light {
@@ -1324,6 +1421,73 @@ section[id].in-view::after {
   gap: 6px;
 }
 
+/* ── Wave inputs (Uiverse.io / AbanoubMagdy1) — adaptado VIZUtire ── */
+.wave-group { position: relative; width: 100%; }
+
+/* form-group con wave: quita su propio borde inferior */
+.form-group.wf {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.form-group.wf:focus-within { border-bottom-color: transparent; }
+
+.wave-group .input {
+  font-size: 0.95rem;
+  padding: 10px 0 8px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid rgba(0,0,0,0.14);
+  background: transparent;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: #1b3c6e;
+  resize: none;
+  transition: border-color 0.25s;
+}
+.wave-group .input:focus { outline: none; border-bottom-color: transparent; }
+
+.wave-group .label {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-family: var(--font-body);
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 10px;
+  display: flex;
+}
+.wave-group .label-char {
+  transition: 0.2s ease all;
+  transition-delay: calc(var(--index) * 0.04s);
+}
+.wave-group .input:focus ~ .label .label-char,
+.wave-group .input:valid ~ .label .label-char,
+.wave-group .input.has-value ~ .label .label-char {
+  transform: translateY(-22px);
+  font-size: 0.68rem;
+  color: #6b7280;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.wave-group .bar { position: relative; display: block; width: 100%; }
+.wave-group .bar:before,
+.wave-group .bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 0;
+  position: absolute;
+  background: #374151;
+  transition: 0.3s ease all;
+}
+.wave-group .bar:before { left: 50%; }
+.wave-group .bar:after  { right: 50%; }
+.wave-group .input:focus ~ .bar:before,
+.wave-group .input:focus ~ .bar:after { width: 50%; }
+
 /* ── Formulario estilo underline ── */
 .cta-form-area {
   background: #fff;
@@ -1546,10 +1710,10 @@ section[id].in-view::after {
 
 /* Footer del formulario */
 .form-footer {
-  display: flex; flex-direction: row; align-items: center;
-  justify-content: space-between; gap: 24px; margin-top: 4px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 16px; margin-top: 4px;
 }
-.form-privacy { font-size: 0.72rem; color: var(--text-3); line-height: 1.55; flex: 1; }
+.form-privacy { font-size: 0.72rem; color: var(--text-3); line-height: 1.55; max-width: 420px; }
 .form-privacy a { color: var(--text-2); text-decoration: underline; }
 
 /* Botón submit */
@@ -1847,10 +2011,12 @@ section[id].in-view::after {
 /* Hero padding/tire fix for medium-wide screens */
 @media (max-width: 1400px) {
   .hero { padding: 110px 80px 60px; }
+  .hero-logo { left: 80px; }
 }
 
 @media (max-width: 1100px) {
   .hero { padding: 110px 60px 60px; }
+  .hero-logo { left: 60px; }
   .container { padding: 0 60px; }
   .header { padding: 16px 60px; }
   .hero-layout { gap: 24px; }
@@ -1861,11 +2027,13 @@ section[id].in-view::after {
 
 @media (max-width: 900px) {
   /* Hero collapses to single column */
-  .hero { height: auto; min-height: 100svh; padding: 110px 24px 60px; flex-direction: column; justify-content: center; align-items: center; }
+  .hero { height: auto; min-height: 100svh; padding: 110px 24px 60px; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .hero-logo { left: 24px; }
   .hero-layout { max-width: 100%; }
-  .hero-text { align-items: center; text-align: center; }
-  .hero-actions { justify-content: center; }
-  .hero-sub { text-align: center; }
+  .hero-text { align-items: flex-start; text-align: left; }
+  .hero-actions { justify-content: flex-start; }
+  .hero-sub { text-align: left; max-width: 58%; }
+  .hero-body { max-width: 58%; }
   .hero-video { border-radius: 0; }
   .hero-cards-left, .hero-cards-right { display: none; }
   /* Scroll story → carrusel horizontal */
@@ -2049,7 +2217,7 @@ section[id].in-view::after {
 /* --- Parte 1: Diagnóstico — fondo blanco --- */
 .diag-main {
   background: #fff;
-  padding: 100px 200px;
+  padding: 100px clamp(24px, 8vw, 160px);
   overflow: hidden;
   border-top: 1px solid rgba(0,0,0,0.06);
   border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -2084,7 +2252,10 @@ section[id].in-view::after {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
-  align-items: end; /* ambas columnas alineadas al fondo del row */
+  align-items: end;
+  max-width: 1060px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .diag-tire-wrap {
   position: relative;
@@ -2099,7 +2270,7 @@ section[id].in-view::after {
   max-width: 520px;
   height: auto;
   display: block;
-  margin-bottom: -100px; /* sangra exactamente hasta el corte de sección */
+  margin-bottom: -100px;
   object-fit: contain;
 }
 /* Marcadores de falla */
@@ -2111,6 +2282,7 @@ section[id].in-view::after {
   border-radius: 4px;
   background: rgba(255,0,0,0.12);
   cursor: pointer;
+  touch-action: manipulation; /* elimina delay de 300ms en móvil */
   animation: fmark-pulse 2.4s ease-in-out infinite;
   transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
@@ -2120,6 +2292,14 @@ section[id].in-view::after {
   box-shadow: 0 0 0 5px rgba(255,0,0,0.15), 0 0 12px rgba(255,0,0,0.35);
   transform: scale(1.25);
   animation: none;
+}
+/* Zona de tap ampliada para móvil (44×44 px mínimo recomendado) */
+@media (max-width: 900px) {
+  .fault-marker::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+  }
 }
 @keyframes fmark-pulse {
   0%, 100% { opacity: 0.55; transform: scale(1); }
@@ -2135,6 +2315,7 @@ section[id].in-view::after {
 .diag-info-card {
   position: absolute;
   top: 0; left: 0; right: 0;
+  max-width: 480px;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -2300,19 +2481,83 @@ section[id].in-view::after {
 .cta-contact-val { font-size: 0.83rem; color: var(--text-2); line-height: 1.55; }
 
 /* Responsive: SISTEMA DE DIAGNÓSTICO */
+@media (max-width: 1100px) {
+  .diag-two-col { gap: 36px; }
+  .diag-info-card { padding: 26px; }
+}
 @media (max-width: 900px) {
   .diag-solution { padding: 72px 0; }
   .diag-pillars { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .diag-two-col { grid-template-columns: 1fr; gap: 32px; }
-  .diag-main { padding: 72px 24px; }
-  .diag-tire-wrap { transform: none; justify-content: center; align-items: center; max-width: 380px; margin: 0 auto; }
-  .diag-tire-img { margin-bottom: 0; max-width: 380px; }
-  .diag-cards-area { min-height: 320px; }
+  .diag-main { padding: 72px 24px 0; }
+
+  /* Neumático ocupa todo el espacio — tarjeta se superpone desde abajo */
+  .diag-two-col {
+    display: block;
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .diag-tire-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    transform: none;
+    margin: 0 auto;
+  }
+  .diag-tire-img {
+    margin-bottom: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Área de tarjetas: overlay sobre el neumático */
+  .diag-cards-area {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    z-index: 10;
+    pointer-events: none; /* deja pasar clicks al neumático */
+  }
+
+  /* Tarjetas ocultas debajo — entran deslizando desde el fondo */
+  .diag-info-card[data-card] {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    overflow: hidden; /* sin scrollbar */
+    touch-action: pan-y;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 20px 24px;
+    transform: translateY(calc(100% + 16px)) !important;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 -6px 32px rgba(0,0,0,0.13);
+  }
+  .diag-info-card.active {
+    transform: translateY(0) !important;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* Thumbnail más compacto en el overlay móvil */
+  .diag-info-card[data-card] .diag-card-thumb img { height: 110px; }
+  .diag-info-card[data-card] .diag-card-title    { font-size: 1.2rem; margin-bottom: 8px; }
+  .diag-info-card[data-card] .diag-card-desc     { margin-bottom: 16px; font-size: 0.83rem; }
+  .diag-info-card[data-card] .diag-card-badge    { margin-bottom: 10px; }
 }
 @media (max-width: 600px) {
-  .diag-main { padding: 60px 20px; }
-  .diag-tire-wrap { max-width: 100%; }
-  .diag-card-thumb img { height: 140px; }
+  .diag-main { padding: 60px 16px 0; }
+  .diag-tire-wrap { max-width: 100%; justify-content: center; }
+  .diag-tire-img { max-width: 100%; }
+  .diag-card-title { font-size: 1.25rem; }
+  .diag-card-desc { font-size: 0.85rem; margin-bottom: 14px; }
+  .diag-card-badge { margin-bottom: 12px; }
+  .diag-card-thumb img { height: 130px; }
   .diag-pillars { grid-template-columns: 1fr; }
   .flota-btns { gap: 8px; }
   .nav-lang-btn { display: none; }
