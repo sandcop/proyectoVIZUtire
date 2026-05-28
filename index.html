@@ -52,12 +52,17 @@
           para Neumáticos<br />
           <em>OTR</em>
         </h1>
-        <p class="hero-sub">
-          Alicanto predice la degradación estructural antes de que ocurra la falla operacional. Transformamos esa predicción en control operacional prescriptivo.
-        </p>
-        <p class="hero-body">
-          La mayoría de operaciones mineras detectan fallos de neumáticos después de que el riesgo operacional ya existe. VIZUtire cambia eso. A través de inteligencia estructural predictiva, validación ultrasónica y recomendaciones operacionales prescriptivas, Alicanto by VIZUtire transforma la gestión de neumáticos de mantenimiento reactivo a certeza operacional.
-        </p>
+        <div class="hero-cycle" id="heroCycle">
+          <p class="hero-sub hero-cycle-item" data-cycle="0" data-dwell="7000">
+            Alicanto predice la degradación estructural antes de que ocurra la falla operacional. Transformamos esa predicción en control operacional prescriptivo.
+          </p>
+          <p class="hero-body hero-cycle-item" data-cycle="1" data-dwell="12000">
+            La mayoría de operaciones mineras detectan fallos de neumáticos después de que el riesgo operacional ya existe. VIZUtire cambia eso. A través de inteligencia estructural predictiva, validación ultrasónica y recomendaciones operacionales prescriptivas, Alicanto by VIZUtire transforma la gestión de neumáticos de mantenimiento reactivo a certeza operacional.
+          </p>
+          <div class="cycle-progress" aria-hidden="true">
+            <div class="cycle-progress-bar" id="cycleBar"></div>
+          </div>
+        </div>
         <div class="hero-actions">
           <a href="#alicanto" class="hero-btn-dark">
             Explorar Alicanto
@@ -187,42 +192,139 @@
       <div class="container">
         <div class="pilares-hdr reveal">
           <div class="tag">Los 3 Pilares</div>
-          <h2 class="section-title">Predecir. Validar. Prescribir.</h2>
+          <h2 class="section-title">Predecir · Validar · Prescribir</h2>
           <p class="section-body center">La metodología que convierte degradación invisible en certeza operacional medible y auditable.</p>
         </div>
-        <div class="pilares-grid reveal delay-1">
+        <div class="pilares-grid pilar-animate">
 
+          <!-- ── PILAR 1 ── -->
           <div class="pilar-card">
-            <div class="pilar-roman">I</div>
-            <h3>Visibilidad<br/>Predictiva</h3>
-            <p>VIZUtire modela cómo cada variable operacional se traduce en degradación del neumático. Procesamos 150 variables en tiempo real para predecir falla estructural 48–72 horas antes de que ocurra.</p>
-            <div class="pilar-metric-box">
-              <span class="pilar-met-num">48–72h</span>
-              <span class="pilar-met-lbl">antes de la falla</span>
+            <div class="pilar-inner">
+
+              <div class="pilar-front">
+                <div class="pilar-icon-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                </div>
+                <h3>Visibilidad<br/>Predictiva</h3>
+                <p>VIZUtire modela 150 variables en tiempo real para predecir falla estructural antes de que ocurra.</p>
+                <div class="pilar-metric-box">
+                  <span class="pilar-met-num">48–72h</span>
+                  <span class="pilar-met-lbl">antes de la falla</span>
+                </div>
+                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
+                  Ver más
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+
+              <div class="pilar-back">
+                <button class="pilar-flip-back-btn" aria-label="Volver">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                </button>
+                <h4 class="pilar-back-title">Alicanto Predice Riesgo Estructural Antes de la Falla Operacional</h4>
+                <p class="pilar-back-intro">Analizamos continuamente más de 150 variables operacionales:</p>
+                <div class="pilar-back-tags">
+                  <span>Carga</span><span>Velocidad</span><span>Terreno</span>
+                  <span>Comportamiento térmico</span><span>Historial de uso</span><span>Estrés operacional</span>
+                </div>
+                <p class="pilar-back-body">Su modelo predictivo identifica patrones de degradación <strong>48–72 horas</strong> antes de que la falla se manifieste operacionalmente.</p>
+                <p class="pilar-back-tagline">No suposiciones. No probabilidades sin contexto.<br/><strong>Inteligencia estructural accionable.</strong></p>
+              </div>
+
             </div>
           </div>
 
+          <div class="pilar-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+
+          <!-- ── PILAR 2 ── -->
           <div class="pilar-card pilar-card--accent">
-            <div class="pilar-roman">II</div>
-            <h3>Validación<br/>Empírica</h3>
-            <p>La predicción sin prueba es especulación. Nuestro ultrasonido actúa como scanner médico del neumático, validando lo que dice el algoritmo con evidencia física real.</p>
-            <div class="pilar-metric-box">
-              <span class="pilar-met-num">99%</span>
-              <span class="pilar-met-lbl">fidelidad estructural</span>
+            <div class="pilar-inner">
+
+              <div class="pilar-front">
+                <div class="pilar-icon-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
+                </div>
+                <h3>Validación<br/>Empírica</h3>
+                <p>El ultrasonido actúa como scanner médico del neumático, validando lo que dice el algoritmo con evidencia física real.</p>
+                <div class="pilar-metric-box">
+                  <span class="pilar-met-num">99%</span>
+                  <span class="pilar-met-lbl">fidelidad estructural</span>
+                  <div class="pilar-bar"><div class="pilar-bar-fill"></div></div>
+                </div>
+                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
+                  Ver más
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+
+              <div class="pilar-back">
+                <button class="pilar-flip-back-btn" aria-label="Volver">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                </button>
+                <h4 class="pilar-back-title">La Predicción No Significa Nada Sin Prueba Física</h4>
+                <p class="pilar-back-body">Toda predicción generada por VIZUtire se valida a través de inspección estructural ultrasónica integrada en Alicanto.</p>
+                <div class="pilar-back-stat">
+                  <span class="pilar-back-stat-num">50,000+</span>
+                  <span class="pilar-back-stat-lbl">mediciones validadas con fidelidad de hasta 99%</span>
+                </div>
+                <p class="pilar-back-tagline"><strong>Las matemáticas predicen.<br/>La física confirma.</strong></p>
+              </div>
+
             </div>
           </div>
 
+          <div class="pilar-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+
+          <!-- ── PILAR 3 ── -->
           <div class="pilar-card">
-            <div class="pilar-roman">III</div>
-            <h3>Prescripción<br/>Optimizada</h3>
-            <p>No es una alerta. Es una decisión ya tomada: "Rota neumático #47 en 36 horas. Extensión de vida útil: 280 horas. Ahorro proyectado: $800.000."</p>
-            <p class="pilar-bullets">Justificada · Cuantificada · Trazable · Auditable</p>
-            <div class="pilar-metric-box">
-              <span class="pilar-met-num">$800K</span>
-              <span class="pilar-met-lbl">ahorro por decisión</span>
+            <div class="pilar-inner">
+
+              <div class="pilar-front">
+                <div class="pilar-icon-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <h3>Prescripción<br/>Optimizada</h3>
+                <p>No es una alerta. Es una decisión ya tomada, justificada, cuantificada y auditable.</p>
+                <div class="pilar-metric-box">
+                  <span class="pilar-met-num">$800K</span>
+                  <span class="pilar-met-lbl">ahorro por decisión</span>
+                </div>
+                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
+                  Ver más
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+
+              <div class="pilar-back">
+                <button class="pilar-flip-back-btn" aria-label="Volver">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                </button>
+                <h4 class="pilar-back-title">Alicanto Convierte Inteligencia en Acción Operacional</h4>
+                <p class="pilar-back-body">La mayoría de sistemas generan alertas. Alicanto genera decisiones operacionales.</p>
+                <div class="pilar-back-contrast">
+                  <p class="pilar-back-no">"Anomalía potencial detectada."</p>
+                  <p class="pilar-back-sino">"Rota Neumático #47 en las próximas 36 horas. Extensión de vida esperada: +280 horas. Ahorros proyectados: $800,000."</p>
+                </div>
+                <div class="pilar-back-tags">
+                  <span>Justificada</span><span>Cuantificada</span>
+                  <span>Trazable</span><span>Auditable</span>
+                </div>
+              </div>
+
             </div>
           </div>
 
+        </div>
+
+        <div class="pilares-tags reveal delay-2">
+          <span class="pilar-tag">Justificada</span>
+          <span class="pilar-tag">Cuantificada</span>
+          <span class="pilar-tag">Trazable</span>
+          <span class="pilar-tag">Auditable</span>
         </div>
       </div>
     </div>

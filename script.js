@@ -95,6 +95,226 @@ const observer = new IntersectionObserver((entries) => {
 
 revealEls.forEach(el => observer.observe(el));
 
+// ========= HERO TEXT CYCLE — persiana =========
+(function () {
+  const cycle = document.getElementById('heroCycle');
+  if (!cycle) return;
+
+  const items = Array.from(cycle.querySelectorAll('.hero-cycle-item'));
+  const bar   = document.getElementById('cycleBar');
+  if (items.length < 2) return;
+
+  /* Sin animación si el usuario prefiere movimiento reducido */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    items[0].classList.add('is-visible');
+    return;
+  }
+
+  const STAGGER_MS      = 45;   // ms de retraso entre palabras (entrada)
+  const WORD_DUR_MS     = 550;  // ms de duración por palabra (entrada)
+  const STAGGER_EXIT_MS = 22;   // ms de retraso entre palabras (salida — más rápido)
+  const WORD_EXIT_DUR   = 400;  // ms de duración por palabra (salida)
+  // Tiempo de lectura por ítem → definido en data-dwell del HTML
+
+  /* ── 1. Dividir cada párrafo en <span class="cycle-word"> ── */
+  items.forEach(el => {
+    const words = el.textContent.trim().split(/\s+/).filter(Boolean);
+    el.innerHTML = words
+      .map(w => `<span class="cycle-word">${w}</span>`)
+      .join(' ');
+  });
+
+  /* ── 2a. Alinear max-width del primer párrafo con la línea más ancha del título ── */
+  function syncCycleToTitle() {
+    const title = document.querySelector('.hero-title');
+    if (!title) return;
+    /* Range.getClientRects() devuelve un rect por cada línea de texto */
+    const range = document.createRange();
+    range.selectNodeContents(title);
+    const rects    = Array.from(range.getClientRects());
+    const maxLineW = Math.max(...rects.map(r => r.width));
+    /* Solo items[0] queda acotado; el segundo párrafo puede extenderse más */
+    if (maxLineW > 0) items[0].style.maxWidth = Math.ceil(maxLineW) + 'px';
+  }
+
+  /* Ejecutar tras cargar fuentes para que las métricas sean exactas */
+  (document.fonts ? document.fonts.ready : Promise.resolve())
+    .then(syncCycleToTitle);
+
+  /* ── 2b. Medir altura del contenedor con ambos textos ── */
+  /* Usamos propiedades individuales para no borrar el maxWidth de items[0] */
+  function measureHeight() {
+    items.forEach(el => {
+      el.style.position  = 'static';
+      el.style.opacity   = '0';
+      el.style.margin    = '0';
+      el.style.animation = 'none';
+    });
+    const h = Math.max(...items.map(el => el.offsetHeight));
+    items.forEach(el => {
+      el.style.position  = '';
+      el.style.opacity   = '';
+      el.style.margin    = '';
+      el.style.animation = '';
+      el.classList.remove('is-first');
+    });
+    cycle.style.height = (h + 14) + 'px'; /* +14 para barra de progreso */
+  }
+  measureHeight();
+
+  /* Recalcula altura Y max-width al redimensionar */
+  let resizeTO = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTO);
+    resizeTO = setTimeout(() => {
+      syncCycleToTitle();
+      measureHeight();
+    }, 200);
+  }, { passive: true });
+
+  /* ── Barra de progreso de lectura ── */
+  let barRAF = null;
+  function runBar(duration, onDone) {
+    if (barRAF) cancelAnimationFrame(barRAF);
+    if (!bar) { setTimeout(onDone, duration); return; }
+    bar.style.width = '0%';
+    const t0 = performance.now();
+    (function tick(now) {
+      const pct = Math.min((now - t0) / duration * 100, 100);
+      bar.style.width = pct + '%';
+      if (pct < 100) barRAF = requestAnimationFrame(tick);
+      else           onDone();
+    })(t0);
+  }
+
+  /* ── Mostrar ítem: stagger palabra a palabra ── */
+  function showItem(idx, done) {
+    const el    = items[idx];
+    const words = el.querySelectorAll('.cycle-word');
+
+    /* Delay escalonado por cada palabra */
+    words.forEach((w, i) => {
+      w.style.animationDelay = (i * STAGGER_MS) + 'ms';
+    });
+
+    el.classList.remove('is-leaving');
+    el.classList.add('is-entering');
+
+    /* Esperar que la última palabra termine de entrar */
+    const totalEnterMs = (words.length - 1) * STAGGER_MS + WORD_DUR_MS;
+    setTimeout(() => {
+      el.classList.remove('is-entering');
+      el.classList.add('is-visible');
+      words.forEach(w => { w.style.animationDelay = ''; });
+      if (done) done();
+    }, totalEnterMs);
+  }
+
+  /* ── Ocultar ítem: stagger palabra a palabra (espejo de la entrada) ── */
+  function hideItem(idx, done) {
+    const el    = items[idx];
+    const words = el.querySelectorAll('.cycle-word');
+
+    /* Delay escalonado por cada palabra */
+    words.forEach((w, i) => {
+      w.style.animationDelay = (i * STAGGER_EXIT_MS) + 'ms';
+    });
+
+    el.classList.remove('is-visible', 'is-entering');
+    el.classList.add('is-leaving');
+    if (bar) bar.style.width = '0%';
+
+    /* Esperar que la última palabra termine de salir */
+    const totalExitMs = (words.length - 1) * STAGGER_EXIT_MS + WORD_EXIT_DUR;
+    setTimeout(() => {
+      el.classList.remove('is-leaving');
+      words.forEach(w => { w.style.animationDelay = ''; });
+      if (done) done();
+    }, totalExitMs);
+  }
+
+  /* ── Ciclo normal: entrada animada + dwell + salida ── */
+  let current = 0;
+  function step() {
+    const dwell = parseInt(items[current].dataset.dwell, 10) || 8000;
+    showItem(current, () => {
+      runBar(dwell, () => {
+        hideItem(current, () => {
+          current = (current + 1) % items.length;
+          step();
+        });
+      });
+    });
+  }
+
+  /* ── Inicio desde el primer ítem ya visible (sin re-animar la entrada) ── */
+  function startFromVisible() {
+    current = 0;
+    const dwell = parseInt(items[0].dataset.dwell, 10) || 8000;
+    runBar(dwell, () => {
+      hideItem(0, () => {
+        current = 1;
+        step();
+      });
+    });
+  }
+
+  /* ── El primer párrafo se muestra estático durante el vídeo ── */
+  items[0].classList.add('is-visible');
+
+  /* ── Esperar al fin del vídeo para arrancar el ciclo ── */
+  const heroVideo   = document.getElementById('heroVideo');
+  let   cycleActive = false;
+
+  function kickoff() {
+    if (cycleActive) return;
+    cycleActive = true;
+    startFromVisible();
+  }
+
+  if (heroVideo && !heroVideo.ended) {
+    heroVideo.addEventListener('ended', kickoff, { once: true });
+    /* Fallback: si el vídeo no termina en 25s (autoplay bloqueado, etc.) */
+    const fallbackTO = setTimeout(kickoff, 25000);
+    heroVideo.addEventListener('ended', () => clearTimeout(fallbackTO), { once: true });
+  } else {
+    kickoff(); /* vídeo ya terminó o no existe */
+  }
+})();
+
+// ========= PILARES — flip de tarjeta =========
+(function () {
+  document.querySelectorAll('.pilar-flip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.pilar-card').classList.add('is-flipped');
+    });
+  });
+  document.querySelectorAll('.pilar-flip-back-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.pilar-card').classList.remove('is-flipped');
+    });
+  });
+})();
+
+// ========= PILARES — staggered scale-in =========
+(function () {
+  const grid = document.querySelector('.pilares-grid.pilar-animate');
+  if (!grid) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    grid.classList.add('is-visible');
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  obs.observe(grid);
+})();
+
 // ========= SCROLL STORY (Apple-style) =========
 const scrollStory = document.querySelector('.scroll-story');
 const storyCards = document.querySelectorAll('.story-card');
