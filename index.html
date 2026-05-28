@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VIZUtire — Diagnóstico estructural de neumáticos OTR</title>
   <meta name="description" content="Diagnóstico estructural no destructivo para neumáticos OTR de minería. Tecnología ultrasónica e IA para cero fallas imprevistas." />
+  <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -195,7 +196,8 @@
           <h2 class="section-title">Predecir · Validar · Prescribir</h2>
           <p class="section-body center">La metodología que convierte degradación invisible en certeza operacional medible y auditable.</p>
         </div>
-        <div class="pilares-grid pilar-animate">
+        <div class="pilares-embla" id="pilaresEmbla">
+        <div class="pilares-grid pilar-animate embla__container">
 
           <!-- ── PILAR 1 ── -->
           <div class="pilar-card">
@@ -318,6 +320,8 @@
             </div>
           </div>
 
+        </div>
+        <div class="pilares-embla-dots" id="pilaresDots" aria-hidden="true"></div>
         </div>
 
         <div class="pilares-tags reveal delay-2">
@@ -651,58 +655,68 @@
     <div class="container">
 
       <div class="section-header reveal">
-        <div class="tag">Casos de éxito</div>
-        <h2 class="section-title">Validado en operaciones<br/>mineras de clase mundial.</h2>
-        <p class="section-body center">Resultados documentados en Tier 1. No proyecciones.</p>
+        <div class="tag">Validación Industrial</div>
+        <h2 class="section-title">Construido en ciencia.<br/>Probado en minería.</h2>
+        <p class="section-body center">VIZUtire no fue construido como innovación teórica.<br/>Fue construido para sobrevivir operaciones mineras reales.</p>
+        <ul class="casos-val-list">
+          <li>5.000+ mediciones estructurales</li>
+          <li>Verificación OEM</li>
+          <li>Pruebas de fidelidad ultrasónica</li>
+          <li>Entornos operacionales reales</li>
+        </ul>
+        <p class="casos-tier">Ya operando en operaciones mineras de Tier 1.</p>
       </div>
 
-      <div class="casos-grid reveal delay-1">
+      <div class="casos-embla reveal delay-1" id="casosEmbla">
+        <div class="casos-grid embla__container">
 
-        <div class="caso-card">
-          <img src="logos 3 pialres/Escondida.svg" alt="Escondida" class="caso-logo" />
-          <div class="caso-op-name">BHP</div>
-          <div class="caso-metrics">
-            <div class="caso-metric">
-              <div class="caso-num">+8–12%</div>
-              <div class="caso-lbl">Disponibilidad de flota</div>
-            </div>
-            <div class="caso-metric">
-              <div class="caso-num">150+</div>
-              <div class="caso-lbl">Horas productivas adicionales / mes</div>
+          <div class="caso-card embla__slide">
+            <img src="logos 3 pialres/Escondida.svg" alt="Escondida" class="caso-logo" />
+            <div class="caso-op-name">BHP</div>
+            <div class="caso-metrics">
+              <div class="caso-metric">
+                <div class="caso-num">+8–12%</div>
+                <div class="caso-lbl">Disponibilidad de flota</div>
+              </div>
+              <div class="caso-metric">
+                <div class="caso-num">150+</div>
+                <div class="caso-lbl">Horas productivas adicionales / mes</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="caso-card caso-card--dark">
-          <img src="logos 3 pialres/Lomas Bayas.svg" alt="Lomas Bayas" class="caso-logo" />
-          <div class="caso-op-name">RT</div>
-          <div class="caso-metrics">
-            <div class="caso-metric">
-              <div class="caso-num">10:1</div>
-              <div class="caso-lbl">ROI documentado</div>
-            </div>
-            <div class="caso-metric">
-              <div class="caso-num">&lt;9 meses</div>
-              <div class="caso-lbl">Payback</div>
+          <div class="caso-card caso-card--dark embla__slide">
+            <img src="logos 3 pialres/Lomas Bayas.svg" alt="Lomas Bayas" class="caso-logo" />
+            <div class="caso-op-name">RT</div>
+            <div class="caso-metrics">
+              <div class="caso-metric">
+                <div class="caso-num">10:1</div>
+                <div class="caso-lbl">ROI documentado</div>
+              </div>
+              <div class="caso-metric">
+                <div class="caso-num">&lt;9 meses</div>
+                <div class="caso-lbl">Payback</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="caso-card">
-          <img src="logos 3 pialres/Spence.svg" alt="Spence" class="caso-logo" />
-          <div class="caso-op-name">BHP</div>
-          <div class="caso-metrics">
-            <div class="caso-metric">
-              <div class="caso-num">0</div>
-              <div class="caso-lbl">Fallas mecánicas por neumático</div>
-            </div>
-            <div class="caso-metric">
-              <div class="caso-num">Michelin</div>
-              <div class="caso-lbl">Verificación OEM del rendimiento</div>
+          <div class="caso-card embla__slide">
+            <img src="logos 3 pialres/Spence.svg" alt="Spence" class="caso-logo" />
+            <div class="caso-op-name">BHP</div>
+            <div class="caso-metrics">
+              <div class="caso-metric">
+                <div class="caso-num">0</div>
+                <div class="caso-lbl">Fallas mecánicas por neumático</div>
+              </div>
+              <div class="caso-metric">
+                <div class="caso-num">Michelin</div>
+                <div class="caso-lbl">Verificación OEM del rendimiento</div>
+              </div>
             </div>
           </div>
-        </div>
 
+        </div>
+        <div class="embla__dots" id="casosDots" aria-hidden="true"></div>
       </div>
 
       <div class="val-strip reveal delay-2">
@@ -971,6 +985,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/embla-carousel@8/embla-carousel.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay@8/embla-carousel-autoplay.umd.js"></script>
   <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="script.js"></script>
 </body>

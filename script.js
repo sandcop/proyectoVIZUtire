@@ -753,14 +753,141 @@ if (form) {
 
   resetHero();
 
-  window.addEventListener('pagehide', (e) => {
-    if (!e.persisted) return;
+  window.addEventListener('pagehide', () => {
     clearTimeout(timer);
     hero.classList.add('hero--skip-transition');
     hero.classList.remove('hero--ended');
   });
 
   window.addEventListener('pageshow', (e) => {
-    if (e.persisted) startTimer();
+    if (!e.persisted) return;
+    hero.classList.add('hero--skip-transition');
+    hero.classList.remove('hero--ended');
+    requestAnimationFrame(() => requestAnimationFrame(startTimer));
   });
+})();
+
+// ========= CASOS DE ÉXITO — EMBLA CAROUSEL (MOBILE) =========
+(function () {
+  if (typeof EmblaCarousel === 'undefined') return;
+
+  const viewportEl = document.getElementById('casosEmbla');
+  const dotsEl = document.getElementById('casosDots');
+  if (!viewportEl) return;
+
+  let embla = null;
+  let dotBtns = [];
+
+  function buildDots() {
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    dotBtns = embla.slideNodes().map((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'embla__dot';
+      btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+      btn.addEventListener('click', () => embla.scrollTo(i));
+      dotsEl.appendChild(btn);
+      return btn;
+    });
+    updateDots();
+  }
+
+  function updateDots() {
+    const idx = embla.selectedScrollSnap();
+    dotBtns.forEach((btn, i) => btn.classList.toggle('embla__dot--selected', i === idx));
+  }
+
+  function init() {
+    if (embla) return;
+    embla = EmblaCarousel(viewportEl, {
+      loop: false,
+      align: 'start',
+      dragFree: false,
+    });
+    viewportEl.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('pointerup', onPointerUp);
+    embla.on('select', updateDots);
+    buildDots();
+  }
+
+  function destroy() {
+    if (!embla) return;
+    viewportEl.removeEventListener('pointerdown', onPointerDown);
+    document.removeEventListener('pointerup', onPointerUp);
+    embla.destroy();
+    embla = null;
+    dotBtns = [];
+    if (dotsEl) dotsEl.innerHTML = '';
+  }
+
+  function onPointerDown() { viewportEl.classList.add('is-dragging'); }
+  function onPointerUp() { viewportEl.classList.remove('is-dragging'); }
+
+  const mq = window.matchMedia('(max-width: 900px)');
+  function onMQ(e) { e.matches ? init() : destroy(); }
+  mq.addEventListener('change', onMQ);
+  onMQ(mq);
+})();
+
+// ========= 3 PILARES — EMBLA DRAG-FREE (≤1100px) =========
+(function () {
+  if (typeof EmblaCarousel === 'undefined') return;
+
+  const viewportEl = document.getElementById('pilaresEmbla');
+  const dotsEl = document.getElementById('pilaresDots');
+  if (!viewportEl) return;
+
+  let embla = null;
+  let dotBtns = [];
+
+  function buildDots(count) {
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    dotBtns = Array.from({ length: count }, (_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'embla__dot';
+      btn.setAttribute('aria-label', 'Pilar ' + (i + 1));
+      btn.addEventListener('click', () => embla.scrollTo(i));
+      dotsEl.appendChild(btn);
+      return btn;
+    });
+    updateDots();
+  }
+
+  function updateDots() {
+    const idx = embla.selectedScrollSnap();
+    dotBtns.forEach((btn, i) => btn.classList.toggle('embla__dot--selected', i === idx));
+  }
+
+  function init() {
+    if (embla) return;
+    embla = EmblaCarousel(viewportEl, {
+      dragFree: true,
+      loop: false,
+      align: 'start',
+      slides: '.pilar-card',
+    });
+    viewportEl.addEventListener('pointerdown', onPD);
+    document.addEventListener('pointerup', onPU);
+    embla.on('select', updateDots);
+    buildDots(embla.slideNodes().length);
+  }
+
+  function destroy() {
+    if (!embla) return;
+    viewportEl.removeEventListener('pointerdown', onPD);
+    document.removeEventListener('pointerup', onPU);
+    embla.destroy();
+    embla = null;
+    dotBtns = [];
+    if (dotsEl) dotsEl.innerHTML = '';
+  }
+
+  function onPD() { viewportEl.classList.add('is-dragging'); }
+  function onPU() { viewportEl.classList.remove('is-dragging'); }
+
+  const mq = window.matchMedia('(max-width: 1100px)');
+  function onMQ(e) { e.matches ? init() : destroy(); }
+  mq.addEventListener('change', onMQ);
+  onMQ(mq);
 })();

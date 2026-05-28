@@ -2682,9 +2682,10 @@ button.hero-btn-dark { border: none; cursor: pointer; }
 /* Grid: card · flecha · card · flecha · card */
 .pilares-grid {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-columns: 300px auto 300px auto 300px;
   gap: 0 16px;
   align-items: center;
+  justify-content: center;
 }
 
 /* Flecha entre cards */
@@ -3186,11 +3187,78 @@ button.hero-btn-dark { border: none; cursor: pointer; }
    CASOS DE ÉXITO
    ============================================= */
 .casos-section { background: #fff; }
+/* Casos intro */
+.casos-val-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  justify-content: center;
+  max-width: 520px;
+}
+.casos-val-list li {
+  font-size: 0.77rem;
+  color: var(--text-2);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+.casos-val-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+.casos-tier {
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: center;
+  margin-top: 14px;
+}
+
+/* Embla carousel wrapper */
+.casos-embla {
+  position: relative;
+  overflow: visible; /* desktop: let hover shadows breathe */
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .casos-embla { overflow: hidden; } /* mobile: carousel clip */
+}
+
+/* Dots */
+.embla__dots {
+  display: none;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 18px;
+}
+.embla__dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--t), transform var(--t);
+  flex-shrink: 0;
+}
+.embla__dot--selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.3);
+}
+
 .casos-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-bottom: 20px;
 }
 .caso-card {
   background: var(--bg);
@@ -3372,19 +3440,44 @@ button.hero-btn-dark { border: none; cursor: pointer; }
 /* =============================================
    RESPONSIVE — nuevas secciones
    ============================================= */
+/* Pilares embla wrapper */
+.pilares-embla {
+  position: relative;
+  overflow: visible;
+}
+.pilares-embla-dots {
+  display: none;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+/* Pilares: reduce el padding excesivo de 200px en pantallas medianas */
+@media (max-width: 1400px) {
+  .diag-solution .container { padding: 0 80px; }
+}
+
 @media (max-width: 1100px) {
   .ali-layout { gap: 48px; }
-  .pilares-grid { gap: 0 10px; }
-  .pilar-card { padding: 32px 28px; }
+  /* Carousel activo — cards siempre a 300px fijo */
+  .pilares-embla { overflow: hidden; cursor: grab; }
+  .pilares-embla.is-dragging { cursor: grabbing; }
+  .pilares-grid { display: flex; flex-wrap: nowrap; gap: 14px; touch-action: pan-y pinch-zoom; justify-content: flex-start; }
+  .pilar-arrow { display: none; }
+  .pilar-card { flex: 0 0 300px; width: 300px; min-width: 0; }
+  .pilares-embla-dots { display: flex; }
 }
 @media (max-width: 900px) {
-  /* En móvil: columna única, flechas se convierten en separadores verticales */
-  .pilares-grid { grid-template-columns: 1fr; gap: 0; }
-  .pilar-arrow { transform: rotate(90deg); margin: 4px auto; }
+  /* En móvil el carousel ya está activo — solo ajuste de padding del container */
+  .diag-solution .container { padding: 0 20px; }
   .ali-layout { grid-template-columns: 1fr; gap: 40px; }
   .ali-body, .ali-myth { max-width: 100%; }
   .ali-title { font-size: clamp(1.8rem, 5vw, 2.6rem); }
-  .casos-grid { grid-template-columns: 1fr; gap: 12px; }
+  .casos-embla { cursor: grab; }
+  .casos-embla.is-dragging { cursor: grabbing; }
+  .casos-grid { display: flex; flex-wrap: nowrap; gap: 12px; touch-action: pan-y pinch-zoom; }
+  .caso-card.embla__slide { flex: 0 0 82%; min-width: 0; }
+  .embla__dots { display: flex; }
   .val-strip { flex-direction: column; padding: 24px; gap: 16px; border-radius: var(--radius-lg); }
   .val-div { width: 100%; height: 1px; }
   .val-item { flex-direction: row; align-items: center; justify-content: space-between; text-align: left; }
