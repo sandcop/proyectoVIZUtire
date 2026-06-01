@@ -3,6 +3,20 @@
 // Activa smoothscroll-polyfill para Safari < 15.4 e iOS antiguos
 if (typeof window.smoothscroll !== 'undefined') window.smoothscroll.polyfill();
 
+// ========= LENIS — smooth scroll =========
+const lenis = typeof Lenis !== 'undefined' ? new Lenis({
+  lerp: 0.08,
+  smoothWheel: true,
+  syncTouch: false,
+}) : null;
+
+if (lenis) {
+  (function rafLoop(time) {
+    lenis.raf(time);
+    requestAnimationFrame(rafLoop);
+  })(0);
+}
+
 // ========= PRELOADER =========
 // Espera: mínimo 1.2s (animación visible) + imágenes críticas decodificadas.
 // Máximo: 2.5s por si algo falla en red. Luego fade out y remove.
@@ -497,16 +511,39 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
   function setOverlay(idx) {
     if (!overlay || !appleNavItems[idx]) return;
-    const name = appleNavItems[idx].querySelector('.ani-name')?.textContent || '';
-    const desc = appleNavItems[idx].querySelector('.ani-desc')?.textContent || '';
+    const name    = appleNavItems[idx].querySelector('.ani-name')?.textContent || '';
+    const desc    = appleNavItems[idx].querySelector('.ani-desc')?.textContent || '';
+    const card    = cards[idx];
+    const intro   = card?.querySelector('.sc-intro')?.textContent   || '';
+    const explain = card?.querySelector('.sc-explain')?.textContent || '';
+    const kpiNum  = card?.querySelector('.sc-proof-num')?.textContent  || '';
+    const kpiLbl  = card?.querySelector('.sc-proof-label')?.textContent || '';
+
+    const bodyHTML = (intro || explain)
+      ? `<div class="mob-ov-body">` +
+          `<div class="mob-ov-divider"></div>` +
+          (intro   ? `<p class="mob-ov-intro">${intro}</p>` : '') +
+          (explain ? `<p class="mob-ov-explain-body">${explain}</p>` : '') +
+          (kpiNum  ? `<div class="mob-ov-kpi"><span class="mob-ov-kpi-num">${kpiNum}</span><span class="mob-ov-kpi-lbl">${kpiLbl}</span></div>` : '') +
+        `</div>`
+      : '';
+
     overlay.innerHTML =
-      `<div class="mob-ov-row">` +
+      `<div class="mob-ov-row mob-ov-toggle">` +
         `<svg class="mob-ov-plus" width="16" height="16" viewBox="0 0 16 16" fill="none">` +
           `<path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>` +
         `</svg>` +
         `<span class="mob-ov-name">${name}</span>` +
+        `<svg class="mob-ov-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">` +
+          `<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>` +
+        `</svg>` +
       `</div>` +
-      `<p class="mob-ov-desc">${desc}</p>`;
+      `<p class="mob-ov-desc">${desc}</p>` +
+      bodyHTML;
+
+    overlay.querySelector('.mob-ov-toggle')?.addEventListener('click', () => {
+      overlay.classList.toggle('mob-ov-open');
+    });
   }
 
   function goTo(i, skipAnim) {
@@ -762,6 +799,14 @@ if (form) {
 
   window.addEventListener('load', () => {
     if (!isMobile() && markers[0]) activate(markers[0].dataset.fault);
+  });
+
+  // X — cerrar tarjeta activa en mobile
+  document.querySelectorAll('.diag-card-close').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      deactivate();
+    });
   });
 
   // ── Interacciones ─────────────────────────────────────────────────────────
@@ -1048,3 +1093,8 @@ if (form) {
   mq.addEventListener('change', onMQ);
   onMQ(mq);
 })();
+
+// ========= ALI-CARD — cerrar en mobile =========
+document.querySelector('.ali-card-close')?.addEventListener('click', () => {
+  document.querySelector('.ali-visual')?.classList.add('is-dismissed');
+});
