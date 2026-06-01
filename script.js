@@ -1,14 +1,77 @@
 /* VIZUtire — JS */
 
-// ========= LENIS SMOOTH SCROLL =========
-const lenis = new Lenis({
-  lerp: 0.1,
-  smoothWheel: true,
+// Activa smoothscroll-polyfill para Safari < 15.4 e iOS antiguos
+if (typeof window.smoothscroll !== 'undefined') window.smoothscroll.polyfill();
+
+// ========= PRELOADER =========
+// Espera: mínimo 1.2s (animación visible) + imágenes críticas decodificadas.
+// Máximo: 2.5s por si algo falla en red. Luego fade out y remove.
+(function () {
+  var pre = document.getElementById('preloader');
+  if (!pre) return;
+
+  // Bloquea scroll mientras el preloader está visible
+  document.body.style.overflow = 'hidden';
+
+  function dismiss() {
+    document.body.style.overflow = '';
+    pre.classList.add('done');
+    // Inicia el video exactamente cuando el preloader empieza a desvanecerse
+    var vid = document.getElementById('heroVideo');
+    if (vid) vid.play().catch(function () {});
+    setTimeout(function () { pre.remove(); }, 650);
+  }
+
+  // Decodifica imágenes críticas antes de mostrar la página
+  var imgs = Array.from(document.querySelectorAll('.diag-tire-img, .diag-card-thumb img'));
+  var decoded = Promise.all(imgs.map(function (img) {
+    if (img.complete) return Promise.resolve();
+    if (img.decode) return img.decode().catch(function () {});
+    return new Promise(function (r) { img.onload = r; img.onerror = r; });
+  }));
+
+  var minWait = new Promise(function (r) { setTimeout(r, 1800); });
+  var maxTimer = setTimeout(dismiss, 3500);
+
+  Promise.all([minWait, decoded]).then(function () {
+    clearTimeout(maxTimer);
+    dismiss();
+  });
+})();
+
+
+// ========= MOBILE DRAWER (patrón Kairal) =========
+var _panel   = document.querySelector('.side-panel');
+var _overlay = document.querySelector('.side-panel-overlay');
+var _toggle  = document.querySelector('.menu-toggle');
+var _close   = document.getElementById('drawerClose');
+
+function toggleSidePanel() {
+  if (!_panel) return;
+  var isOpening = !_panel.classList.contains('active');
+  requestAnimationFrame(function () {
+    _panel.classList.toggle('active');
+    _overlay.classList.toggle('active');
+    _toggle.classList.toggle('open');
+    document.body.style.overflow = isOpening ? 'hidden' : '';
+  });
+}
+
+if (_toggle)  _toggle.addEventListener('click', toggleSidePanel);
+if (_overlay) _overlay.addEventListener('click', toggleSidePanel);
+if (_close)   _close.addEventListener('click', function () {
+  _close.classList.add('spinning');
+  toggleSidePanel();
+  // Quitar la clase cuando termine la transición del panel
+  _panel.addEventListener('transitionend', function reset() {
+    _close.classList.remove('spinning');
+    _panel.removeEventListener('transitionend', reset);
+  });
 });
-(function rafLoop(time) {
-  lenis.raf(time);
-  requestAnimationFrame(rafLoop);
-})(0);
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && _panel && _panel.classList.contains('active')) toggleSidePanel();
+});
 
 // ========= DOT REVEAL — coordenadas locales por sección =========
 const dotSections = document.querySelectorAll('.hero, .scroll-story, .cta-section');
@@ -89,9 +152,10 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
 
 revealEls.forEach(el => observer.observe(el));
 
@@ -272,6 +336,12 @@ revealEls.forEach(el => observer.observe(el));
     startFromVisible();
   }
 
+  /* ── Móvil: sin vídeo → arrancar ciclo inmediatamente ── */
+  if (window.innerWidth <= 900) {
+    kickoff();
+    return;
+  }
+
   if (heroVideo && !heroVideo.ended) {
     heroVideo.addEventListener('ended', kickoff, { once: true });
     /* Fallback: si el vídeo no termina en 25s (autoplay bloqueado, etc.) */
@@ -291,7 +361,22 @@ revealEls.forEach(el => observer.observe(el));
   });
   document.querySelectorAll('.pilar-flip-back-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      btn.closest('.pilar-card').classList.remove('is-flipped');
+      const card = btn.closest('.pilar-card');
+      card.classList.remove('is-flipped');
+      // Cerrar acordeón al volver para que quede limpio al re-abrir
+      card.querySelectorAll('.pilar-acc-toggle[aria-expanded="true"]').forEach(t => {
+        t.setAttribute('aria-expanded', 'false');
+        t.querySelector('.pilar-acc-label').textContent = 'Ver variables';
+      });
+    });
+  });
+
+  // Acordeón de variables dentro del back
+  document.querySelectorAll('.pilar-acc-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      toggle.querySelector('.pilar-acc-label').textContent = open ? 'Ver variables' : 'Ocultar variables';
     });
   });
 })();
@@ -387,13 +472,14 @@ const counterObs = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.rcount').forEach(el => counterObs.observe(el));
 
-// ========= SMOOTH SCROLL =========
+// ========= SMOOTH SCROLL — nativo via scroll-behavior:smooth en CSS =========
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
     const target = document.querySelector(link.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    lenis.scrollTo(target, { offset: -80 });
+    const y = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: y, behavior: 'smooth' });
   });
 });
 
@@ -481,7 +567,21 @@ const sectionHighlightObs = new IntersectionObserver((entries) => {
   entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting));
 }, { threshold: 0.05 });
 
-document.querySelectorAll('section[id]').forEach(s => sectionHighlightObs.observe(s));
+document.querySelectorAll('section[id], .diag-solution').forEach(s => sectionHighlightObs.observe(s));
+
+// ========= IFRAMES — suspender cuando están fuera del viewport =========
+// Evita que el RAF loop interno del iframe consuma recursos innecesarios
+(function () {
+  const iframes = document.querySelectorAll('.hitos-iframe, .hitos-iframe-mobile, .clientes-iframe');
+  if (!iframes.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      // visibility:hidden detiene el rendering del iframe pero mantiene el layout
+      e.target.style.visibility = e.isIntersecting ? 'visible' : 'hidden';
+    });
+  }, { rootMargin: '200px 0px' }); // margen de 200px para pre-cargar antes de entrar
+  iframes.forEach(f => obs.observe(f));
+})();
 
 // ========= BANNER TRACK PAUSE ON HOVER =========
 const bannerTrack = document.querySelector('.banner-track');
@@ -696,13 +796,13 @@ if (form) {
   });
 })();
 
-// ========= LENIS — redirige wheel sobre el iframe de historia =========
+// ========= IFRAME HISTORIA — redirige wheel al scroll nativo de la página =========
 (function () {
   const historiaFrame = document.querySelector('.historia-frame');
   if (!historiaFrame) return;
   historiaFrame.addEventListener('wheel', (e) => {
     e.preventDefault();
-    lenis.scrollBy(e.deltaY, { immediate: false });
+    window.scrollBy({ top: e.deltaY, behavior: 'auto' });
   }, { passive: false });
 })();
 
@@ -722,49 +822,106 @@ if (form) {
 (function () {
   const video   = document.getElementById('heroVideo');
   const scanner = document.getElementById('heroScanner');
-  const hero    = document.querySelector('.hero');
   if (!video || !scanner) return;
+
+  /* Móvil: CSS ya muestra el scanner; detener y descargar el vídeo */
+  if (window.innerWidth <= 900) {
+    video.pause();
+    video.removeAttribute('src');
+    const source = video.querySelector('source');
+    if (source) source.removeAttribute('src');
+    video.load(); /* aborta la carga */
+    return;
+  }
+
   video.addEventListener('ended', () => {
     scanner.classList.add('visible');
   });
 })();
 
-// ========= HERO TEXT — vuelve a color legible en 4 s desde carga =========
-// bfcache: pagehide limpia el estado antes del snapshot para que al restaurar
-// la página ya arranque en el estado blanco correcto (sin flash oscuro).
+// ========= HERO TEXT + LOGO — disparo único, permanente =========
+// Cuando el vídeo muestra fondo claro (luminancia > THRESHOLD):
+//   • Texto pasa a oscuro (.hero--ended) y se queda así para siempre.
+//   • Logo cambia de positivo (oscuro) → negativo (blanco) al mismo tiempo.
+// Una vez disparado, el muestreo se detiene; no hay reversión.
 (function () {
-  const hero = document.querySelector('.hero');
-  if (!hero) return;
+  const hero  = document.querySelector('.hero');
+  const video = document.getElementById('heroVideo');
+  if (!hero || !video) return;
 
-  let timer = null;
+  // Móvil: estado controlado por CSS media query; no necesitamos canvas
+  if (window.innerWidth <= 900) return;
 
-  function startTimer() {
-    clearTimeout(timer);
-    hero.classList.remove('hero--skip-transition');
-    timer = setTimeout(() => hero.classList.add('hero--ended'), 4000);
+  let triggered    = false; // una vez true, bloqueado permanentemente
+  let rafId        = null;
+  let canvasFailed = false;
+
+  function trigger(reason) {
+    if (triggered) return;
+    triggered = true;
+    hero.classList.add('hero--ended');
+    console.info('[VIZUtire hero] Trigger disparado —', reason);
+    stopRAF(); // estado permanente → no hace falta seguir muestreando
   }
 
-  function resetHero() {
-    clearTimeout(timer);
-    hero.classList.add('hero--skip-transition');
-    hero.classList.remove('hero--ended');
-    requestAnimationFrame(() => requestAnimationFrame(startTimer));
+  // ── Canvas 32×18 para leer brillo real del frame ────────────────────────
+  const canvas = document.createElement('canvas');
+  canvas.width = 32; canvas.height = 18;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const THRESHOLD = 128; // luminancia 0–255; por encima = fondo claro
+
+  function readLuminance() {
+    if (canvasFailed || video.readyState < 2) return null;
+    try {
+      ctx.drawImage(video, 0, 0, 32, 18);
+      const d = ctx.getImageData(0, 0, 32, 18).data;
+      let s = 0;
+      for (let i = 0; i < d.length; i += 4)
+        s += d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
+      return s / (d.length / 4);
+    } catch (e) {
+      // CORS/SecurityError (común con file://): activar fallback por tiempo
+      canvasFailed = true;
+      return null;
+    }
   }
 
-  resetHero();
+  // ── Fallback temporal si canvas está bloqueado (file://) ────────────────
+  // BRIGHT_START = segundo del vídeo en que aparece el fondo blanco/claro.
+  // Ajusta este valor si el trigger se dispara muy pronto o muy tarde.
+  const BRIGHT_START = 4.5; // ← ajustar según el vídeo
 
-  window.addEventListener('pagehide', () => {
-    clearTimeout(timer);
-    hero.classList.add('hero--skip-transition');
-    hero.classList.remove('hero--ended');
-  });
+  function sampleFrame() {
+    if (triggered || video.paused || video.ended || video.readyState < 2) return;
 
-  window.addEventListener('pageshow', (e) => {
-    if (!e.persisted) return;
-    hero.classList.add('hero--skip-transition');
-    hero.classList.remove('hero--ended');
-    requestAnimationFrame(() => requestAnimationFrame(startTimer));
-  });
+    const lum = readLuminance();
+    if (lum !== null) {
+      // Canvas disponible: usar brillo real
+      if (lum > THRESHOLD) trigger('canvas lum=' + lum.toFixed(1) + ' t=' + video.currentTime.toFixed(2) + 's');
+    } else if (canvasFailed) {
+      // Canvas bloqueado: usar tiempo como fallback
+      if (video.currentTime >= BRIGHT_START) trigger('fallback t=' + video.currentTime.toFixed(2) + 's (BRIGHT_START=' + BRIGHT_START + ')');
+    }
+  }
+
+  // rAF loop mientras el vídeo reproduce — se detiene solo al disparar
+  function startRAF() {
+    if (rafId || triggered) return;
+    (function loop() {
+      sampleFrame();
+      rafId = (!triggered && !video.paused && !video.ended)
+        ? requestAnimationFrame(loop)
+        : null;
+    })();
+  }
+  function stopRAF() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  video.addEventListener('play',   startRAF);
+  video.addEventListener('pause',  stopRAF);
+  video.addEventListener('ended',  stopRAF);
+  window.addEventListener('pageshow', stopRAF);
 })();
 
 // ========= CASOS DE ÉXITO — EMBLA CAROUSEL (MOBILE) =========

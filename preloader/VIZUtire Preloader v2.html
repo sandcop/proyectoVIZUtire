@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>VIZUtire — Preloader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #f3f2ef;
+    --red: #e3001b;
+    --gray: #a0a0a0;
+    --black: #141414;
+    --ink: #141414;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(120% 100% at 50% 45%, #faf9f7 0%, var(--bg) 60%, #e9e8e4 100%);
+  }
+
+  .lockup {
+    width: min(70vw, 760px);
+    height: auto;
+  }
+  .lockup svg { display: block; width: 100%; height: auto; }
+
+  /* --- colors (VIZU red, tire black; dots: gray top, red mid, black bottom) --- */
+  .cls-1 { fill: var(--gray); }   /* top dots */
+  .cls-2 { fill: var(--black); }  /* tire + bottom dots */
+  .cls-3 { fill: var(--red); }    /* VIZU + middle dots */
+
+  /* --- dot animation: soft random reveal + fade, infinite --- */
+  #dots .dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    will-change: opacity, transform;
+    animation-name: dotBreath;
+    animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+    animation-iteration-count: infinite;
+  }
+  @keyframes dotBreath {
+    0%   { opacity: 0;   transform: scale(.55); }
+    22%  { opacity: 1;   transform: scale(1); }
+    58%  { opacity: 1;   transform: scale(1); }
+    84%  { opacity: 0;   transform: scale(.78); }
+    100% { opacity: 0;   transform: scale(.55); }
+  }
+
+  /* dark theme variant — VIZU red & mid dots stay red; black becomes light */
+  .stage[data-theme="dark"] { background: radial-gradient(120% 100% at 50% 45%, #161616 0%, #0d0d0d 60%, #060606 100%); }
+  .stage[data-theme="dark"] .cls-2 { fill: #f1f1f1; }  /* tire + bottom dots */
+  .stage[data-theme="dark"] .cls-1 { fill: #8a8a8a; }  /* top dots */
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage" data-theme="light">
+  <div class="lockup" aria-label="VIZUtire">
+    <svg viewBox="0 0 180 90.9" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <!-- wordmark: tire (cls-2) -->
+        <path class="cls-2" d="M94.07,53.88l-.69,3.64h-2.79l-.49,2.63h2.79l-1.9,9.91c-.28,1.42-.44,2.51-.44,3.64,0,2.02,1.17,3.8,4.13,3.8.97,0,1.98-.12,2.59-.36l.16-2.63c-.44.12-.97.16-1.58.16-1.29,0-1.86-.73-1.86-1.9,0-1.01.16-2.02.4-3.11l1.78-9.5h4.69l.53-2.63h-4.69l.89-4.69-3.52,1.05Z"></path>
+        <path class="cls-2" d="M104.95,77.1l3.72-19.58h-3.32l-3.76,19.58h3.36ZM107.86,54.21c1.33,0,2.26-.93,2.31-2.26,0-1.21-.81-2.1-2.02-2.1s-2.14.97-2.18,2.26c0,1.21.73,2.1,1.9,2.1Z"></path>
+        <path class="cls-2" d="M114.21,77.1l1.62-8.61c.85-4.57,3.44-8.09,6.35-8.09.36,0,.69.04.93.08l.65-3.32c-.28-.04-.65-.08-.97-.08-2.63,0-4.73,2.02-5.99,4.69h-.12c.2-1.5.36-2.87.53-4.25h-2.95c-.2,1.82-.53,4.41-.97,6.96l-2.39,12.62h3.32Z"></path>
+        <path class="cls-2" d="M137.11,73.5c-1.21.65-2.95,1.33-5.26,1.33-2.02,0-3.6-.85-4.37-2.63-.44-1.05-.57-2.87-.4-3.72,7.24.12,13.02-1.21,13.02-6.35,0-2.83-2.02-5.06-5.74-5.06-6.31,0-10.68,6.67-10.68,12.58,0,4.33,2.26,7.89,7.44,7.89,2.63,0,5.02-.73,6.47-1.54l-.49-2.51ZM136.86,62.17c0,3.07-4.13,3.8-9.42,3.72.85-3.07,3.23-6.19,6.43-6.19,1.78,0,2.99.89,2.99,2.47Z"></path>
+        <!-- wordmark: VIZU (cls-3) -->
+        <path class="cls-3" d="M62.89,49.84v15.21c0,8.66,4,12.5,10.88,12.5s11.36-4,11.36-12.42v-15.29h-6.15v15.65c0,4.85-1.78,7.12-5.02,7.12s-4.93-2.39-4.93-7.12v-15.65h-6.15ZM37.86,77.1h21.15v-5.1h-12.9v-.16l12.7-18.44v-3.56h-19.78v5.1h11.81v.16l-12.98,18.69v3.32ZM28.07,49.84v27.26h6.15v-27.26h-6.15ZM15.94,77.1l9.18-27.26h-6.55l-3.48,11.65c-.93,3.11-1.78,6.35-2.47,9.63h-.12c-.65-3.4-1.5-6.47-2.43-9.75l-3.32-11.53H0l8.74,27.26h7.2Z"></path>
+        <!-- dot cluster -->
+        <g id="dots">
+          <path class="cls-1 dot" d="M163.05,21.38c.21,4.59,4.31,8.69,8.87,9,4.2.29,7.38-3.17,6.94-7.32-.45-4.19-3.98-7.96-8.17-8.55-4.19-.6-7.83,2.61-7.64,6.87Z"></path>
+          <path class="cls-1 dot" d="M144.48,12.43c-.19,4.62,4.58,7.53,8.73,7.57,4.1.04,8.79-2.77,8.5-7.35-.27-4.3-4.68-7.02-8.66-7.08-3.95-.06-8.39,2.55-8.57,6.86Z"></path>
+          <path class="cls-1 dot" d="M128.87,6.79c-.77,3.81,3.28,5.41,6.42,5.02,3.64-.45,8.31-3.13,8.59-7.21.25-3.73-3.98-4.99-6.98-4.49-3.43.57-7.3,3.07-8.03,6.69Z"></path>
+          <path class="cls-3 dot" d="M163.58,43.8c.01,4.67,3.71,9.25,8.61,9.08,4.64-.16,7.84-4.56,7.81-8.97-.03-4.42-3.26-8.82-7.89-9.05-4.88-.24-8.54,4.29-8.53,8.93Z"></path>
+          <path class="cls-3 dot" d="M143.94,33.28c-.07,5.09,4.34,9.29,9.37,9.3,5,0,9.33-4.16,9.23-9.21-.1-4.95-4.38-9.02-9.29-9.06-4.92-.04-9.24,4.01-9.3,8.97Z"></path>
+          <path class="cls-3 dot" d="M126.47,24.1c-.39,4.37,3.12,7.93,7.48,7.71,4.68-.24,8.94-4.32,9.08-9.06.13-4.44-3.75-7.77-8.1-7.29-4.34.48-8.08,4.28-8.47,8.64Z"></path>
+          <path class="cls-2 dot" d="M163.17,66.56c-.17,4.32,3.45,7.78,7.78,7.22,4.28-.56,7.78-4.47,8.17-8.72.39-4.2-2.76-7.87-7.07-7.63-4.66.26-8.69,4.5-8.88,9.13Z"></path>
+          <path class="cls-2 dot" d="M143.93,56.76c.06,4.98,4.38,9.05,9.32,9.01,4.93-.04,9.21-4.14,9.3-9.1.09-5.06-4.23-9.24-9.24-9.24-5.04,0-9.44,4.23-9.38,9.32Z"></path>
+          <path class="cls-2 dot" d="M125.56,45.53c0,4.6,3.5,8.98,8.27,9.14,4.98.17,8.88-4.32,8.88-9.13,0-4.82-3.91-9.31-8.89-9.15-4.76.16-8.26,4.54-8.26,9.14Z"></path>
+          <path class="cls-2 dot" d="M144.46,77.75c.17,4.34,4.61,7,8.6,6.94,4.01-.06,8.42-2.83,8.69-7.15.28-4.6-4.39-7.47-8.53-7.43-4.19.04-8.95,3.01-8.76,7.64Z"></path>
+          <path class="cls-2 dot" d="M128.91,84.15c.73,3.6,4.61,6.08,8.02,6.65,2.98.5,7.22-.73,6.96-4.45-.28-4.06-4.95-6.72-8.58-7.17-3.12-.39-7.18,1.17-6.4,4.97Z"></path>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+/* Assign each dot a randomized duration + negative delay so the cluster
+   twinkles softly and never in sync. Speed tweak rescales every duration. */
+const DOTS = [...document.querySelectorAll('#dots .dot')];
+const base = [];
+
+function seedDots() {
+  base.length = 0;
+  DOTS.forEach(el => {
+    const dur   = 3.2 + Math.random() * 3.4;   // 3.2s – 6.6s
+    const delay = -Math.random() * dur;         // desync start
+    base.push({ dur, delay });
+  });
+}
+function applyDots(speed = 1) {
+  DOTS.forEach((el, i) => {
+    const { dur, delay } = base[i];
+    el.style.animationDuration = (dur / speed) + 's';
+    el.style.animationDelay    = (delay / speed) + 's';
+  });
+}
+seedDots();
+applyDots(1);
+window.__applyDots = applyDots;
+window.__reseedDots = () => { seedDots(); applyDots(parseFloat(document.getElementById('stage').dataset.speed || '1')); };
+</script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "speed": 1,
+  "theme": "light"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const stage = document.getElementById('stage');
+  useEffect(() => {
+    stage.dataset.speed = String(t.speed);
+    stage.dataset.theme = t.theme;
+    window.__applyDots(t.speed);
+  }, [t.speed, t.theme]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection title="Dots">
+        <TweakSlider label="Speed" min={0.5} max={1.8} step={0.05} value={t.speed} onChange={v => setTweak('speed', v)} format={v => v.toFixed(2) + '×'} />
+        <TweakButton label="Reshuffle timing" onClick={() => window.__reseedDots()} />
+      </TweakSection>
+      <TweakSection title="Ground">
+        <TweakRadio label="Background" value={t.theme} options={[
+          { value: 'light', label: 'Light' },
+          { value: 'dark',  label: 'Dark' },
+        ]} onChange={v => setTweak('theme', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
+</script>
+
+</body>
+</html>

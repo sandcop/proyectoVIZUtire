@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>VIZUtire — Preloader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0b0b0b;
+    --red: #ff1b1b;
+    --red-soft: #ff3a3a;
+    --gray: #8e8e8e;
+    --ink: #ededed;
+    --mute: #5a5a5a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Barlow Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- stage ---- */
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(120% 90% at 50% 50%, #131313 0%, #0b0b0b 55%, #050505 100%);
+    overflow: hidden;
+  }
+  .stage::before {
+    /* vignette */
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(70% 60% at 50% 50%, transparent 50%, rgba(0,0,0,.55) 90%, rgba(0,0,0,.85) 100%);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .stage::after {
+    /* subtle grain */
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 5;
+    opacity: .55;
+  }
+
+  /* ambient atmosphere blobs */
+  .ambient {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    opacity: 0;
+    animation: ambient-fade 3.6s ease-out 0s 1 forwards;
+  }
+  .ambient .glow {
+    position: absolute;
+    width: 60vmin; height: 60vmin;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .35;
+  }
+  .ambient .glow.a { left: 18%; top: 30%; background: radial-gradient(closest-side, rgba(255,27,27,.25), transparent 70%); }
+  .ambient .glow.b { right: 12%; bottom: 18%; background: radial-gradient(closest-side, rgba(255,255,255,.05), transparent 70%); }
+
+  @keyframes ambient-fade {
+    0% { opacity: 0; }
+    25% { opacity: 1; }
+    100% { opacity: .9; }
+  }
+
+  /* radar rings, optional */
+  .radar {
+    position: absolute;
+    width: 1200px; height: 1200px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+  }
+  .radar .ring {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255,27,27,.12);
+    transform: scale(.2);
+    opacity: 0;
+  }
+  .stage[data-atmosphere="radar"] .radar { opacity: 1; }
+  .stage[data-atmosphere="radar"] .radar .ring {
+    animation: radar-ring 3.2s ease-out infinite;
+  }
+  .stage[data-atmosphere="radar"] .radar .ring:nth-child(2) { animation-delay: .9s; }
+  .stage[data-atmosphere="radar"] .radar .ring:nth-child(3) { animation-delay: 1.8s; }
+  @keyframes radar-ring {
+    0%   { transform: scale(.2); opacity: 0; }
+    20%  { opacity: .6; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  /* ---- logo lockup ---- */
+  .lockup {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    column-gap: 28px;
+    align-items: end;
+    padding: 0 6vmin;
+  }
+  .wordmark {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    line-height: .82;
+    font-size: clamp(96px, 17vmin, 240px);
+    letter-spacing: -.01em;
+    overflow: hidden; /* clip the slide-in for "tire" */
+    padding-bottom: .04em;
+  }
+  .vizu {
+    color: var(--red);
+    font-weight: 800;
+    font-stretch: condensed;
+    letter-spacing: -.015em;
+    opacity: 0;
+    transform: translateY(14px);
+    filter: drop-shadow(0 0 0 rgba(255,27,27,0));
+    animation: vizu-in 900ms cubic-bezier(.2,.7,.2,1) 250ms forwards,
+               vizu-glow 1500ms ease-out 600ms forwards;
+  }
+  .tire {
+    color: #f4f4f4;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    opacity: 0;
+    transform: translateX(-90%);
+    animation: tire-in 850ms cubic-bezier(.2,.75,.2,1) 950ms forwards;
+    margin-left: -.04em;
+  }
+
+  @keyframes vizu-in {
+    0%   { opacity: 0; transform: translateY(18px); }
+    60%  { opacity: 1; }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes vizu-glow {
+    0%   { filter: drop-shadow(0 0 0 rgba(255,27,27,0)); }
+    35%  { filter: drop-shadow(0 0 28px rgba(255,27,27,.55)); }
+    100% { filter: drop-shadow(0 0 0 rgba(255,27,27,0)); }
+  }
+  @keyframes tire-in {
+    0%   { opacity: 0; transform: translateX(-60%); }
+    50%  { opacity: 1; }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ---- dot pattern ---- */
+  .dots {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    position: relative;
+    width: clamp(110px, 19vmin, 260px);
+    height: clamp(140px, 24vmin, 320px);
+    margin-bottom: .04em;
+  }
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    background: #2a2a2a;
+    opacity: 0;
+    transform: scale(.4);
+    transition: background-color .25s ease;
+    will-change: transform, opacity, background-color, box-shadow;
+  }
+  .dot.gray  { background: var(--gray); }
+  .dot.black { background: #0f0f0f; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+  .dot.red   { background: var(--red); }
+
+  .dot.lit-red {
+    background: var(--red);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.04),
+      0 0 18px rgba(255,27,27,.55),
+      0 0 38px rgba(255,27,27,.25);
+  }
+
+  /* dot reveal */
+  @keyframes dot-pop {
+    0%   { opacity: 0; transform: scale(.4); }
+    60%  { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes dot-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+  }
+
+  /* subtitle */
+  .subtitle {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    margin-top: 14px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: clamp(11px, 1.5vmin, 18px);
+    letter-spacing: .42em;
+    text-transform: uppercase;
+    color: #bdbdbd;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    animation: subtitle-in 700ms ease-out 1900ms forwards;
+  }
+  .subtitle .rule {
+    flex: 0 0 auto;
+    width: 28px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    opacity: .9;
+  }
+  .subtitle .text { white-space: nowrap; }
+  .subtitle .meta {
+    margin-left: auto;
+    color: #6e6e6e;
+    letter-spacing: .35em;
+  }
+  @keyframes subtitle-in {
+    0%   { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- scan line ---- */
+  .scan-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .scan {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -10%;
+    width: 30%;
+    background:
+      linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,27,27,.0) 30%,
+        rgba(255,27,27,.18) 48%,
+        rgba(255,255,255,.85) 50%,
+        rgba(255,27,27,.18) 52%,
+        rgba(255,27,27,0) 70%,
+        transparent 100%);
+    mix-blend-mode: screen;
+    filter: blur(.4px);
+    opacity: 0;
+    transform: translateX(-120%);
+    animation: scan-sweep 1500ms cubic-bezier(.6,.05,.4,1) 2000ms forwards;
+  }
+  .scan::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 49.6%, rgba(255,27,27,.9) 50%, transparent 50.4%);
+    filter: blur(.5px);
+  }
+  @keyframes scan-sweep {
+    0%   { opacity: 0; transform: translateX(-120%); }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(420%); }
+  }
+
+  /* radar arc scan variant */
+  .arc {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 140vmin; height: 140vmin;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+  }
+  .arc circle { fill: none; }
+  .stage[data-scan="arc"] .scan { display: none; }
+  .stage[data-scan="arc"] .arc {
+    animation: arc-sweep 2200ms cubic-bezier(.5,.05,.4,1) 2000ms forwards;
+  }
+  .stage[data-scan="line"] .arc { display: none; }
+  .stage[data-scan="none"] .scan,
+  .stage[data-scan="none"] .arc { display: none; }
+  @keyframes arc-sweep {
+    0%   { opacity: 0; transform: translate(-50%, -50%) rotate(-180deg); }
+    20%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) rotate(180deg); }
+  }
+
+  /* logo flash on scan pass */
+  .lockup {
+    transition: filter .4s ease;
+  }
+  .stage.scan-flash .lockup {
+    filter: brightness(1.18) contrast(1.04);
+  }
+
+  /* progress + status */
+  .hud {
+    position: absolute;
+    left: 6vmin; right: 6vmin;
+    bottom: 4.5vmin;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: #6e6e6e;
+    opacity: 0;
+    animation: hud-in 600ms ease-out 600ms forwards;
+  }
+  .hud .dot-led {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px rgba(255,27,27,.8);
+    animation: led-blink 1.4s ease-in-out infinite;
+  }
+  @keyframes led-blink {
+    0%, 100% { opacity: .35; }
+    50%      { opacity: 1; }
+  }
+  .hud .bar {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+    position: relative;
+    overflow: hidden;
+  }
+  .hud .bar::after {
+    content: "";
+    position: absolute; inset: 0;
+    width: 0%;
+    background: linear-gradient(90deg, var(--red), rgba(255,27,27,.4));
+    animation: bar-fill 3000ms ease-out 200ms forwards;
+  }
+  @keyframes hud-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: .9; transform: translateY(0); }
+  }
+  @keyframes bar-fill { to { width: 100%; } }
+
+  .hud .right { color: #909090; }
+
+  /* corner ticks */
+  .ticks {
+    position: absolute; inset: 4vmin;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    animation: hud-in 600ms ease-out 800ms forwards;
+  }
+  .ticks i {
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 1px solid rgba(255,255,255,.18);
+  }
+  .ticks i.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+  .ticks i.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+  .ticks i.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+  .ticks i.br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+  /* final state hold + fade */
+  .stage.complete .lockup {
+    filter: brightness(1.02);
+  }
+
+  /* hide chrome when running clean */
+  .stage[data-hud="off"] .hud,
+  .stage[data-hud="off"] .ticks { display: none; }
+
+  /* speed scaling — multiplied via animation-duration via inline style */
+  .lockup, .scan, .arc, .ambient, .hud .bar::after, .ticks {
+    animation-fill-mode: forwards;
+  }
+
+  /* replay button */
+  .replay {
+    position: absolute;
+    z-index: 50;
+    right: 18px; top: 18px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #d4d4d4;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .replay:hover { background: rgba(255,27,27,.12); color: #fff; border-color: rgba(255,27,27,.4); }
+
+  /* edit-mode tweaks intensity classes */
+  .stage[data-intensity="subtle"] .vizu { animation-name: vizu-in; }
+  .stage[data-intensity="vivid"] .vizu { animation-name: vizu-in, vizu-glow-vivid; }
+  @keyframes vizu-glow-vivid {
+    0%   { filter: drop-shadow(0 0 0 rgba(255,27,27,0)); }
+    40%  { filter: drop-shadow(0 0 50px rgba(255,27,27,.85)); }
+    100% { filter: drop-shadow(0 0 8px rgba(255,27,27,.2)); }
+  }
+  .stage[data-intensity="vivid"] .dot.lit-red {
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.06),
+      0 0 26px rgba(255,27,27,.8),
+      0 0 60px rgba(255,27,27,.4);
+  }
+
+  /* background variants */
+  .stage[data-bg="grid"] {
+    background:
+      radial-gradient(120% 90% at 50% 50%, #131313 0%, #0b0b0b 55%, #050505 100%),
+      linear-gradient(0deg, rgba(255,255,255,.03), rgba(255,255,255,.03));
+  }
+  .stage[data-bg="grid"]::before {
+    background:
+      radial-gradient(70% 60% at 50% 50%, transparent 50%, rgba(0,0,0,.55) 90%, rgba(0,0,0,.85) 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 64px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 64px);
+  }
+  .stage[data-bg="flat"] {
+    background: #0b0b0b;
+  }
+  .stage[data-bg="flat"]::before { background: none; }
+
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage" data-intensity="standard" data-scan="line" data-bg="vignette" data-atmosphere="radar" data-hud="on">
+
+  <div class="ambient" aria-hidden="true">
+    <div class="glow a"></div>
+    <div class="glow b"></div>
+  </div>
+
+  <div class="radar" aria-hidden="true">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <svg class="arc" viewBox="-100 -100 200 200" aria-hidden="true">
+    <defs>
+      <linearGradient id="arcG" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"  stop-color="rgba(255,27,27,0)"/>
+        <stop offset="80%" stop-color="rgba(255,27,27,.0)"/>
+        <stop offset="98%" stop-color="rgba(255,27,27,.9)"/>
+        <stop offset="100%" stop-color="rgba(255,255,255,1)"/>
+      </linearGradient>
+    </defs>
+    <circle cx="0" cy="0" r="80" stroke="url(#arcG)" stroke-width="2" stroke-dasharray="251 502" stroke-linecap="round"/>
+  </svg>
+
+  <div class="lockup" id="lockup">
+    <div class="wordmark" aria-label="VIZUtire">
+      <span class="vizu">VIZU</span><span class="tire">tire</span>
+    </div>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="subtitle">
+      <span class="rule"></span>
+      <span class="text">3D Ultrasonic Tire Testing</span>
+      <span class="meta">v 4.2 · CALIBRATED</span>
+    </div>
+  </div>
+
+  <div class="scan-wrap" aria-hidden="true">
+    <div class="scan" id="scan"></div>
+  </div>
+
+  <div class="ticks" aria-hidden="true">
+    <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+  </div>
+
+  <div class="hud" id="hud" aria-hidden="true">
+    <span class="dot-led"></span>
+    <span>Scanning lockup</span>
+    <span class="bar"></span>
+    <span class="right" id="hud-pct">00%</span>
+  </div>
+
+  <button class="replay" id="replay" type="button">↻ Replay</button>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+/* ---- DOT GRID ----
+   Recreates the brand's staggered dot cluster. 4 columns, ellipse shapes.
+   Colors phase in: gray -> black -> red, with red dots glowing on activation. */
+
+const DOT_LAYOUT = [
+  // col, row, sizeX, sizeY, phase  (phase: 0 gray, 1 black, 2 red)
+  // column 1 (leftmost, mostly black with one red top)
+  { c: 0, r: 1, w: 0.95, h: 0.78, phase: 2, idx: 4 }, // red top
+  { c: 0, r: 2, w: 1.00, h: 0.82, phase: 1, idx: 5 },
+  { c: 0, r: 3, w: 1.05, h: 0.86, phase: 1, idx: 6 },
+  // column 2 (red dominant in middle)
+  { c: 1, r: 0, w: 0.78, h: 0.66, phase: 0, idx: 0 }, // gray top
+  { c: 1, r: 1, w: 0.92, h: 0.76, phase: 2, idx: 7 }, // red
+  { c: 1, r: 2, w: 0.95, h: 0.80, phase: 1, idx: 8 }, // black
+  { c: 1, r: 3, w: 1.00, h: 0.84, phase: 1, idx: 9 }, // black
+  // column 3 (gray top, red middle, black bottom)
+  { c: 2, r: 0, w: 0.85, h: 0.70, phase: 0, idx: 1 }, // gray
+  { c: 2, r: 1, w: 0.95, h: 0.78, phase: 2, idx: 10 }, // red
+  { c: 2, r: 2, w: 1.00, h: 0.84, phase: 1, idx: 11 }, // black
+  { c: 2, r: 3, w: 0.78, h: 0.66, phase: 1, idx: 12 }, // black smaller
+  // column 4 (rightmost: gray top)
+  { c: 3, r: 0, w: 0.78, h: 0.66, phase: 0, idx: 2 }, // gray
+  { c: 3, r: 1, w: 0.85, h: 0.72, phase: 0, idx: 3 }, // gray (extra)
+];
+
+function buildDots() {
+  const wrap = document.getElementById('dots');
+  wrap.innerHTML = '';
+  // grid in normalized 0..1 space
+  const cols = 4;
+  const rows = 4;
+  const cellW = 100 / cols;
+  const cellH = 100 / rows;
+  // staggered offsets per column for organic feel
+  const colOffset = [0, -6, -3, 4];
+  const rowOffset = [0, 4, 0, 6];
+
+  DOT_LAYOUT.forEach((d, i) => {
+    const el = document.createElement('div');
+    el.className = 'dot ' + ['gray','black','red'][d.phase];
+    el.dataset.phase = d.phase;
+    el.dataset.idx = d.idx;
+    const cx = (d.c + 0.5) * cellW + (colOffset[d.c] || 0);
+    const cy = (d.r + 0.5) * cellH + (rowOffset[d.c] || 0) - 6;
+    const w = d.w * cellW * 0.92;
+    const h = d.h * cellH * 0.92;
+    el.style.left = (cx - w/2) + '%';
+    el.style.top  = (cy - h/2) + '%';
+    el.style.width  = w + '%';
+    el.style.height = h + '%';
+    wrap.appendChild(el);
+  });
+}
+buildDots();
+
+/* ---- TIMELINE ----
+   t=0       : start
+   0–250ms   : ambient & stage settle
+   250–1150  : VIZU fade up + glow
+   950–1800  : "tire" slides in
+   1300–2400 : dot reveal sequence (gray -> black -> red, staggered)
+   2000–3500 : scan sweep + flash
+   3000      : red dots "lit" pulse begins (loops gently)
+   3500–4500 : hold
+*/
+
+const stage = document.getElementById('stage');
+const scan  = document.getElementById('scan');
+const hudPct = document.getElementById('hud-pct');
+
+let timers = [];
+function clearTimers() { timers.forEach(t => clearTimeout(t)); timers = []; }
+function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+function runDots(speedMul = 1) {
+  const dots = [...document.querySelectorAll('.dot')];
+  // animate by phase, then by visual order
+  const phaseOrder = [0, 1, 2];
+  let cursor = 1300;
+  phaseOrder.forEach((phase) => {
+    const group = dots.filter(d => +d.dataset.phase === phase)
+                      .sort((a,b) => (+a.dataset.idx) - (+b.dataset.idx));
+    group.forEach((el, i) => {
+      const delay = (cursor + i * 70) / speedMul;
+      at(delay, () => {
+        el.style.animation = `dot-pop 520ms cubic-bezier(.2,.8,.2,1) forwards`;
+        if (phase === 2) {
+          // illuminate red dots after pop
+          at(360 / speedMul, () => {
+            el.classList.add('lit-red');
+            el.style.animation = `dot-pulse 2200ms ease-in-out infinite`;
+          });
+        }
+      });
+    });
+    cursor += group.length * 70 + 120;
+  });
+}
+
+function runScanFlash(speedMul = 1) {
+  const flashAt = 2600 / speedMul;
+  at(flashAt, () => {
+    stage.classList.add('scan-flash');
+    at(420 / speedMul, () => stage.classList.remove('scan-flash'));
+  });
+}
+
+function runHud(speedMul = 1) {
+  // tick the percentage
+  const start = performance.now();
+  const dur = 3000 / speedMul;
+  function tick(now) {
+    const t = Math.min(1, (now - start - 200) / dur);
+    if (t > 0) {
+      const pct = Math.floor(t * 100);
+      hudPct.textContent = String(pct).padStart(2, '0') + '%';
+    }
+    if (t < 1) requestAnimationFrame(tick);
+    else hudPct.textContent = '100%';
+  }
+  requestAnimationFrame(tick);
+}
+
+function setSpeed(mul) {
+  // scale all CSS animations by setting --speed, used via animation-duration multipliers? 
+  // simpler: set CSS variable consumed by inline JS-driven timings; for CSS keyframes,
+  // we re-inject a <style> override.
+  let style = document.getElementById('speed-style');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'speed-style';
+    document.head.appendChild(style);
+  }
+  const f = (ms) => Math.round(ms / mul) + 'ms';
+  style.textContent = `
+    .vizu { animation-duration: ${f(900)}, ${f(1500)}; animation-delay: ${f(250)}, ${f(600)}; }
+    .tire { animation-duration: ${f(850)}; animation-delay: ${f(950)}; }
+    .subtitle { animation-duration: ${f(700)}; animation-delay: ${f(1900)}; }
+    .scan { animation-duration: ${f(1500)}; animation-delay: ${f(2000)}; }
+    .stage[data-scan="arc"] .arc { animation-duration: ${f(2200)}; animation-delay: ${f(2000)}; }
+    .ambient { animation-duration: ${f(3600)}; }
+    .hud .bar::after { animation-duration: ${f(3000)}; animation-delay: ${f(200)}; }
+  `;
+}
+
+function play(speedMul = 1) {
+  clearTimers();
+  // reset dots
+  document.querySelectorAll('.dot').forEach(el => {
+    el.style.animation = 'none';
+    el.style.opacity = 0;
+    el.style.transform = 'scale(.4)';
+    el.classList.remove('lit-red');
+  });
+  // restart wordmark animations by cloning nodes
+  const wm = document.querySelector('.wordmark');
+  wm.innerHTML = '<span class="vizu">VIZU</span><span class="tire">tire</span>';
+  const sub = document.querySelector('.subtitle');
+  sub.style.animation = 'none'; void sub.offsetWidth; sub.style.animation = '';
+  const sc = document.getElementById('scan');
+  sc.style.animation = 'none'; void sc.offsetWidth; sc.style.animation = '';
+  const am = document.querySelector('.ambient');
+  am.style.animation = 'none'; void am.offsetWidth; am.style.animation = '';
+  const bar = document.querySelector('.hud .bar');
+  // re-trigger ::after via class swap
+  bar.classList.remove('go'); void bar.offsetWidth; bar.classList.add('go');
+
+  setSpeed(speedMul);
+  runDots(speedMul);
+  runScanFlash(speedMul);
+  runHud(speedMul);
+}
+
+document.getElementById('replay').addEventListener('click', () => {
+  const mul = parseFloat(stage.dataset.speed || '1');
+  play(mul);
+});
+
+// initial play
+play(1);
+
+</script>
+
+<!-- Tweaks -->
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "speed": 0.6,
+  "intensity": "standard",
+  "scan": "line",
+  "bg": "grid",
+  "atmosphere": "radar",
+  "hud": false,
+  "loop": false,
+  "loopDelay": 1.2
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const stage = document.getElementById('stage');
+
+  useEffect(() => {
+    stage.dataset.speed = String(t.speed);
+    stage.dataset.intensity = t.intensity;
+    stage.dataset.scan = t.scan;
+    stage.dataset.bg = t.bg;
+    stage.dataset.atmosphere = t.atmosphere;
+    stage.dataset.hud = t.hud ? 'on' : 'off';
+    // re-play whenever any visual tweak changes
+    play(t.speed);
+  }, [t.speed, t.intensity, t.scan, t.bg, t.atmosphere, t.hud]);
+
+  // optional looping
+  useEffect(() => {
+    if (!t.loop) return;
+    let id;
+    function loop() {
+      // total animation ~ 3.5s; add user-defined hold
+      const total = (3500 / t.speed) + t.loopDelay * 1000;
+      id = setTimeout(() => {
+        play(t.speed);
+        loop();
+      }, total);
+    }
+    loop();
+    return () => clearTimeout(id);
+  }, [t.loop, t.loopDelay, t.speed]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection title="Motion">
+        <TweakSlider label="Speed" min={0.6} max={1.6} step={0.05} value={t.speed} onChange={v => setTweak('speed', v)} format={v => v.toFixed(2) + '×'} />
+        <TweakToggle label="Loop" value={t.loop} onChange={v => setTweak('loop', v)} />
+        {t.loop && <TweakSlider label="Loop hold" min={0} max={3} step={0.1} value={t.loopDelay} onChange={v => setTweak('loopDelay', v)} format={v => v.toFixed(1) + 's'} />}
+      </TweakSection>
+
+      <TweakSection title="Look">
+        <TweakRadio label="Intensity" value={t.intensity} options={[
+          { value: 'subtle',  label: 'Subtle' },
+          { value: 'standard', label: 'Standard' },
+          { value: 'vivid',  label: 'Vivid' },
+        ]} onChange={v => setTweak('intensity', v)} />
+        <TweakSelect label="Scan effect" value={t.scan} options={[
+          { value: 'line', label: 'Linear sweep' },
+          { value: 'arc',  label: 'Radar arc' },
+          { value: 'none', label: 'None' },
+        ]} onChange={v => setTweak('scan', v)} />
+        <TweakSelect label="Atmosphere" value={t.atmosphere} options={[
+          { value: 'radar', label: 'Radar rings' },
+          { value: 'none',  label: 'Quiet' },
+        ]} onChange={v => setTweak('atmosphere', v)} />
+        <TweakSelect label="Background" value={t.bg} options={[
+          { value: 'vignette', label: 'Vignette' },
+          { value: 'grid',     label: 'Faint grid' },
+          { value: 'flat',     label: 'Flat matte' },
+        ]} onChange={v => setTweak('bg', v)} />
+      </TweakSection>
+
+      <TweakSection title="HUD">
+        <TweakToggle label="Show telemetry" value={t.hud} onChange={v => setTweak('hud', v)} />
+        <TweakButton label="Replay" onClick={() => play(t.speed)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
+</script>
+
+</body>
+</html>
