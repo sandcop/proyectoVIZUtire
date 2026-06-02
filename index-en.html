@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>if(!localStorage.getItem('vizutire-lang')||localStorage.getItem('vizutire-lang')==='en'){localStorage.setItem('vizutire-lang','en');window.location.replace('index-en.html');}</script>
-  <title>VIZUtire — Diagnóstico estructural de neumáticos OTR</title>
-  <meta name="description" content="Diagnóstico estructural no destructivo para neumáticos OTR de minería. Tecnología ultrasónica e IA para cero fallas imprevistas." />
+  <title>VIZUtire — Structural Diagnostics for OTR Tires</title>
+  <meta name="description" content="Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures." />
   <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
   <link rel="stylesheet" href="styles.css" />
   <!-- ── Preloader VIZUtire ── -->
@@ -33,14 +32,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <!-- Preload imagen principal diag-section — está justo bajo el fold, eager load evita retraso en reveal -->
   <link rel="preload" as="image" href="imagenes/tire-inner 2.webp" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="imagenes/neumatico 1.webp" type="image/webp" fetchpriority="high" />
-  <!-- DNS prefetch para CDNs externos — resuelve dominio en paralelo con el parseo del HTML -->
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-  <!-- Scripts diferidos: se descargan mientras el browser parsea el HTML,
-       se ejecutan en orden después del DOM — sin bloquear el render inicial -->
-  <!-- smoothscroll-polyfill: activa scroll suave en Safari < 15.4 e iOS antiguos (~2KB) -->
   <script defer src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/embla-carousel@8/embla-carousel.umd.js"></script>
@@ -50,7 +44,7 @@
 <body>
 
   <!-- ══════════════════ PRELOADER ══════════════════ -->
-  <div id="preloader" role="status" aria-label="Cargando VIZUtire">
+  <div id="preloader" role="status" aria-label="Loading VIZUtire">
     <div class="pre-lockup">
       <svg viewBox="0 0 180 90.9" xmlns="http://www.w3.org/2000/svg">
         <g>
@@ -76,7 +70,6 @@
       </svg>
     </div>
   </div>
-  <!-- Seed dot timings inmediatamente — sin esperar defer -->
   <script>
     (function(){
       var dots = document.querySelectorAll('#pre-dots .dot');
@@ -89,20 +82,20 @@
     })();
   </script>
 
-  <!-- ===================== NAVBAR pill flotante ===================== -->
+  <!-- ===================== NAVBAR ===================== -->
   <header class="header">
     <nav class="navbar" id="navbar">
       <ul class="nav-links">
         <li><a href="#alicanto" class="nav-highlight">Alicanto</a></li>
-        <li><a href="#tecnologia">Tecnología</a></li>
-        <li><a href="#ciencia">Ciencia</a></li>
-        <li><a href="#pilares">Pilares</a></li>
+        <li><a href="#tecnologia">Technology</a></li>
+        <li><a href="#ciencia">Science</a></li>
+        <li><a href="#pilares">Pillars</a></li>
       </ul>
       <div class="nav-actions">
         <a href="#contacto" class="nav-cta-btn">Demo</a>
-        <a href="index-en.html" class="nav-lang-btn" onclick="localStorage.setItem('vizutire-lang','en')">EN</a>
+        <a href="index.html" class="nav-lang-btn" onclick="localStorage.setItem('vizutire-lang','es')">ES</a>
       </div>
-      <button class="menu-toggle" id="hamburger" aria-label="Menú">
+      <button class="menu-toggle" id="hamburger" aria-label="Menu">
         <span></span>
         <span></span>
         <span></span>
@@ -112,15 +105,15 @@
 
   <!-- ===================== MOBILE DRAWER ===================== -->
   <div class="side-panel-overlay" id="mobileOverlay"></div>
-  <div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="side-panel-header">
       <div class="side-panel-logo">
         <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" />
       </div>
-      <button class="close-panel" id="drawerClose" aria-label="Cerrar menú">×</button>
+      <button class="close-panel" id="drawerClose" aria-label="Close menu">×</button>
     </div>
     <div class="side-panel-content">
-      <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería. Inteligencia operacional para cero fallas imprevistas.</p>
+      <p class="panel-description">Non-destructive structural diagnostics for mining OTR tires. Operational intelligence for zero unexpected failures.</p>
       <ul class="panel-nav">
         <li><a href="#alicanto" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
@@ -128,18 +121,18 @@
         </a></li>
         <li><a href="#tecnologia" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
-          Tecnología
+          Technology
         </a></li>
         <li><a href="#ciencia" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
-          Ciencia
+          Science
         </a></li>
         <li><a href="#pilares" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-          Pilares
+          Pillars
         </a></li>
       </ul>
-      <a href="#contacto" class="panel-cta" onclick="toggleSidePanel()">Solicitar Demo</a>
+      <a href="#contacto" class="panel-cta" onclick="toggleSidePanel()">Request Demo</a>
       <div class="panel-contact">
         <div class="panel-contact-item">
           <span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
@@ -172,17 +165,17 @@
     <div class="hero-layout">
       <div class="hero-text">
         <h1 class="hero-title">
-          Inteligencia<br />
-          Operacional<br />
-          Para Neumáticos<br />
-          <em>OTR</em>
+          Operational<br />
+          Intelligence<br />
+          for OTR<br />
+          <em>Tires</em>
         </h1>
         <div class="hero-cycle" id="heroCycle">
           <p class="hero-sub hero-cycle-item" data-cycle="0" data-dwell="7000">
-            Alicanto predice la degradación estructural antes de que ocurra la falla operacional. Transformamos esa predicción en control operacional prescriptivo.
+            VIZUtire predicts structural degradation before operational failure occurs. Alicanto transforms that prediction into prescriptive operational control.
           </p>
           <p class="hero-body hero-cycle-item" data-cycle="1" data-dwell="12000">
-            La mayoría de operaciones mineras detectan fallos de neumáticos después de que el riesgo operacional ya existe. VIZUtire cambia eso. A través de inteligencia estructural predictiva, validación ultrasónica y recomendaciones operacionales prescriptivas, Alicanto by VIZUtire transforma la gestión de neumáticos de mantenimiento reactivo a certeza operacional.
+            Most mining operations detect tire failure after operational risk already exists. VIZUtire changes that. Through predictive structural intelligence, ultrasonic validation, and prescriptive operational recommendations, Alicanto by VIZUtire transforms tire management from reactive maintenance into operational certainty.
           </p>
           <div class="cycle-progress" aria-hidden="true">
             <div class="cycle-progress-bar" id="cycleBar"></div>
@@ -190,7 +183,7 @@
         </div>
         <div class="hero-actions">
           <a href="#alicanto" class="hero-btn-dark">
-            Explorar Alicanto
+            Explore Alicanto
             <span class="arr-btn">
               <span class="arr-btn-box">
                 <span class="arr-btn-elem">
@@ -203,94 +196,89 @@
             </span>
           </a>
           <a href="#tecnologia" class="hero-btn-light">
-            Ver tecnología
+            See Technology
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Vídeo hero + scanner al terminar -->
     <div class="hero-visual">
       <video class="hero-video" muted playsinline preload="auto" id="heroVideo">
         <source src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
       </video>
       <div class="hero-scanner" id="heroScanner">
-        <img class="scanner-base" src="header vizu/assets/tire.webp" alt="Neumático OTR" />
+        <img class="scanner-base" src="header vizu/assets/tire.webp" alt="OTR Tire" />
         <img class="scanner-scan" src="header vizu/assets/tire.webp" alt="" aria-hidden="true" />
       </div>
     </div>
 
   </section>
 
-  <!-- ===================== BANNER CLIENTES (logos) ===================== -->
+  <!-- ===================== CLIENTS BANNER ===================== -->
   <section class="clients-banner">
     <iframe
       src="assets/clientes-banner.html"
       class="clientes-iframe"
       frameborder="0"
       scrolling="no"
-      title="Clientes validados"
+      title="Validated clients"
     ></iframe>
   </section>
 
-  <!-- ===================== SISTEMA DE DIAGNÓSTICO OPERACIONAL ===================== -->
+  <!-- ===================== DIAGNOSTIC SYSTEM ===================== -->
   <section class="diag-section" id="problema">
 
-    <!-- Parte 1: Diagnóstico — fondo blanco con neumático + marcadores -->
     <div class="diag-main">
       <div class="container">
         <div class="diag-hdr-light reveal">
-          <h2 class="diag-title-light">Alicanto: vemos lo<br/>que nadie ve</h2>
-
+          <h2 class="diag-title-light">Alicanto: We See<br/>What No One Else Can</h2>
         </div>
         <div class="diag-two-col reveal delay-1">
-          <!-- Neumático con 5 marcadores interactivos -->
           <div class="diag-tire-wrap">
-            <img src="imagenes/tire-inner 2.webp" alt="Fallas detectadas en neumático OTR" class="diag-tire-img" fetchpriority="high" />
+            <img src="imagenes/tire-inner 2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" />
             <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
             <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
             <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
           </div>
 
-          <!-- Área de tarjetas — se muestran al hover sobre cada marcador -->
           <div class="diag-cards-area">
 
             <div class="diag-info-card active" data-card="1">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
               <div class="diag-card-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 F-1
               </div>
-              <h3 class="diag-card-title">Microfisura interna</h3>
-              <p class="diag-card-desc">Discontinuidades internas detectadas mediante ultrasonido de 2.4 MHz. Etapa inicial con alta probabilidad de progresión bajo carga operacional.</p>
+              <h3 class="diag-card-title">Internal Microcrack</h3>
+              <p class="diag-card-desc">Internal discontinuities detected via 2.4 MHz ultrasound. Early stage with high probability of progression under operational load.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Microfisura interna" />
+                <img src="imagenes/neumatico 1.webp" alt="Internal microcrack" />
               </div>
             </div>
 
             <div class="diag-info-card" data-card="2">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
               <div class="diag-card-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 F-2
               </div>
-              <h3 class="diag-card-title">Separación de capas</h3>
-              <p class="diag-card-desc">Delaminación entre capas estructurales del neumático. El análisis tensional identifica la extensión y profundidad del daño con precisión milimétrica.</p>
+              <h3 class="diag-card-title">Layer Separation</h3>
+              <p class="diag-card-desc">Delamination between structural tire layers. Tensional analysis identifies the extent and depth of damage with millimetric precision.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Separación de capas" />
+                <img src="imagenes/neumatico 1.webp" alt="Layer separation" />
               </div>
             </div>
 
             <div class="diag-info-card" data-card="3">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
               <div class="diag-card-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 F-3
               </div>
-              <h3 class="diag-card-title">Fractura en cinturón</h3>
-              <p class="diag-card-desc">Rotura de cordones metálicos en el cinturón de acero. Riesgo estructural crítico. El modelo de IA predice ventana de falla con ±8% de precisión.</p>
+              <h3 class="diag-card-title">Belt Fracture</h3>
+              <p class="diag-card-desc">Broken steel cords in the steel belt. Critical structural risk. The AI model predicts failure window with ±8% precision.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Fractura en cinturón" />
+                <img src="imagenes/neumatico 1.webp" alt="Belt fracture" />
               </div>
             </div>
 
@@ -299,17 +287,17 @@
       </div>
     </div>
 
-    <!-- Parte 2: Los 3 Pilares -->
+    <!-- 3 Pillars -->
     <div class="diag-solution" id="pilares">
       <div class="container">
         <div class="pilares-hdr reveal">
-          <h2 class="section-title">Predecir · Validar · Prescribir</h2>
-          <p class="section-body center">La metodología que convierte degradación invisible en certeza operacional medible y auditable.</p>
+          <h2 class="section-title">Predict · Validate · Prescribe</h2>
+          <p class="section-body center">The methodology that converts invisible degradation into measurable, auditable operational certainty.</p>
         </div>
         <div class="pilares-embla" id="pilaresEmbla">
         <div class="pilares-grid pilar-animate embla__container">
 
-          <!-- ── PILAR 1 ── -->
+          <!-- ── PILLAR 1 ── -->
           <div class="pilar-card">
             <div class="pilar-inner">
 
@@ -317,38 +305,38 @@
                 <div class="pilar-icon-wrap">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
                 </div>
-                <h3>Visibilidad<br/>Predictiva</h3>
-                <p>VIZUtire modela 150 variables en tiempo real para predecir falla estructural antes de que ocurra.</p>
+                <h3>Predictive<br/>Visibility</h3>
+                <p>VIZUtire models 150 variables in real time to predict structural failure before it occurs.</p>
                 <div class="pilar-metric-box">
                   <span class="pilar-met-num">48–72h</span>
-                  <span class="pilar-met-lbl">antes de la falla</span>
+                  <span class="pilar-met-lbl">before failure</span>
                 </div>
-                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
-                  Ver más
+                <button class="pilar-flip-btn" aria-label="See pillar detail">
+                  Learn more
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </button>
               </div>
 
               <div class="pilar-back">
-                <h4 class="pilar-back-title">Alicanto Predice Riesgo Estructural Antes de la Falla Operacional</h4>
-                <p class="pilar-back-intro">Analizamos continuamente más de 150 variables operacionales:</p>
+                <h4 class="pilar-back-title">VIZUtire Predicts Structural Risk Before Operational Failure</h4>
+                <p class="pilar-back-intro">We continuously analyze over 150 operational variables:</p>
                 <div class="pilar-back-accordion">
                   <button class="pilar-acc-toggle" aria-expanded="false">
-                    <span class="pilar-acc-label">Ver variables</span>
+                    <span class="pilar-acc-label">View variables</span>
                     <svg class="pilar-acc-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                   </button>
                   <div class="pilar-acc-body">
                     <div class="pilar-back-tags">
-                      <span>Carga</span><span>Velocidad</span><span>Terreno</span>
-                      <span>Comportamiento térmico</span><span>Historial de uso</span><span>Estrés operacional</span>
+                      <span>Load</span><span>Speed</span><span>Terrain</span>
+                      <span>Thermal behavior</span><span>Usage history</span><span>Operational stress</span>
                     </div>
                   </div>
                 </div>
-                <p class="pilar-back-body">Su modelo predictivo identifica patrones de degradación <strong>48–72 horas</strong> antes de que la falla se manifieste operacionalmente.</p>
-                <p class="pilar-back-tagline">No suposiciones. No probabilidades sin contexto.<br/><strong>Inteligencia estructural accionable.</strong></p>
-                <button class="pilar-flip-back-btn" aria-label="Volver">
+                <p class="pilar-back-body">Its predictive model identifies degradation patterns <strong>48–72 hours</strong> before failure manifests operationally.</p>
+                <p class="pilar-back-tagline">Not assumptions. Not probabilities without context.<br/><strong>Actionable structural intelligence.</strong></p>
+                <button class="pilar-flip-back-btn" aria-label="Go back">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-                  Volver
+                  Back
                 </button>
               </div>
 
@@ -359,7 +347,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
 
-          <!-- ── PILAR 2 ── -->
+          <!-- ── PILLAR 2 ── -->
           <div class="pilar-card pilar-card--accent">
             <div class="pilar-inner">
 
@@ -367,30 +355,30 @@
                 <div class="pilar-icon-wrap">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
                 </div>
-                <h3>Validación<br/>Empírica</h3>
-                <p>El ultrasonido actúa como scanner médico del neumático, validando lo que dice el algoritmo con evidencia física real.</p>
+                <h3>Empirical<br/>Validation</h3>
+                <p>Ultrasound acts as the tire's medical scanner, validating what the algorithm says with real physical evidence.</p>
                 <div class="pilar-metric-box">
                   <span class="pilar-met-num">99%</span>
-                  <span class="pilar-met-lbl">fidelidad estructural</span>
+                  <span class="pilar-met-lbl">structural fidelity</span>
                   <div class="pilar-bar"><div class="pilar-bar-fill"></div></div>
                 </div>
-                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
-                  Ver más
+                <button class="pilar-flip-btn" aria-label="See pillar detail">
+                  Learn more
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </button>
               </div>
 
               <div class="pilar-back">
-                <h4 class="pilar-back-title">La Predicción No Significa Nada Sin Prueba Física</h4>
-                <p class="pilar-back-body">Toda predicción generada por VIZUtire se valida a través de inspección estructural ultrasónica integrada en Alicanto.</p>
+                <h4 class="pilar-back-title">Prediction Means Nothing Without Physical Proof</h4>
+                <p class="pilar-back-body">Every prediction generated by VIZUtire is validated through ultrasonic structural inspection integrated into Alicanto.</p>
                 <div class="pilar-back-stat">
-                  <span class="pilar-back-stat-num">5.000+</span>
-                  <span class="pilar-back-stat-lbl">mediciones validadas con fidelidad de hasta 99%</span>
+                  <span class="pilar-back-stat-num">5,000+</span>
+                  <span class="pilar-back-stat-lbl">measurements validated with up to 99% fidelity</span>
                 </div>
-                <p class="pilar-back-tagline"><strong>Las matemáticas predicen.<br/>La física confirma.</strong></p>
-                <button class="pilar-flip-back-btn" aria-label="Volver">
+                <p class="pilar-back-tagline"><strong>Mathematics predicts.<br/>Physics confirms.</strong></p>
+                <button class="pilar-flip-back-btn" aria-label="Go back">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-                  Volver
+                  Back
                 </button>
               </div>
 
@@ -401,7 +389,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
 
-          <!-- ── PILAR 3 ── -->
+          <!-- ── PILLAR 3 ── -->
           <div class="pilar-card">
             <div class="pilar-inner">
 
@@ -409,32 +397,32 @@
                 <div class="pilar-icon-wrap">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                 </div>
-                <h3>Prescripción<br/>Optimizada</h3>
-                <p>No es una alerta. Es una decisión ya tomada, justificada, cuantificada y auditable.</p>
+                <h3>Prescriptive<br/>Optimization</h3>
+                <p>Not an alert. It's a decision already made, justified, quantified and auditable.</p>
                 <div class="pilar-metric-box">
                   <span class="pilar-met-num">$800K</span>
-                  <span class="pilar-met-lbl">ahorro por decisión</span>
+                  <span class="pilar-met-lbl">savings per decision</span>
                 </div>
-                <button class="pilar-flip-btn" aria-label="Ver detalle del pilar">
-                  Ver más
+                <button class="pilar-flip-btn" aria-label="See pillar detail">
+                  Learn more
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </button>
               </div>
 
               <div class="pilar-back">
-                <h4 class="pilar-back-title">Alicanto Convierte Inteligencia en Acción Operacional</h4>
-                <p class="pilar-back-body">La mayoría de sistemas generan alertas. Alicanto genera decisiones operacionales.</p>
+                <h4 class="pilar-back-title">Alicanto Converts Intelligence into Operational Action</h4>
+                <p class="pilar-back-body">Most systems generate alerts. Alicanto generates operational decisions.</p>
                 <div class="pilar-back-contrast">
-                  <p class="pilar-back-no">"Anomalía potencial detectada."</p>
-                  <p class="pilar-back-sino">"Rota Neumático #47 en las próximas 36 horas. Extensión de vida esperada: +280 horas. Ahorros proyectados: $800,000."</p>
+                  <p class="pilar-back-no">"Potential anomaly detected."</p>
+                  <p class="pilar-back-sino">"Rotate Tire #47 within the next 36 hours. Expected life extension: +280 hours. Projected savings: $800,000."</p>
                 </div>
                 <div class="pilar-back-tags">
-                  <span>Justificada</span><span>Cuantificada</span>
-                  <span>Trazable</span><span>Auditable</span>
+                  <span>Justified</span><span>Quantified</span>
+                  <span>Traceable</span><span>Auditable</span>
                 </div>
-                <button class="pilar-flip-back-btn" aria-label="Volver">
+                <button class="pilar-flip-back-btn" aria-label="Go back">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-                  Volver
+                  Back
                 </button>
               </div>
 
@@ -446,9 +434,9 @@
         </div>
 
         <div class="pilares-tags reveal delay-2">
-          <span class="pilar-tag">Justificada</span>
-          <span class="pilar-tag">Cuantificada</span>
-          <span class="pilar-tag">Trazable</span>
+          <span class="pilar-tag">Justified</span>
+          <span class="pilar-tag">Quantified</span>
+          <span class="pilar-tag">Traceable</span>
           <span class="pilar-tag">Auditable</span>
         </div>
       </div>
@@ -456,15 +444,14 @@
 
   </section>
 
-  <!-- ===================== EL DESAFÍO — Apple-style scroll ===================== -->
+  <!-- ===================== THE ALICANTO VISION — Apple-style scroll ===================== -->
   <section class="scroll-story" id="tecnologia">
     <div class="story-sticky">
       <div class="hero-dots"></div>
       <div class="story-layout">
 
-        <!-- LEFT: Apple-style navigation -->
         <div class="story-left reveal">
-          <h2 class="problem-title reveal">La visión<br />de Alicanto</h2>
+          <h2 class="problem-title reveal">The Alicanto<br />Vision</h2>
           <nav class="apple-nav">
             <button class="apple-nav-item" data-nav="0">
               <div class="ani-row">
@@ -472,9 +459,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Producción Adicional</span>
+                <span class="ani-name">Additional Production</span>
               </div>
-              <span class="ani-desc">Más horas productivas sin aumentar la flota.</span>
+              <span class="ani-desc">More productive hours without expanding the fleet.</span>
             </button>
             <button class="apple-nav-item" data-nav="1">
               <div class="ani-row">
@@ -482,9 +469,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Planificación Predictiva</span>
+                <span class="ani-name">Predictive Planning</span>
               </div>
-              <span class="ani-desc">Conozca qué ocurrirá antes de que afecte el plan minero.</span>
+              <span class="ani-desc">Know what will happen before it impacts the mining plan.</span>
             </button>
             <button class="apple-nav-item" data-nav="2">
               <div class="ani-row">
@@ -492,9 +479,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Mayor Vida Útil</span>
+                <span class="ani-name">Extended Tire Life</span>
               </div>
-              <span class="ani-desc">Decisiones respaldadas por datos para postergar cambios.</span>
+              <span class="ani-desc">Data-backed decisions to defer replacements.</span>
             </button>
             <button class="apple-nav-item" data-nav="3">
               <div class="ani-row">
@@ -502,9 +489,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Eliminación de Reventones</span>
+                <span class="ani-name">Blowout Elimination</span>
               </div>
-              <span class="ani-desc">Seguridad operacional basada en evidencia estructural.</span>
+              <span class="ani-desc">Operational safety based on structural evidence.</span>
             </button>
             <button class="apple-nav-item" data-nav="4">
               <div class="ani-row">
@@ -512,9 +499,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Sustentabilidad</span>
+                <span class="ani-name">Sustainability</span>
               </div>
-              <span class="ani-desc">Más eficiencia operativa con menor impacto ambiental.</span>
+              <span class="ani-desc">Greater operational efficiency with lower environmental impact.</span>
             </button>
             <button class="apple-nav-item" data-nav="5">
               <div class="ani-row">
@@ -522,9 +509,9 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">ROI Comprobado</span>
+                <span class="ani-name">Proven ROI</span>
               </div>
-              <span class="ani-desc">Retornos medibles validados en operación minera real.</span>
+              <span class="ani-desc">Measurable returns validated in real mining operations.</span>
             </button>
             <button class="apple-nav-item" data-nav="6">
               <div class="ani-row">
@@ -532,31 +519,29 @@
                   <svg class="ani-dot" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
                   <svg class="ani-plus" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </span>
-                <span class="ani-name">Optimización de Costos</span>
+                <span class="ani-name">Cost Optimization</span>
               </div>
-              <span class="ani-desc">Menos reemplazos innecesarios, más valor generado.</span>
+              <span class="ani-desc">Fewer unnecessary replacements, more value generated.</span>
             </button>
           </nav>
         </div>
 
-        <!-- RIGHT: tarjetas animadas al scroll -->
         <div class="story-right">
           <div class="carousel-window">
           <div class="story-card" data-card="0">
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Camiones mineros operando en faena</span>
+                <span>Mining trucks operating at site</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">01</div>
-
-              <p class="sc-intro">Más horas productivas sin aumentar la flota.</p>
-              <p class="sc-explain">VIZUtire identifica oportunidades para capturar disponibilidad operacional que normalmente se pierde por fallas inesperadas en neumáticos. Cada hora recuperada se traduce en más toneladas movidas y mayor utilización de activos ya existentes.</p>
+              <p class="sc-intro">More productive hours without expanding the fleet.</p>
+              <p class="sc-explain">VIZUtire identifies opportunities to capture operational availability that is normally lost to unexpected tire failures. Every recovered hour translates into more tons moved and greater utilization of existing assets.</p>
               <div class="sc-proof">
-                <span class="sc-proof-num">US$ 13M/año</span>
-                <span class="sc-proof-label">Valor potencial generado</span>
+                <span class="sc-proof-num">US$ 13M/yr</span>
+                <span class="sc-proof-label">Potential value generated</span>
               </div>
             </div>
           </div>
@@ -565,17 +550,16 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Centro de control o planificación minera</span>
+                <span>Mining control or planning center</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">02</div>
-
-              <p class="sc-intro">Conozca qué ocurrirá antes de que afecte el plan minero.</p>
-              <p class="sc-explain">Nuestra tecnología entrega visibilidad anticipada sobre el estado estructural de cada neumático, permitiendo planificar mantenimientos y rotaciones con anticipación y reduciendo la planificación reactiva.</p>
+              <p class="sc-intro">Know what will happen before it impacts the mining plan.</p>
+              <p class="sc-explain">Our technology delivers early visibility into the structural condition of each tire, enabling maintenance and rotation planning in advance, reducing reactive decision-making.</p>
               <div class="sc-proof">
-                <span class="sc-proof-num">US$ 1,5M</span>
-                <span class="sc-proof-label">Ahorro operacional estimado</span>
+                <span class="sc-proof-num">US$ 1.5M</span>
+                <span class="sc-proof-label">Estimated operational savings</span>
               </div>
             </div>
           </div>
@@ -584,17 +568,16 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Inspección de neumáticos OTR en terreno</span>
+                <span>OTR tire inspection in the field</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">03</div>
-
-              <p class="sc-intro">Extender la vida útil con decisiones respaldadas por datos.</p>
-              <p class="sc-explain">Convertimos la experiencia técnica en un proceso parametrizado y escalable que permite postergar cambios de manera informada, aumentando el rendimiento promedio sin comprometer la seguridad operacional.</p>
+              <p class="sc-intro">Extend tire life with data-backed decisions.</p>
+              <p class="sc-explain">We transform technical expertise into a parameterized, scalable process that allows informed deferrals of replacements, increasing average performance without compromising operational safety.</p>
               <div class="sc-proof">
                 <span class="sc-proof-num">US$ 11M</span>
-                <span class="sc-proof-label">Ahorro combinado potencial</span>
+                <span class="sc-proof-label">Potential combined savings</span>
               </div>
             </div>
           </div>
@@ -603,17 +586,16 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Operación minera segura o monitoreo preventivo</span>
+                <span>Safe mining operation or preventive monitoring</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">04</div>
-
-              <p class="sc-intro">Seguridad operacional basada en evidencia.</p>
-              <p class="sc-explain">Detectamos tempranamente separaciones mecánicas que pueden derivar en fallas catastróficas. Esto permite eliminar la principal causa de reventones y fortalecer la trazabilidad de las decisiones operacionales.</p>
+              <p class="sc-intro">Operational safety based on evidence.</p>
+              <p class="sc-explain">We detect mechanical separations early before they lead to catastrophic failures. This eliminates the primary cause of blowouts and strengthens the traceability of operational decisions.</p>
               <div class="sc-proof">
                 <span class="sc-proof-num">0</span>
-                <span class="sc-proof-label">Reventones por separación mecánica</span>
+                <span class="sc-proof-label">Blowouts from mechanical separation</span>
               </div>
             </div>
           </div>
@@ -622,17 +604,16 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Minería y sustentabilidad integradas</span>
+                <span>Mining and sustainability integrated</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">05</div>
-
-              <p class="sc-intro">Más eficiencia operativa con menor impacto ambiental.</p>
-              <p class="sc-explain">Cada neumático que alcanza una mayor vida útil reduce la necesidad de reemplazos, disminuyendo residuos, transporte asociado y consumo de recursos durante todo el ciclo de vida.</p>
+              <p class="sc-intro">Greater operational efficiency with lower environmental impact.</p>
+              <p class="sc-explain">Every tire that reaches a longer life reduces the need for replacements, decreasing waste, associated transport and resource consumption throughout the full lifecycle.</p>
               <div class="sc-proof">
-                <span class="sc-proof-num">1.200 t</span>
-                <span class="sc-proof-label">Residuos evitados por año</span>
+                <span class="sc-proof-num">1,200 t</span>
+                <span class="sc-proof-label">Waste avoided per year</span>
               </div>
             </div>
           </div>
@@ -641,17 +622,16 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Dashboard financiero o indicadores ejecutivos</span>
+                <span>Financial dashboard or executive indicators</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">06</div>
-
-              <p class="sc-intro">Un caso de negocio respaldado por datos reales.</p>
-              <p class="sc-explain">Los beneficios operacionales, la reducción de eventos no programados y la optimización del consumo de neumáticos generan retornos medibles con modelos financieros validados en operación minera.</p>
+              <p class="sc-intro">A business case backed by real data.</p>
+              <p class="sc-explain">Operational benefits, reduction of unplanned events and optimization of tire consumption generate measurable returns with financial models validated in real mining operations.</p>
               <div class="sc-proof">
                 <span class="sc-proof-num">10:1</span>
-                <span class="sc-proof-label">ROI potencial</span>
+                <span class="sc-proof-label">Potential ROI</span>
               </div>
             </div>
           </div>
@@ -660,31 +640,28 @@
             <div class="sc-image">
               <div class="sc-img-ph">
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="26" height="17" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M10 4l1.5-3h5L18 4"/></svg>
-                <span>Gestión de flota OTR</span>
+                <span>OTR fleet management</span>
               </div>
             </div>
             <div class="sc-content">
               <div class="sc-num">07</div>
-
-              <p class="sc-intro">Menos neumáticos consumidos, más valor generado.</p>
-              <p class="sc-explain">La reducción de reemplazos innecesarios permite disminuir significativamente el gasto anual asociado a neumáticos sin afectar la disponibilidad de la flota ni los contratos operacionales existentes.</p>
+              <p class="sc-intro">Fewer tires consumed, more value generated.</p>
+              <p class="sc-explain">Reducing unnecessary replacements allows a significant decrease in annual tire-related expenditure without affecting fleet availability or existing operational contracts.</p>
               <div class="sc-proof">
                 <span class="sc-proof-num">13%</span>
-                <span class="sc-proof-label">Menor gasto anual en neumáticos</span>
+                <span class="sc-proof-label">Lower annual tire expenditure</span>
               </div>
             </div>
           </div>
           <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
           </div><!-- /carousel-window -->
 
-          <!-- Flechas carrusel (solo móvil) — posicionadas sobre la imagen -->
-          <button class="carousel-btn carousel-prev" aria-label="Anterior">
+          <button class="carousel-btn carousel-prev" aria-label="Previous">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
-          <button class="carousel-btn carousel-next" aria-label="Siguiente">
+          <button class="carousel-btn carousel-next" aria-label="Next">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
           </button>
-          <!-- Dots -->
           <div class="carousel-dots">
             <span class="carousel-dot"></span>
             <span class="carousel-dot"></span>
@@ -706,49 +683,49 @@
       <div class="ali-layout">
 
         <div class="ali-text reveal">
-          <h2 class="ali-title">Conoce Alicanto<br/>el centro de<br/><em>inteligencia operacional</em></h2>
-          <p class="ali-body">Alicanto es la infraestructura donde VIZUtire transforma datos en decisiones.</p>
-          <p class="ali-body">No es un dashboard. No es monitoreo.</p>
-          <p class="ali-body">Es el punto de convergencia entre análisis predictivo, validación ultrasónica e inteligencia prescriptiva para anticipar degradación, reducir incertidumbre y optimizar la continuidad operacional.</p>
-          <p class="ali-myth">En la mitología minera, el Alicanto revelaba riquezas ocultas bajo la tierra. Hoy, Alicanto revela lo que antes era invisible: la realidad estructural dentro de cada neumático OTR.</p>
+          <h2 class="ali-title">Meet Alicanto<br/>the operational<br/><em>intelligence center</em></h2>
+          <p class="ali-body">Alicanto is where VIZUtire becomes operational.</p>
+          <p class="ali-body">Not a dashboard. Not a monitoring app.</p>
+          <p class="ali-body">Alicanto is the centralized operational intelligence infrastructure where predictive analysis, ultrasonic validation, and prescriptive decision-making converge. It is where uncertainty becomes control.</p>
+          <p class="ali-myth">In mining mythology, Alicanto was the bird capable of revealing hidden mineral wealth beneath the earth. Today, Alicanto reveals what operators could never previously see: the structural reality inside every OTR tire.</p>
         </div>
 
         <div class="ali-visual reveal delay-1">
           <div class="ali-card">
             <div class="ali-card-hdr">
               <div class="ali-status-dot"></div>
-              <span>Alicanto — Centro de Monitoreo Estructural</span>
-              <span class="ali-card-live">EN VIVO</span>
-              <button class="ali-card-close" aria-label="Cerrar">
+              <span>Alicanto — Structural Monitoring Center</span>
+              <span class="ali-card-live">LIVE</span>
+              <button class="ali-card-close" aria-label="Close">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
             <div class="ali-alert-body">
-              <div class="ali-alert-tag">ALERTA ESTRUCTURAL</div>
-              <div class="ali-alert-tire">Neumático #47</div>
+              <div class="ali-alert-tag">STRUCTURAL ALERT</div>
+              <div class="ali-alert-tire">Tire #47</div>
               <div class="ali-alert-risk">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
-                Riesgo estructural: ALTO
+                Structural risk: HIGH
               </div>
               <div class="ali-alert-action">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                Rotar a posición trasera derecha en 36 horas
+                Rotate to rear right position within 36 hours
               </div>
               <div class="ali-alert-metrics">
                 <div class="ali-alert-met">
                   <span class="ali-met-val">+280h</span>
-                  <span class="ali-met-lbl">extensión de vida útil</span>
+                  <span class="ali-met-lbl">life extension</span>
                 </div>
                 <div class="ali-alert-met ali-met-green">
                   <span class="ali-met-val">$800,000</span>
-                  <span class="ali-met-lbl">ahorro proyectado</span>
+                  <span class="ali-met-lbl">projected savings</span>
                 </div>
               </div>
             </div>
             <div class="ali-card-footer">
-              <span>5.000+ mediciones validadas</span>
+              <span>5,000+ validated measurements</span>
               <span class="ali-footer-dot">·</span>
-              <span>Verificado Michelin</span>
+              <span>Michelin Verified</span>
             </div>
           </div>
         </div>
@@ -757,20 +734,20 @@
     </div>
   </section>
 
-  <!-- ===================== CASOS DE ÉXITO ===================== -->
+  <!-- ===================== SCIENCE & VALIDATION ===================== -->
   <section class="casos-section section" id="ciencia">
     <div class="container">
 
       <div class="section-header reveal">
-        <h2 class="section-title">Construido en ciencia<br/><span class="title-muted">Probado en minería</span></h2>
-        <p class="section-body center">VIZUtire no fue construido como innovación teórica.<br/>Fue construido para sobrevivir operaciones mineras reales.</p>
+        <h2 class="section-title">Built on Science<br/><span class="title-muted">Proven in Mining</span></h2>
+        <p class="section-body center">VIZUtire was not built as theoretical innovation.<br/>It was built to survive real mining operations.</p>
         <ul class="casos-val-list">
-          <li>5.000+ mediciones estructurales</li>
-          <li>Verificación OEM</li>
-          <li>Pruebas de fidelidad ultrasónica</li>
-          <li>Entornos operacionales reales</li>
+          <li>5,000+ structural measurements</li>
+          <li>OEM verification</li>
+          <li>Ultrasonic fidelity testing</li>
+          <li>Real operational environments</li>
         </ul>
-        <p class="casos-tier">Ya operando en operaciones mineras de Tier 1.</p>
+        <p class="casos-tier">Already operating in Tier 1 mining operations.</p>
       </div>
 
       <div class="casos-embla reveal delay-1" id="casosEmbla">
@@ -782,11 +759,11 @@
             <div class="caso-metrics">
               <div class="caso-metric">
                 <div class="caso-num">+8–12%</div>
-                <div class="caso-lbl">Disponibilidad de flota</div>
+                <div class="caso-lbl">Fleet availability</div>
               </div>
               <div class="caso-metric">
                 <div class="caso-num">150+</div>
-                <div class="caso-lbl">Horas productivas adicionales / mes</div>
+                <div class="caso-lbl">Additional productive hours/month</div>
               </div>
             </div>
           </div>
@@ -797,10 +774,10 @@
             <div class="caso-metrics">
               <div class="caso-metric">
                 <div class="caso-num">10:1</div>
-                <div class="caso-lbl">ROI documentado</div>
+                <div class="caso-lbl">Documented ROI</div>
               </div>
               <div class="caso-metric">
-                <div class="caso-num">&lt;9 meses</div>
+                <div class="caso-num">&lt;9 months</div>
                 <div class="caso-lbl">Payback</div>
               </div>
             </div>
@@ -812,11 +789,11 @@
             <div class="caso-metrics">
               <div class="caso-metric">
                 <div class="caso-num">0</div>
-                <div class="caso-lbl">Fallas mecánicas por neumático</div>
+                <div class="caso-lbl">Tire-related mechanical failures</div>
               </div>
               <div class="caso-metric">
                 <div class="caso-num">Michelin</div>
-                <div class="caso-lbl">Verificación OEM del rendimiento</div>
+                <div class="caso-lbl">OEM performance validation</div>
               </div>
             </div>
           </div>
@@ -827,46 +804,46 @@
 
       <div class="val-strip reveal delay-2">
         <div class="val-item">
-          <span class="val-num">5.000+</span>
-          <span class="val-lbl">Mediciones estructurales</span>
+          <span class="val-num">5,000+</span>
+          <span class="val-lbl">Structural measurements</span>
         </div>
         <div class="val-div"></div>
         <div class="val-item">
           <span class="val-num">99%</span>
-          <span class="val-lbl">Fidelidad ultrasónica</span>
+          <span class="val-lbl">Ultrasonic fidelity</span>
         </div>
         <div class="val-div"></div>
         <div class="val-item">
           <span class="val-num">Michelin</span>
-          <span class="val-lbl">Verificación OEM</span>
+          <span class="val-lbl">OEM Verification</span>
         </div>
         <div class="val-div"></div>
         <div class="val-item">
           <span class="val-num">Tier 1</span>
-          <span class="val-lbl">Operaciones validadas</span>
+          <span class="val-lbl">Validated operations</span>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ===================== CIERRE NARRATIVO ===================== -->
+  <!-- ===================== CLOSING NARRATIVE ===================== -->
   <section class="cierre-section" id="cierre">
     <div class="container">
       <div class="cierre-inner reveal">
-        <h2 class="cierre-title">La certeza operacional<br/>comienza con<br/><em>visibilidad estructural</em></h2>
+        <h2 class="cierre-title">Operational certainty<br/>starts with<br/><em>structural visibility</em></h2>
         <div class="cierre-steps">
-          <div class="cierre-step">Ya gestionas combustible, despacho, carga y mantenimiento.</div>
-          <div class="cierre-step">Ahora gestiona lo que históricamente ha permanecido invisible.</div>
+          <div class="cierre-step">You already manage fuel, dispatch, payload and maintenance.</div>
+          <div class="cierre-step">Now manage what has historically remained invisible.</div>
         </div>
         <div class="cierre-actions">
-          <div class="cierre-action-item">Ve la degradación antes.</div>
-          <div class="cierre-action-item">Actúa con evidencia.</div>
-          <div class="cierre-action-item">Opera con certeza.</div>
+          <div class="cierre-action-item">See degradation earlier.</div>
+          <div class="cierre-action-item">Act with evidence.</div>
+          <div class="cierre-action-item">Operate with certainty.</div>
         </div>
         <div class="cierre-brand">Alicanto by VIZUtire</div>
         <a href="#contacto" class="hero-btn-dark">
-          Solicitar evaluación técnica
+          Request Technical Assessment
           <span class="arr-btn">
             <span class="arr-btn-box">
               <span class="arr-btn-elem">
@@ -882,12 +859,12 @@
     </div>
   </section>
 
-  <!-- ===================== HISTORIA / HITOS ===================== -->
+  <!-- ===================== MILESTONES ===================== -->
   <section class="section historia-section" id="historia">
     <div class="container">
       <div class="section-header reveal">
-        <h2 class="section-title">Evolución con hitos<br />verificables.</h2>
-        <p class="section-body center">Investigación, protección tecnológica, pilotos, validación y escalamiento.</p>
+        <h2 class="section-title">Evolution with verifiable<br />milestones.</h2>
+        <p class="section-body center">Research, technology protection, pilots, validation and scaling.</p>
       </div>
       <div class="historia-frame reveal delay-1">
         <iframe
@@ -895,41 +872,39 @@
           class="hitos-iframe"
           frameborder="0"
           scrolling="no"
-          title="Mapa de hitos VIZUtire"
+          title="VIZUtire milestone map"
         ></iframe>
         <iframe
           src="assets/hitos/hitos-mobile.html"
           class="hitos-iframe-mobile"
           frameborder="0"
-          title="Mapa de hitos VIZUtire móvil"
+          title="VIZUtire milestone map mobile"
         ></iframe>
       </div>
     </div>
   </section>
 
-  <!-- ===================== CONTACTO ===================== -->
+  <!-- ===================== CONTACT ===================== -->
   <section class="cta-section" id="contacto">
     <div class="container">
 
-      <!-- Columna izquierda -->
       <div class="cta-inner reveal">
-        <h2 class="cta-title">Reduce el riesgo estructural antes del evento.</h2>
-        <p class="cta-sub">Solicite una evaluación técnica para su flota OTR. Nuestro equipo analiza su operación y entrega diagnóstico en 48 horas.</p>
+        <h2 class="cta-title">Reduce structural risk before the event.</h2>
+        <p class="cta-sub">Request a technical assessment for your OTR fleet. Our team analyzes your operation and delivers a diagnosis within 48 hours.</p>
         <div class="cta-contact-cards">
           <div class="cta-contact-card">
-            <span class="cta-contact-label">Ubicación</span>
+            <span class="cta-contact-label">Location</span>
             <span class="cta-contact-val">Las Encinas 353,<br />Antofagasta — Chile</span>
-            <a href="https://maps.app.goo.gl/ojtexXBu2NvL8qjv9" target="_blank" rel="noopener" class="cta-contact-maps-link">Ver en Google Maps →</a>
+            <a href="https://maps.app.goo.gl/ojtexXBu2NvL8qjv9" target="_blank" rel="noopener" class="cta-contact-maps-link">View on Google Maps →</a>
           </div>
           <div class="cta-contact-card">
-            <span class="cta-contact-label">Contacto</span>
+            <span class="cta-contact-label">Contact</span>
             <span class="cta-contact-val">digital@vizutire.com</span>
             <span class="cta-contact-val cta-contact-phone">+56 9 9543 4402</span>
           </div>
         </div>
       </div>
 
-      <!-- Columna derecha: formulario de contacto -->
       <div class="cta-form-area reveal delay-2">
         <form class="cta-form" id="contactForm" novalidate>
 
@@ -939,7 +914,7 @@
                 <input required type="text" id="nombre" name="nombre" class="input" autocomplete="name">
                 <span class="bar"></span>
                 <label class="label" for="nombre">
-                  <span class="label-char" style="--index:0">N</span><span class="label-char" style="--index:1">o</span><span class="label-char" style="--index:2">m</span><span class="label-char" style="--index:3">b</span><span class="label-char" style="--index:4">r</span><span class="label-char" style="--index:5">e</span><span class="label-char" style="--index:6">&nbsp;</span><span class="label-char" style="--index:7">c</span><span class="label-char" style="--index:8">o</span><span class="label-char" style="--index:9">m</span><span class="label-char" style="--index:10">p</span><span class="label-char" style="--index:11">l</span><span class="label-char" style="--index:12">e</span><span class="label-char" style="--index:13">t</span><span class="label-char" style="--index:14">o</span>
+                  <span class="label-char" style="--index:0">F</span><span class="label-char" style="--index:1">u</span><span class="label-char" style="--index:2">l</span><span class="label-char" style="--index:3">l</span><span class="label-char" style="--index:4">&nbsp;</span><span class="label-char" style="--index:5">n</span><span class="label-char" style="--index:6">a</span><span class="label-char" style="--index:7">m</span><span class="label-char" style="--index:8">e</span>
                 </label>
               </div>
             </div>
@@ -948,7 +923,7 @@
                 <input required type="text" id="empresa" name="empresa" class="input" autocomplete="organization">
                 <span class="bar"></span>
                 <label class="label" for="empresa">
-                  <span class="label-char" style="--index:0">E</span><span class="label-char" style="--index:1">m</span><span class="label-char" style="--index:2">p</span><span class="label-char" style="--index:3">r</span><span class="label-char" style="--index:4">e</span><span class="label-char" style="--index:5">s</span><span class="label-char" style="--index:6">a</span>
+                  <span class="label-char" style="--index:0">C</span><span class="label-char" style="--index:1">o</span><span class="label-char" style="--index:2">m</span><span class="label-char" style="--index:3">p</span><span class="label-char" style="--index:4">a</span><span class="label-char" style="--index:5">n</span><span class="label-char" style="--index:6">y</span>
                 </label>
               </div>
             </div>
@@ -960,16 +935,16 @@
                 <input required type="email" id="email" name="email" class="input" autocomplete="email">
                 <span class="bar"></span>
                 <label class="label" for="email">
-                  <span class="label-char" style="--index:0">C</span><span class="label-char" style="--index:1">o</span><span class="label-char" style="--index:2">r</span><span class="label-char" style="--index:3">r</span><span class="label-char" style="--index:4">e</span><span class="label-char" style="--index:5">o</span><span class="label-char" style="--index:6">&nbsp;</span><span class="label-char" style="--index:7">e</span><span class="label-char" style="--index:8">l</span><span class="label-char" style="--index:9">e</span><span class="label-char" style="--index:10">c</span><span class="label-char" style="--index:11">t</span><span class="label-char" style="--index:12">r</span><span class="label-char" style="--index:13">ó</span><span class="label-char" style="--index:14">n</span><span class="label-char" style="--index:15">i</span><span class="label-char" style="--index:16">c</span><span class="label-char" style="--index:17">o</span>
+                  <span class="label-char" style="--index:0">E</span><span class="label-char" style="--index:1">m</span><span class="label-char" style="--index:2">a</span><span class="label-char" style="--index:3">i</span><span class="label-char" style="--index:4">l</span>
                 </label>
               </div>
             </div>
             <div class="form-group" id="flotaGroup">
-              <label>Flota OTR aproximada <span class="req">*</span></label>
+              <label>Approximate OTR fleet size <span class="req">*</span></label>
               <input type="hidden" name="flota" id="flota">
               <div class="cs-wrap" id="flotaSelect">
                 <button type="button" class="cs-trigger" id="flotaTrigger" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="flotaValue">Seleccionar rango</span>
+                  <span id="flotaValue">Select range</span>
                   <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none">
                     <path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -977,28 +952,28 @@
                 <div class="cs-panel" id="flotaPanel" role="listbox">
                   <button type="button" class="cs-opt" data-value="1-10" role="option">
                     <span class="cs-opt-range">1 – 10</span>
-                    <span class="cs-opt-unit">neumáticos</span>
+                    <span class="cs-opt-unit">tires</span>
                     <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                   <button type="button" class="cs-opt" data-value="11-50" role="option">
                     <span class="cs-opt-range">11 – 50</span>
-                    <span class="cs-opt-unit">neumáticos</span>
+                    <span class="cs-opt-unit">tires</span>
                     <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                   <button type="button" class="cs-opt" data-value="51-200" role="option">
                     <span class="cs-opt-range">51 – 200</span>
-                    <span class="cs-opt-unit">neumáticos</span>
+                    <span class="cs-opt-unit">tires</span>
                     <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                   <button type="button" class="cs-opt" data-value="200+" role="option">
                     <span class="cs-opt-range">+200</span>
-                    <span class="cs-opt-unit">neumáticos</span>
+                    <span class="cs-opt-unit">tires</span>
                     <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -1013,15 +988,15 @@
               <textarea id="mensaje" name="mensaje" rows="3" class="input"></textarea>
               <span class="bar"></span>
               <label class="label" for="mensaje">
-                <span class="label-char" style="--index:0">M</span><span class="label-char" style="--index:1">e</span><span class="label-char" style="--index:2">n</span><span class="label-char" style="--index:3">s</span><span class="label-char" style="--index:4">a</span><span class="label-char" style="--index:5">j</span><span class="label-char" style="--index:6">e</span>
+                <span class="label-char" style="--index:0">M</span><span class="label-char" style="--index:1">e</span><span class="label-char" style="--index:2">s</span><span class="label-char" style="--index:3">s</span><span class="label-char" style="--index:4">a</span><span class="label-char" style="--index:5">g</span><span class="label-char" style="--index:6">e</span>
               </label>
             </div>
           </div>
 
           <div class="form-footer">
-            <p class="form-privacy">Al enviar acepta nuestras condiciones de privacidad. Sus datos se usan exclusivamente para contactarle.</p>
+            <p class="form-privacy">By submitting you accept our privacy policy. Your data is used exclusively to contact you.</p>
             <button type="submit" class="btn-submit hero-btn-dark">
-              Solicitar evaluación
+              Request Assessment
               <span class="arr-btn">
                 <span class="arr-btn-box">
                   <span class="arr-btn-elem">
@@ -1052,7 +1027,7 @@
           <a href="#" class="footer-logo-link">
             <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" loading="lazy" />
           </a>
-          <p class="footer-brand-desc">Diagnóstico estructural no destructivo<br />para neumáticos OTR de minería.</p>
+          <p class="footer-brand-desc">Non-destructive structural diagnostics<br />for mining OTR tires.</p>
           <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
           <div class="footer-social">
             <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1072,23 +1047,23 @@
         </div>
         <div class="footer-nav">
           <div class="footer-col">
-            <h4>SERVICIOS</h4>
-            <a href="#problema">Inspección Ultrasónica</a>
-            <a href="#problema">Beneficios</a>
-            <a href="#problema">Analítica Con IA</a>
-            <a href="#problema">Reportes De Diagnóstico</a>
+            <h4>SERVICES</h4>
+            <a href="#problema">Ultrasonic Inspection</a>
+            <a href="#problema">Benefits</a>
+            <a href="#problema">AI Analytics</a>
+            <a href="#problema">Diagnostic Reports</a>
           </div>
           <div class="footer-col">
-            <h4>EMPRESA</h4>
+            <h4>COMPANY</h4>
             <a href="#alicanto">Alicanto</a>
-            <a href="#ciencia">Casos de éxito</a>
-            <a href="#historia">Hitos</a>
-            <a href="#contacto">Contacto</a>
+            <a href="#ciencia">Case Studies</a>
+            <a href="#historia">Milestones</a>
+            <a href="#contacto">Contact</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 VIZUtire. Todos los derechos reservados.</p>
+        <p>© 2026 VIZUtire. All rights reserved.</p>
         <p>Antofagasta, Chile</p>
       </div>
     </div>
