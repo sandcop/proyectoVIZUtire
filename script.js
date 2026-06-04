@@ -3,19 +3,7 @@
 // Activa smoothscroll-polyfill para Safari < 15.4 e iOS antiguos
 if (typeof window.smoothscroll !== 'undefined') window.smoothscroll.polyfill();
 
-// ========= LENIS — smooth scroll =========
-const lenis = typeof Lenis !== 'undefined' ? new Lenis({
-  lerp: 0.08,
-  smoothWheel: true,
-  syncTouch: false,
-}) : null;
 
-if (lenis) {
-  (function rafLoop(time) {
-    lenis.raf(time);
-    requestAnimationFrame(rafLoop);
-  })(0);
-}
 
 // ========= PRELOADER =========
 // Espera: mínimo 1.2s (animación visible) + imágenes críticas decodificadas.
@@ -222,21 +210,26 @@ revealEls.forEach(el => observer.observe(el));
   /* ── 2b. Medir altura del contenedor con ambos textos ── */
   /* Usamos propiedades individuales para no borrar el maxWidth de items[0] */
   function measureHeight() {
+    // Fase escritura — forzar posición natural para medir
     items.forEach(el => {
       el.style.position  = 'static';
       el.style.opacity   = '0';
       el.style.margin    = '0';
       el.style.animation = 'none';
     });
-    const h = Math.max(...items.map(el => el.offsetHeight));
-    items.forEach(el => {
-      el.style.position  = '';
-      el.style.opacity   = '';
-      el.style.margin    = '';
-      el.style.animation = '';
-      el.classList.remove('is-first');
+    // Fase lectura en rAF — el browser ya recalculó el layout, sin reflow forzado
+    requestAnimationFrame(() => {
+      const h = Math.max(...items.map(el => el.offsetHeight));
+      // Fase escritura de vuelta
+      items.forEach(el => {
+        el.style.position  = '';
+        el.style.opacity   = '';
+        el.style.margin    = '';
+        el.style.animation = '';
+        el.classList.remove('is-first');
+      });
+      cycle.style.height = (h + 14) + 'px'; /* +14 para barra de progreso */
     });
-    cycle.style.height = (h + 14) + 'px'; /* +14 para barra de progreso */
   }
   measureHeight();
 
