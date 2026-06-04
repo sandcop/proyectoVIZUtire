@@ -361,6 +361,7 @@ revealEls.forEach(el => observer.observe(el));
 
 // ========= PILARES — flip de tarjeta =========
 (function () {
+  const isEN = document.documentElement.lang === 'en';
   document.querySelectorAll('.pilar-flip-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.closest('.pilar-card').classList.add('is-flipped');
@@ -373,7 +374,7 @@ revealEls.forEach(el => observer.observe(el));
       // Cerrar acordeón al volver para que quede limpio al re-abrir
       card.querySelectorAll('.pilar-acc-toggle[aria-expanded="true"]').forEach(t => {
         t.setAttribute('aria-expanded', 'false');
-        t.querySelector('.pilar-acc-label').textContent = 'Ver variables';
+        t.querySelector('.pilar-acc-label').textContent = isEN ? 'View variables' : 'Ver variables';
       });
     });
   });
@@ -383,7 +384,9 @@ revealEls.forEach(el => observer.observe(el));
     toggle.addEventListener('click', () => {
       const open = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!open));
-      toggle.querySelector('.pilar-acc-label').textContent = open ? 'Ver variables' : 'Ocultar variables';
+      toggle.querySelector('.pilar-acc-label').textContent = open
+        ? (isEN ? 'View variables' : 'Ver variables')
+        : (isEN ? 'Hide variables' : 'Ocultar variables');
     });
   });
 })();
@@ -1087,7 +1090,14 @@ if (form) {
   onMQ(mq);
 })();
 
-// ========= ALI-CARD — cerrar en mobile =========
-document.querySelector('.ali-card-close')?.addEventListener('click', () => {
-  document.querySelector('.ali-visual')?.classList.add('is-dismissed');
-});
+// ========= ALICANTO ACCORDION =========
+(function () {
+  const items = document.querySelectorAll('.ali-acc-item');
+  if (!items.length) return;
+  items.forEach(function (item) {
+    item.addEventListener('mouseenter', function () {
+      items.forEach(function (it) { it.classList.remove('active'); });
+      item.classList.add('active');
+    });
+  });
+})();
