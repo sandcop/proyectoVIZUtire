@@ -6,8 +6,7 @@
   <title>VIZUtire — Structural Diagnostics for OTR Tires</title>
   <meta name="description" content="Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures." />
   <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
-  <link rel="stylesheet" href="styles.css" />
-  <!-- ── Preloader VIZUtire ── -->
+  <!-- ── Preloader VIZUtire — CSS crítico inline (no bloquea render) ── -->
   <style>
     #preloader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;
       background:#f0f1f3;
@@ -29,14 +28,18 @@
       100%{opacity:0;transform:scale(.5);}
     }
   </style>
+  <!-- styles.css — preload async: el preloader cubre la página (~1.8s), sin FOUC garantizado -->
+  <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="styles.css" /></noscript>
+  <!-- Google Fonts — preload async (elimina bloqueo de render) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
+  <!-- Preload LCP: imagen principal del diagnóstico -->
   <link rel="preload" as="image" href="imagenes/tire-inner 2.webp" type="image/webp" fetchpriority="high" />
-  <link rel="preload" as="image" href="imagenes/neumatico 1.webp" type="image/webp" fetchpriority="high" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
   <script defer src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/embla-carousel@8/embla-carousel.umd.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay@8/embla-carousel-autoplay.umd.js"></script>
   <script defer src="script.js"></script>
@@ -108,7 +111,7 @@
   <div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="side-panel-header">
       <div class="side-panel-logo">
-        <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" />
+        <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
       </div>
       <button class="close-panel" id="drawerClose" aria-label="Close menu">×</button>
     </div>
@@ -158,8 +161,8 @@
   <section class="hero" id="inicio">
     <div class="hero-dots"></div>
     <a href="#" class="hero-logo">
-      <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" />
-      <img src="imagenes/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" />
+      <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" width="619" height="315" />
+      <img src="imagenes/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" width="619" height="315" />
     </a>
 
     <div class="hero-layout">
@@ -203,12 +206,12 @@
     </div>
 
     <div class="hero-visual">
-      <video class="hero-video" muted playsinline preload="auto" id="heroVideo">
+      <video class="hero-video" muted playsinline preload="none" poster="imagenes/neumatico 1.webp" id="heroVideo">
         <source src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
       </video>
       <div class="hero-scanner" id="heroScanner">
-        <img class="scanner-base" src="header vizu/assets/tire.webp" alt="OTR Tire" />
-        <img class="scanner-scan" src="header vizu/assets/tire.webp" alt="" aria-hidden="true" />
+        <img class="scanner-base" src="header vizu/assets/tire.webp" alt="OTR Tire" width="1200" height="640" />
+        <img class="scanner-scan" src="header vizu/assets/tire.webp" alt="" aria-hidden="true" width="1200" height="640" />
       </div>
     </div>
 
@@ -235,7 +238,7 @@
         </div>
         <div class="diag-two-col reveal delay-1">
           <div class="diag-tire-wrap">
-            <img src="imagenes/tire-inner 2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" />
+            <img src="imagenes/tire-inner 2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" width="800" height="800" />
             <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
             <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
             <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
@@ -252,7 +255,7 @@
               <h3 class="diag-card-title">Internal Microcrack</h3>
               <p class="diag-card-desc">Internal discontinuities detected via 2.4 MHz ultrasound. Early stage with high probability of progression under operational load.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Internal microcrack" />
+                <img src="imagenes/neumatico 1.webp" alt="Internal microcrack" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -265,7 +268,7 @@
               <h3 class="diag-card-title">Layer Separation</h3>
               <p class="diag-card-desc">Delamination between structural tire layers. Tensional analysis identifies the extent and depth of damage with millimetric precision.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Layer separation" />
+                <img src="imagenes/neumatico 1.webp" alt="Layer separation" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -278,7 +281,7 @@
               <h3 class="diag-card-title">Belt Fracture</h3>
               <p class="diag-card-desc">Broken steel cords in the steel belt. Critical structural risk. The AI model predicts failure window with ±8% precision.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Belt fracture" />
+                <img src="imagenes/neumatico 1.webp" alt="Belt fracture" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -754,7 +757,7 @@
         <div class="casos-grid embla__container">
 
           <div class="caso-card embla__slide">
-            <img src="logos 3 pialres/Escondida.svg" alt="Escondida" class="caso-logo" loading="lazy" />
+            <img src="logos 3 pialres/Escondida.svg" alt="Escondida" class="caso-logo" width="1185" height="99" loading="lazy" />
             <div class="caso-op-name">BHP</div>
             <div class="caso-metrics">
               <div class="caso-metric">
@@ -769,7 +772,7 @@
           </div>
 
           <div class="caso-card caso-card--dark embla__slide">
-            <img src="logos 3 pialres/Lomas Bayas.svg" alt="Lomas Bayas" class="caso-logo" loading="lazy" />
+            <img src="logos 3 pialres/Lomas Bayas.svg" alt="Lomas Bayas" class="caso-logo" width="604" height="307" loading="lazy" />
             <div class="caso-op-name">RT</div>
             <div class="caso-metrics">
               <div class="caso-metric">
@@ -784,7 +787,7 @@
           </div>
 
           <div class="caso-card embla__slide">
-            <img src="logos 3 pialres/Spence.svg" alt="Spence" class="caso-logo" loading="lazy" />
+            <img src="logos 3 pialres/Spence.svg" alt="Spence" class="caso-logo" width="923" height="99" loading="lazy" />
             <div class="caso-op-name">BHP</div>
             <div class="caso-metrics">
               <div class="caso-metric">
@@ -867,17 +870,22 @@
         <p class="section-body center">Research, technology protection, pilots, validation and scaling.</p>
       </div>
       <div class="historia-frame reveal delay-1">
+        <div class="hitos-shield" aria-hidden="true"></div>
         <iframe
-          src="assets/hitos/hitos.html"
+          src="animacion_definitiva/Map EN.html"
           class="hitos-iframe"
           frameborder="0"
           scrolling="no"
+          loading="lazy"
+          inert
           title="VIZUtire milestone map"
         ></iframe>
         <iframe
-          src="assets/hitos/hitos-mobile.html"
+          src="animacion_definitiva/Map EN Mobile.html"
           class="hitos-iframe-mobile"
           frameborder="0"
+          loading="lazy"
+          inert
           title="VIZUtire milestone map mobile"
         ></iframe>
       </div>
@@ -1019,13 +1027,13 @@
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="footer-watermark" aria-hidden="true">
-      <img src="imagenes/SVG/Alicanto_foooter.svg" alt="" />
+      <img src="imagenes/SVG/Alicanto_foooter.svg" alt="" width="405" height="81" />
     </div>
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
           <a href="#" class="footer-logo-link">
-            <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" loading="lazy" />
+            <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
           </a>
           <p class="footer-brand-desc">Non-destructive structural diagnostics<br />for mining OTR tires.</p>
           <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
