@@ -214,9 +214,11 @@
     <!-- Vídeo hero + scanner al terminar -->
     <div class="hero-visual">
       <video class="hero-video" muted playsinline preload="none" id="heroVideo"
+             disablepictureinpicture
              poster="imagenes/neumatico 1.webp">
-        <source src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
+        <source data-src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
       </video>
+      <script>if(window.innerWidth<=900){var _v=document.getElementById('heroVideo');if(_v)_v.remove();}</script>
       <div class="hero-scanner" id="heroScanner">
         <img class="scanner-base" src="header vizu/assets/tire.webp" alt="Neumático OTR" width="1200" height="640" loading="lazy" />
         <img class="scanner-scan" src="header vizu/assets/tire.webp" alt="" aria-hidden="true" width="1200" height="640" loading="lazy" />
@@ -876,6 +878,7 @@
           src="animacion_definitiva/Map ESP Móvil.html"
           class="hitos-iframe-mobile"
           frameborder="0"
+          scrolling="no"
           loading="lazy"
           inert
           title="Mapa de hitos VIZUtire móvil"
@@ -941,44 +944,28 @@
                 </label>
               </div>
             </div>
-            <div class="form-group" id="flotaGroup">
-              <label>Flota OTR aproximada <span class="req">*</span></label>
-              <input type="hidden" name="flota" id="flota">
-              <div class="cs-wrap" id="flotaSelect">
-                <button type="button" class="cs-trigger" id="flotaTrigger" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="flotaValue">Seleccionar rango</span>
+            <div class="form-group" id="cargoGroup">
+              <label>Cargo / Área <span class="req">*</span></label>
+              <input type="hidden" name="cargo" id="cargo">
+              <div class="cs-wrap" id="cargoSelect">
+                <button type="button" class="cs-trigger" id="cargoTrigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="cargoValue">Seleccionar cargo</span>
                   <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none">
                     <path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
-                <div class="cs-panel" id="flotaPanel" role="listbox">
-                  <button type="button" class="cs-opt" data-value="1-10" role="option">
-                    <span class="cs-opt-range">1 – 10</span>
-                    <span class="cs-opt-unit">neumáticos</span>
-                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <div class="cs-panel" id="cargoPanel" role="listbox">
+                  <button type="button" class="cs-opt" data-value="Gerencia de operaciones" role="option">
+                    <span class="cs-opt-unit" style="flex:1;font-size:0.88rem;color:var(--text)">Gerencia de operaciones</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
-                  <button type="button" class="cs-opt" data-value="11-50" role="option">
-                    <span class="cs-opt-range">11 – 50</span>
-                    <span class="cs-opt-unit">neumáticos</span>
-                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                  <button type="button" class="cs-opt" data-value="Encargado de mantenimiento" role="option">
+                    <span class="cs-opt-unit" style="flex:1;font-size:0.88rem;color:var(--text)">Encargado de mantenimiento</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
-                  <button type="button" class="cs-opt" data-value="51-200" role="option">
-                    <span class="cs-opt-range">51 – 200</span>
-                    <span class="cs-opt-unit">neumáticos</span>
-                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                  <button type="button" class="cs-opt" data-value="200+" role="option">
-                    <span class="cs-opt-range">+200</span>
-                    <span class="cs-opt-unit">neumáticos</span>
-                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                  <button type="button" class="cs-opt" data-value="CFO / Finanzas" role="option">
+                    <span class="cs-opt-unit" style="flex:1;font-size:0.88rem;color:var(--text)">CFO / Finanzas</span>
+                    <svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
                 </div>
               </div>
@@ -987,7 +974,7 @@
 
           <div class="form-group wf">
             <div class="wave-group">
-              <textarea id="mensaje" name="mensaje" rows="3" class="input"></textarea>
+              <textarea required id="mensaje" name="mensaje" rows="3" class="input"></textarea>
               <span class="bar"></span>
               <label class="label" for="mensaje">
                 <span class="label-char" style="--index:0">M</span><span class="label-char" style="--index:1">e</span><span class="label-char" style="--index:2">n</span><span class="label-char" style="--index:3">s</span><span class="label-char" style="--index:4">a</span><span class="label-char" style="--index:5">j</span><span class="label-char" style="--index:6">e</span>
