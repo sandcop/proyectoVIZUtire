@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evaluación Técnica — VIZUtire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>(function(){try{var d=JSON.parse(sessionStorage.getItem('viz_access')||'{}');if(!d.t||Date.now()>(d.exp||0))throw 0;}catch(e){location.replace('index.html#contacto');}})();</script>
+    <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
+    <link rel="stylesheet" href="styles.css" />
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,18 +28,24 @@
 
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        /* ─── Header ────────────────────────────── */
-        .header { padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-        .logo-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
-        .logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
-        .logo-text em { color: var(--red); font-style: normal; }
-
         /* ─── Layout ─────────────────────────────── */
-        .page { display: flex; justify-content: center; padding: 48px 24px 80px; }
-        .form-wrap { width: 100%; max-width: 520px; }
+        .page { display: flex; justify-content: center; padding: 40px 24px 60px; }
+        .form-wrap {
+            width: 100%; max-width: 560px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 28px;
+            padding: 36px 40px 44px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.07);
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 640px) {
+            .form-wrap { border-radius: 20px; padding: 24px 20px 32px; }
+        }
 
         /* ─── Progress Bar ───────────────────────── */
-        .progress { display: flex; align-items: center; margin-bottom: 48px; }
+        .progress { display: flex; align-items: center; margin-bottom: 20px; }
         .prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .prog-num {
             width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border);
@@ -54,7 +66,32 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ─── Form Header ────────────────────────── */
-        .form-head { margin-bottom: 36px; }
+        .form-head { margin-bottom: 14px; }
+
+        /* ─── Indicador de flujo (correo iniciado) ── */
+        .flujo-pill {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(3,7,18,0.05);
+            border: 1px solid rgba(3,7,18,0.1);
+            border-radius: 100px;
+            padding: 6px 14px 6px 10px;
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 16px;
+            width: fit-content;
+        }
+        .flujo-pill.visible { display: inline-flex; }
+        .flujo-pill-dot {
+            width: 7px; height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.22);
+            animation: blink 2s ease-in-out infinite;
+        }
+        .flujo-pill strong { color: var(--text); font-weight: 600; }
         .badge {
             display: inline-flex; align-items: center; gap: 7px;
             background: rgba(225,68,58,0.10); border: 1px solid rgba(225,68,58,0.28);
@@ -68,10 +105,10 @@
         .form-desc { font-size: 14px; color: var(--text-sub); line-height: 1.65; }
 
         /* ─── Section ────────────────────────────── */
-        .section { margin-bottom: 28px; }
+        .section { margin-bottom: 10px; padding: 0; }
         .section-title {
             font-size: 11px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase;
-            color: var(--text-muted); margin-bottom: 14px;
+            color: var(--text-muted); margin-bottom: 10px;
             display: flex; align-items: center; gap: 12px;
         }
         .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -278,21 +315,154 @@
             position: fixed;
             inset: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 0;
             background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
             background-size: 20px 20px;
             -webkit-mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
             mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
         }
+
+        /* ─── Custom select — estilo caja (contexto formulario) ── */
+        .field-cs { position: relative; }
+        .field-cs .cs-trigger {
+            width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; padding: 11px 14px; font-family: inherit; font-size: 14px;
+            font-weight: 400; color: var(--text-muted); cursor: pointer; text-align: left;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: border-color 0.15s, box-shadow 0.15s, color 0.2s;
+        }
+        .field-cs .cs-trigger.has-value { color: var(--text); font-weight: 500; }
+        .field-cs.open .cs-trigger,
+        .field-cs .cs-trigger:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); outline: none; }
+        .field-cs.error .cs-trigger { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        .field-cs .cs-arrow { color: var(--text-muted); flex-shrink: 0; transition: transform 0.3s ease, color 0.2s; }
+        .field-cs.open .cs-arrow { transform: rotate(180deg); color: var(--text-sub); }
+        .field-cs .cs-panel {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background: #fff; border-radius: 14px; border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10); padding: 6px; z-index: 300;
+            opacity: 0; transform: translateY(-8px) scale(0.98); pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .field-cs.open .cs-panel { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .field-cs .cs-opt {
+            display: flex; align-items: center; justify-content: space-between; width: 100%;
+            gap: 10px; background: transparent; border: none; border-radius: 8px;
+            padding: 10px 12px; cursor: pointer; text-align: left; font-family: inherit;
+            font-size: 13px; color: var(--text); transition: background 0.15s;
+        }
+        .field-cs .cs-opt:hover { background: rgba(0,0,0,0.04); }
+        .field-cs .cs-opt.selected { background: rgba(225,68,58,0.06); }
+        .field-cs .cs-opt .cs-opt-label { flex: 1; }
+        .field-cs .cs-opt .cs-opt-check {
+            color: var(--red); flex-shrink: 0; opacity: 0; transform: scale(0.6);
+            transition: opacity 0.18s, transform 0.18s ease;
+        }
+        .field-cs .cs-opt.selected .cs-opt-check { opacity: 1; transform: scale(1); }
+
+        /* ─── Logo fijo (form page no tiene hero) ── */
+        .page-logo {
+            position: fixed;
+            top: 16px;
+            left: 200px;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            pointer-events: all;
+            text-decoration: none;
+        }
+        .page-logo .logo-img { height: 60px; width: auto; display: block; }
+        @media (max-width: 1400px) { .page-logo { left: 80px; } }
+        @media (max-width: 1100px) { .page-logo { left: 60px; } }
+        @media (max-width: 900px)  { .page-logo { left: 24px; } }
+
+        /* ─── Offset por el header fijo ─────────── */
+        .page { padding-top: 110px !important; }
+
+        /* ─── Footer ajustes en esta página ─────── */
+        .footer { margin-top: 0; }
+
+        /* ─── Ocultar header antiguo ─────────────── */
+        .header-old { display: none; }
     </style>
 </head>
 <body>
 <div class="cursor-dots" aria-hidden="true"></div>
 
+<!-- Logo fijo top-left -->
+<a href="index.html" class="page-logo" aria-label="VIZUtire — inicio">
+  <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="logo-img" width="619" height="315" />
+</a>
+
+<!-- Navbar pill flotante (idéntico al main) -->
 <header class="header">
-    <div class="logo-dot"></div>
-    <span class="logo-text">VIZU<em>tire</em></span>
+  <nav class="navbar" id="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html#alicanto" class="nav-highlight">Alicanto</a></li>
+      <li><a href="index.html#tecnologia">Tecnología</a></li>
+      <li><a href="index.html#ciencia">Ciencia</a></li>
+      <li><a href="index.html#pilares">Pilares</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="index.html#contacto" class="nav-cta-btn">Demo</a>
+      <a href="formulario-captacion-en.html" class="nav-lang-btn" onclick="localStorage.setItem('vizutire-lang','en')">EN</a>
+    </div>
+    <button class="menu-toggle" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 </header>
+
+<!-- Mobile drawer (idéntico al main) -->
+<div class="side-panel-overlay" id="mobileOverlay"></div>
+<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="side-panel-header">
+    <div class="side-panel-logo">
+      <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
+    </div>
+    <button class="close-panel" id="drawerClose" aria-label="Cerrar menú">×</button>
+  </div>
+  <div class="side-panel-content">
+    <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería. Inteligencia operacional para cero fallas imprevistas.</p>
+    <ul class="panel-nav">
+      <li><a href="index.html#alicanto" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
+        Alicanto
+      </a></li>
+      <li><a href="index.html#tecnologia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
+        Tecnología
+      </a></li>
+      <li><a href="index.html#ciencia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
+        Ciencia
+      </a></li>
+      <li><a href="index.html#pilares" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        Pilares
+      </a></li>
+    </ul>
+    <a href="index.html#contacto" class="panel-cta">Solicitar Demo</a>
+    <div class="panel-contact">
+      <div class="panel-contact-item">
+        <span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+        <span class="panel-contact-text">digital@vizutire.com</span>
+      </div>
+      <div class="panel-contact-item">
+        <span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="panel-contact-text">Antofagasta, Chile</span>
+      </div>
+    </div>
+    <div class="panel-social">
+      <a href="https://www.instagram.com/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/company/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
 
 <div class="page">
 <div class="form-wrap">
@@ -326,7 +496,10 @@
     <div id="step-1" class="step visible">
 
         <div class="form-head">
-            <div class="badge"><span class="badge-dot"></span>Evaluación técnica gratuita</div>
+            <div class="flujo-pill" id="flujoIndicator">
+                <span class="flujo-pill-dot"></span>
+                Flujo iniciado con <strong id="flujoEmail"></strong>
+            </div>
             <h1 class="form-title">Solicita el diagnóstico<br>de tu flota OTR</h1>
             <p class="form-desc">Completa el formulario y un especialista se comunicará<br>contigo en menos de 24 horas.</p>
         </div>
@@ -340,12 +513,18 @@
                 </div>
                 <div class="field">
                     <label>Cargo / Área <span class="req">*</span></label>
-                    <select id="cargo">
-                        <option value="" disabled selected>Selecciona tu área</option>
-                        <option value="Gerencia de operaciones">Gerencia de operaciones</option>
-                        <option value="Encargado de mantenimiento">Encargado de mantenimiento</option>
-                        <option value="CFO / Finanzas">CFO / Finanzas</option>
-                    </select>
+                    <input type="hidden" id="cargo">
+                    <div class="field-cs cs-wrap" data-field="cargo">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Selecciona tu área</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Gerencia de operaciones" role="option"><span class="cs-opt-label">Gerencia de operaciones</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Encargado de mantenimiento" role="option"><span class="cs-opt-label">Encargado de mantenimiento</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="CFO / Finanzas" role="option"><span class="cs-opt-label">CFO / Finanzas</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="field">
                     <label>Correo electrónico <span class="req">*</span></label>
@@ -373,15 +552,21 @@
                         <input type="tel" id="telefono" class="tel-num" placeholder="9 1234 5678">
                     </div>
                 </div>
-                <div class="field">
+                <div class="field col-full">
                     <label>Preferencia de contacto <span class="req">*</span></label>
-                    <select id="pref-contacto">
-                        <option value="" disabled selected>¿Cómo prefieres que te contactemos?</option>
-                        <option value="Correo electrónico">Correo electrónico</option>
-                        <option value="WhatsApp">WhatsApp</option>
-                        <option value="Llamada telefónica">Llamada telefónica</option>
-                        <option value="Videollamada">Videollamada</option>
-                    </select>
+                    <input type="hidden" id="pref-contacto">
+                    <div class="field-cs cs-wrap" data-field="pref-contacto">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">¿Cómo prefieres que te contactemos?</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Correo electrónico" role="option"><span class="cs-opt-label">Correo electrónico</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="WhatsApp" role="option"><span class="cs-opt-label">WhatsApp</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Llamada telefónica" role="option"><span class="cs-opt-label">Llamada telefónica</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Videollamada" role="option"><span class="cs-opt-label">Videollamada</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -395,28 +580,31 @@
                 </div>
                 <div class="field">
                     <label>País <span class="req">*</span></label>
-                    <select id="pais">
-                        <option value="" disabled selected>Selecciona el país</option>
-                        <option>Chile</option><option>Perú</option><option>México</option>
-                        <option>Argentina</option><option>Brasil</option><option>Colombia</option>
-                        <option>Venezuela</option><option>Bolivia</option><option>Ecuador</option>
-                        <option>Paraguay</option><option>Uruguay</option><option>Panamá</option>
-                        <option>España</option><option>Estados Unidos</option><option>Otro</option>
-                    </select>
+                    <input type="hidden" id="pais">
+                    <div class="field-cs cs-wrap" data-field="pais">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Selecciona el país</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Chile" role="option"><span class="cs-opt-label">Chile</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Perú" role="option"><span class="cs-opt-label">Perú</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="México" role="option"><span class="cs-opt-label">México</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Argentina" role="option"><span class="cs-opt-label">Argentina</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Brasil" role="option"><span class="cs-opt-label">Brasil</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Colombia" role="option"><span class="cs-opt-label">Colombia</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Bolivia" role="option"><span class="cs-opt-label">Bolivia</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Ecuador" role="option"><span class="cs-opt-label">Ecuador</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Panamá" role="option"><span class="cs-opt-label">Panamá</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="España" role="option"><span class="cs-opt-label">España</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Estados Unidos" role="option"><span class="cs-opt-label">Estados Unidos</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Otro" role="option"><span class="cs-opt-label">Otro</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="field">
                     <label>Ciudad / Faena <span class="req">*</span></label>
                     <input type="text" id="ciudad" placeholder="Antofagasta">
-                </div>
-                <div class="field">
-                    <label>Flota OTR aproximada <span class="req">*</span></label>
-                    <select id="flota">
-                        <option value="" disabled selected>Rango de neumáticos</option>
-                        <option value="1-10">1 – 10 neumáticos</option>
-                        <option value="11-50">11 – 50 neumáticos</option>
-                        <option value="51-200">51 – 200 neumáticos</option>
-                        <option value="200+">Más de 200 neumáticos</option>
-                    </select>
                 </div>
                 <div class="field">
                     <label>N.° de CAEX / camiones</label>
@@ -424,15 +612,21 @@
                 </div>
                 <div class="field col-full">
                     <label>Tipo de equipo principal</label>
-                    <select id="equipo">
-                        <option value="" disabled selected>Selecciona el equipo</option>
-                        <option>Camiones de arrastre</option>
-                        <option>Cargadores frontales</option>
-                        <option>Perforadoras</option>
-                        <option>Bulldozers / Tractores</option>
-                        <option>Mixto (varios tipos)</option>
-                        <option>Otro</option>
-                    </select>
+                    <input type="hidden" id="equipo">
+                    <div class="field-cs cs-wrap" data-field="equipo">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Selecciona el equipo</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Camiones de arrastre" role="option"><span class="cs-opt-label">Camiones de arrastre</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Cargadores frontales" role="option"><span class="cs-opt-label">Cargadores frontales</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Perforadoras" role="option"><span class="cs-opt-label">Perforadoras</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Bulldozers / Tractores" role="option"><span class="cs-opt-label">Bulldozers / Tractores</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Mixto (varios tipos)" role="option"><span class="cs-opt-label">Mixto (varios tipos)</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Otro" role="option"><span class="cs-opt-label">Otro</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -785,7 +979,76 @@
 </div>
 </div>
 
+<!-- ===================== FOOTER (idéntico al main) ===================== -->
+<footer class="footer">
+  <div class="footer-watermark" aria-hidden="true">
+    <img src="imagenes/SVG/Alicanto_foooter.svg" alt="" width="405" height="81" />
+  </div>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo-link">
+          <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
+        </a>
+        <p class="footer-brand-desc">Diagnóstico estructural no destructivo<br />para neumáticos OTR de minería.</p>
+        <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <h4>SERVICIOS</h4>
+          <a href="index.html#problema">Inspección Ultrasónica</a>
+          <a href="index.html#problema">Beneficios</a>
+          <a href="index.html#problema">Analítica Con IA</a>
+          <a href="index.html#problema">Reportes De Diagnóstico</a>
+        </div>
+        <div class="footer-col">
+          <h4>EMPRESA</h4>
+          <a href="index.html#alicanto">Alicanto</a>
+          <a href="index.html#ciencia">Casos de éxito</a>
+          <a href="index.html#historia">Hitos</a>
+          <a href="index.html#contacto">Contacto</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 VIZUtire. Todos los derechos reservados.</p>
+      <p>Antofagasta, Chile</p>
+    </div>
+  </div>
+</footer>
+
 <script>
+/* ─── Navbar / Mobile Drawer ──────────────────────── */
+var _panel   = document.querySelector('.side-panel');
+var _overlay = document.querySelector('.side-panel-overlay');
+var _toggle  = document.querySelector('.menu-toggle');
+var _close   = document.getElementById('drawerClose');
+
+function toggleSidePanel() {
+  if (!_panel) return;
+  var isOpening = !_panel.classList.contains('active');
+  requestAnimationFrame(function () {
+    _panel.classList.toggle('active');
+    _overlay.classList.toggle('active');
+    if (_toggle) _toggle.classList.toggle('open');
+    document.body.style.overflow = isOpening ? 'hidden' : '';
+  });
+}
+if (_toggle) _toggle.addEventListener('click', toggleSidePanel);
+if (_close)  _close.addEventListener('click', toggleSidePanel);
+if (_overlay) _overlay.addEventListener('click', toggleSidePanel);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _panel && _panel.classList.contains('active')) toggleSidePanel();
+});
+
 /* ══════════════════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════════════════ */
@@ -821,21 +1084,72 @@ function updateProgress(n) {
     });
 }
 
+/* ─── Custom selects (box-style) ───────────────────────── */
+(function () {
+    function initCS(wrap) {
+        var fieldId = wrap.dataset.field;
+        var hidden  = document.getElementById(fieldId);
+        if (!hidden) return;
+        var trigger = wrap.querySelector('.cs-trigger');
+        var valSpan = wrap.querySelector('.cs-val');
+        var opts    = wrap.querySelectorAll('.cs-opt');
+
+        trigger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var opening = !wrap.classList.contains('open');
+            document.querySelectorAll('.field-cs.open').forEach(function (w) {
+                w.classList.remove('open');
+                w.querySelector('.cs-trigger').setAttribute('aria-expanded', 'false');
+            });
+            if (opening) {
+                wrap.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        opts.forEach(function (opt) {
+            opt.addEventListener('click', function () {
+                opts.forEach(function (o) { o.classList.remove('selected'); });
+                opt.classList.add('selected');
+                valSpan.textContent = opt.querySelector('.cs-opt-label').textContent;
+                trigger.classList.add('has-value');
+                hidden.value = opt.dataset.value;
+                wrap.classList.remove('open', 'error');
+                trigger.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    document.querySelectorAll('.field-cs[data-field]').forEach(initCS);
+
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.field-cs.open').forEach(function (w) {
+            w.classList.remove('open');
+            w.querySelector('.cs-trigger').setAttribute('aria-expanded', 'false');
+        });
+    });
+})();
+
 /* ─── Paso 1 → 2 ─────────────────────────────────────── */
 function goStep2() {
-    const required = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'flota', 'pref-contacto'];
+    const required = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'pref-contacto'];
     let ok = true;
     required.forEach(id => {
         const el = document.getElementById(id);
         el.classList.remove('error');
         if (id === 'telefono') document.getElementById('tel-wrap').classList.remove('error');
+        // Quitar error del custom select si existe
+        const cs = el.parentElement && el.parentElement.querySelector('.field-cs');
+        if (cs) cs.classList.remove('error');
         if (!el.value.trim()) {
             el.classList.add('error');
             if (id === 'telefono') document.getElementById('tel-wrap').classList.add('error');
+            // Propagar error al custom select visual
+            if (cs) cs.classList.add('error');
             ok = false;
         }
     });
-    if (!ok) { document.querySelector('.error')?.scrollIntoView({ block: 'center' }); return; }
+    if (!ok) { document.querySelector('.field-cs.error, .error')?.scrollIntoView({ block: 'center' }); return; }
 
     state.nombre        = document.getElementById('nombre').value.trim();
     state.cargo         = document.getElementById('cargo').value.trim();
@@ -845,7 +1159,7 @@ function goStep2() {
     state.empresa       = document.getElementById('empresa').value.trim();
     state.pais          = document.getElementById('pais').value;
     state.ciudad        = document.getElementById('ciudad').value.trim();
-    state.flota         = document.getElementById('flota').value;
+    state.flota         = '';
     state.numCaexP1     = document.getElementById('num-caex-p1').value || '';
     state.equipo        = document.getElementById('equipo').value || 'No especificado';
 
@@ -1106,7 +1420,6 @@ function renderResumen() {
         if (pre.nombre)  document.getElementById('nombre').value  = pre.nombre;
         if (pre.empresa) document.getElementById('empresa').value = pre.empresa;
         if (pre.correo)  document.getElementById('correo').value  = pre.correo;
-        if (pre.flota)   document.getElementById('flota').value   = pre.flota;
     } catch (_) {}
 })();
 
@@ -1127,6 +1440,21 @@ document.getElementById('telefono').addEventListener('input', () =>
         dot.style.setProperty('--dot-y', e.clientY + 'px');
     });
 }());
+
+/* ─── Indicador de correo (flujo iniciado) ──────────── */
+(function () {
+    try {
+        const pre = JSON.parse(localStorage.getItem('vizutire_prefill') || '{}');
+        if (pre.correo) {
+            const pill  = document.getElementById('flujoIndicator');
+            const span  = document.getElementById('flujoEmail');
+            if (pill && span) {
+                span.textContent = pre.correo;
+                pill.classList.add('visible');
+            }
+        }
+    } catch (_) {}
+})();
 </script>
 
 </body>
