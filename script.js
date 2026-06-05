@@ -18,9 +18,9 @@ if (typeof window.smoothscroll !== 'undefined') window.smoothscroll.polyfill();
   function dismiss() {
     document.body.style.overflow = '';
     pre.classList.add('done');
-    // Inicia el video exactamente cuando el preloader empieza a desvanecerse
+    // Inicia el video solo en desktop — en móvil el scanner se muestra via CSS
     var vid = document.getElementById('heroVideo');
-    if (vid) vid.play().catch(function () {});
+    if (vid && window.innerWidth > 900) vid.play().catch(function () {});
     setTimeout(function () { pre.remove(); }, 650);
   }
 
@@ -84,6 +84,39 @@ document.addEventListener('mousemove', e => {
     sec.style.setProperty('--local-y', (e.clientY - r.top)  + 'px');
   });
 }, { passive: true });
+
+// ========= CUSTOM SELECT — Cargo / Área =========
+(function () {
+  const wrap    = document.getElementById('cargoSelect');
+  const trigger = document.getElementById('cargoTrigger');
+  const valueEl = document.getElementById('cargoValue');
+  const hidden  = document.getElementById('cargo');
+  if (!wrap) return;
+
+  function open()  { wrap.classList.add('open');    trigger.setAttribute('aria-expanded', 'true'); }
+  function close() { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    wrap.classList.contains('open') ? close() : open();
+  });
+
+  wrap.querySelectorAll('.cs-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const val   = opt.dataset.value;
+      const label = opt.querySelector('.cs-opt-unit, .cs-opt-range').textContent;
+      hidden.value        = val;
+      valueEl.textContent = label;
+      trigger.classList.add('has-value');
+      wrap.querySelectorAll('.cs-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      close();
+    });
+  });
+
+  document.addEventListener('click', () => close());
+  wrap.addEventListener('click', e => e.stopPropagation());
+})();
 
 // ========= CUSTOM SELECT — Flota OTR =========
 (function () {
@@ -664,9 +697,30 @@ if (bannerTrack) {
 // ========= FORMULARIO =========
 const form = document.getElementById('contactForm');
 if (form) {
+  const emailEl = document.getElementById('email');
+
+  // Quitar estado de error mientras el usuario escribe
+  if (emailEl) {
+    emailEl.addEventListener('input', () => {
+      emailEl.closest('.form-group')?.classList.remove('form-group--error', 'form-group--shake');
+    });
+  }
+
   form.addEventListener('submit', e => {
     e.preventDefault();
-    if (!window._captchaValid || !window._captchaValid()) return;
+
+    // Correo obligatorio antes de continuar
+    const emailVal   = (emailEl?.value || '').trim();
+    const emailGroup = emailEl?.closest('.form-group');
+    if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      emailGroup?.classList.add('form-group--error', 'form-group--shake');
+      setTimeout(() => emailGroup?.classList.remove('form-group--shake'), 420);
+      emailEl?.focus();
+      return;
+    }
+    emailGroup?.classList.remove('form-group--error');
+
+    if (window._captchaValid && !window._captchaValid()) return;
 
     const data = Object.fromEntries(new FormData(form));
 
@@ -675,7 +729,13 @@ if (form) {
       nombre:  data.nombre  || '',
       empresa: data.empresa || '',
       correo:  data.email   || '',
-      flota:   data.flota   || '',
+      cargo:   data.cargo   || '',
+    }));
+
+    // Token de acceso — válido 2 horas, heredado por la nueva pestaña via sessionStorage
+    sessionStorage.setItem('viz_access', JSON.stringify({
+      t: 'viz_' + Date.now(),
+      exp: Date.now() + 7200000
     }));
 
     // Abrir el formulario de captación en nueva página
@@ -865,35 +925,49 @@ if (form) {
   const scanner = document.getElementById('heroScanner');
   if (!video || !scanner) return;
 
-  /* Móvil: CSS ya muestra el scanner; detener y descargar el vídeo */
-  if (window.innerWidth <= 900) {
-    video.pause();
-    video.removeAttribute('src');
-    const source = video.querySelector('source');
-    if (source) source.removeAttribute('src');
-    video.load(); /* aborta la carga */
-    return;
+  const source  = video.querySelector('source');
+  // Acepta data-src (sin carga inicial) o src convencional
+  const origSrc = source
+    ? (source.getAttribute('data-src') || source.getAttribute('src') || null)
+    : null;
+
+  function onEnded() { scanner.classList.add('visible'); }
+
+  function setupDesktop() {
+    // Asigna src la primera vez (o lo restaura tras modo móvil)
+    if (origSrc && source && !source.getAttribute('src')) {
+      source.setAttribute('src', origSrc);
+      video.load();
+      video.play().catch(() => {});
+    }
+    video.removeEventListener('ended', onEnded);
+    video.addEventListener('ended', onEnded);
   }
 
-  video.addEventListener('ended', () => {
-    scanner.classList.add('visible');
-  });
+  function teardownMobile() {
+    video.removeEventListener('ended', onEnded);
+    scanner.classList.remove('visible');
+    video.pause();
+    if (source) source.removeAttribute('src');
+    video.load(); // sin src → el navegador no registra sesión de media
+  }
+
+  const mqScanner = window.matchMedia('(max-width: 900px)');
+  if (mqScanner.matches) teardownMobile(); else setupDesktop();
+  mqScanner.addEventListener('change', e => e.matches ? teardownMobile() : setupDesktop());
 })();
 
 // ========= HERO TEXT + LOGO — disparo único, permanente =========
 // Cuando el vídeo muestra fondo claro (luminancia > THRESHOLD):
 //   • Texto pasa a oscuro (.hero--ended) y se queda así para siempre.
-//   • Logo cambia de positivo (oscuro) → negativo (blanco) al mismo tiempo.
+//   • Logo cambia de negativo (blanco) → positivo (oscuro) al mismo tiempo.
 // Una vez disparado, el muestreo se detiene; no hay reversión.
 (function () {
   const hero  = document.querySelector('.hero');
   const video = document.getElementById('heroVideo');
   if (!hero || !video) return;
 
-  // Móvil: estado controlado por CSS media query; no necesitamos canvas
-  if (window.innerWidth <= 900) return;
-
-  let triggered    = false; // una vez true, bloqueado permanentemente
+  let triggered    = false;
   let rafId        = null;
   let canvasFailed = false;
 
@@ -901,15 +975,16 @@ if (form) {
     if (triggered) return;
     triggered = true;
     hero.classList.add('hero--ended');
-    console.info('[VIZUtire hero] Trigger disparado —', reason);
-    stopRAF(); // estado permanente → no hace falta seguir muestreando
+    console.info('[VIZUtire hero] Trigger —', reason);
+    stopRAF();
   }
 
-  // ── Canvas 32×18 para leer brillo real del frame ────────────────────────
   const canvas = document.createElement('canvas');
   canvas.width = 32; canvas.height = 18;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  const THRESHOLD = 128; // luminancia 0–255; por encima = fondo claro
+  const THRESHOLD    = 128;
+  const BRIGHT_START = 3.4;
+  const TIMER_TRIGGER = 3.4;
 
   function readLuminance() {
     if (canvasFailed || video.readyState < 2) return null;
@@ -921,31 +996,21 @@ if (form) {
         s += d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
       return s / (d.length / 4);
     } catch (e) {
-      // CORS/SecurityError (común con file://): activar fallback por tiempo
       canvasFailed = true;
       return null;
     }
   }
 
-  // ── Fallback temporal si canvas está bloqueado (file://) ────────────────
-  // BRIGHT_START = segundo del vídeo en que aparece el fondo blanco/claro.
-  // Ajusta este valor si el trigger se dispara muy pronto o muy tarde.
-  const BRIGHT_START = 4.5; // ← ajustar según el vídeo
-
   function sampleFrame() {
     if (triggered || video.paused || video.ended || video.readyState < 2) return;
-
     const lum = readLuminance();
     if (lum !== null) {
-      // Canvas disponible: usar brillo real
       if (lum > THRESHOLD) trigger('canvas lum=' + lum.toFixed(1) + ' t=' + video.currentTime.toFixed(2) + 's');
     } else if (canvasFailed) {
-      // Canvas bloqueado: usar tiempo como fallback
-      if (video.currentTime >= BRIGHT_START) trigger('fallback t=' + video.currentTime.toFixed(2) + 's (BRIGHT_START=' + BRIGHT_START + ')');
+      if (video.currentTime >= BRIGHT_START) trigger('fallback t=' + video.currentTime.toFixed(2) + 's');
     }
   }
 
-  // rAF loop mientras el vídeo reproduce — se detiene solo al disparar
   function startRAF() {
     if (rafId || triggered) return;
     (function loop() {
@@ -959,9 +1024,42 @@ if (form) {
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
   }
 
-  video.addEventListener('play',   startRAF);
-  video.addEventListener('pause',  stopRAF);
-  video.addEventListener('ended',  stopRAF);
+  function onTimeUpdate() {
+    if (video.currentTime >= TIMER_TRIGGER) {
+      trigger('timeupdate ' + TIMER_TRIGGER + 's');
+      video.removeEventListener('timeupdate', onTimeUpdate);
+    }
+  }
+
+  function setupDesktop() {
+    if (triggered) return;
+    // Elimina primero por si setupDesktop se llama varias veces
+    video.removeEventListener('play',    startRAF);
+    video.removeEventListener('pause',   stopRAF);
+    video.removeEventListener('ended',   stopRAF);
+    video.removeEventListener('timeupdate', onTimeUpdate);
+    video.addEventListener('play',    startRAF);
+    video.addEventListener('pause',   stopRAF);
+    video.addEventListener('ended',   stopRAF);
+    video.addEventListener('timeupdate', onTimeUpdate);
+    // Fallback garantizado: si ningún mecanismo disparó antes, el 'ended' lo hace
+    video.addEventListener('ended', () => trigger('video ended fallback'), { once: true });
+  }
+
+  function teardownMobile() {
+    stopRAF();
+    video.removeEventListener('play',       startRAF);
+    video.removeEventListener('pause',      stopRAF);
+    video.removeEventListener('ended',      stopRAF);
+    video.removeEventListener('timeupdate', onTimeUpdate);
+  }
+
+  const mqHero = window.matchMedia('(max-width: 900px)');
+  if (!mqHero.matches) setupDesktop();
+  mqHero.addEventListener('change', e => {
+    if (e.matches) teardownMobile(); else setupDesktop();
+  });
+
   window.addEventListener('pageshow', stopRAF);
 })();
 
