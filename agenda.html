@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Cita — VISUtire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Agendar Cita — VIZUtire</title>
+    <script>(function(){try{var d=JSON.parse(sessionStorage.getItem('viz_access')||'{}');if(!d.t||Date.now()>(d.exp||0))throw 0;}catch(e){location.replace('index.html#contacto');}})();</script>
+    <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
+    <link rel="stylesheet" href="styles.css" />
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,21 +33,19 @@
             min-height: 100vh;
         }
 
-        /* ─── Header ─────────────────────────── */
-        .header {
-            padding: 18px 32px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* ─── Logo fijo ──────────────────────── */
+        .page-logo {
+            position: fixed; top: 16px; left: 200px; z-index: 101;
+            display: flex; align-items: center; pointer-events: all; text-decoration: none;
         }
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
-        .logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
-        .logo-text em { color: var(--red); font-style: normal; }
+        .page-logo .logo-img { height: 60px; width: auto; display: block; }
+        @media (max-width: 1400px) { .page-logo { left: 80px; } }
+        @media (max-width: 1100px) { .page-logo { left: 60px; } }
+        @media (max-width: 900px)  { .page-logo { left: 24px; } }
 
         /* ─── Layout ─────────────────────────── */
-        .page { display: flex; justify-content: center; padding: 48px 24px 80px; }
+        .page { display: flex; justify-content: center; padding: 40px 24px 60px; padding-top: 110px !important; }
+        .section { padding: 0 !important; }
         .wrap { width: 100%; max-width: 540px; }
 
         /* ─── Progress ───────────────────────── */
@@ -390,12 +394,15 @@
             .header { padding: 16px; }
         }
 
+        .wrap { width: 100%; max-width: 540px; background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:28px; padding:36px 40px 44px; box-shadow:0 6px 32px rgba(0,0,0,0.07); position:relative; z-index:1; }
+        @media (max-width: 640px) { .wrap { border-radius:20px; padding:24px 20px 32px; } }
+
         /* ─── Cursor dot-reveal ──────────────────── */
         .cursor-dots {
             position: fixed;
             inset: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 0;
             background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
             background-size: 20px 20px;
             -webkit-mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
@@ -406,12 +413,58 @@
 <body>
 <div class="cursor-dots" aria-hidden="true"></div>
 
+<!-- Logo fijo top-left -->
+<a href="index.html" class="page-logo" aria-label="VIZUtire — inicio">
+  <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="logo-img" width="619" height="315" />
+</a>
+
+<!-- Navbar pill -->
 <header class="header">
-    <a class="logo" href="formulario-captacion.html">
-        <div class="logo-dot"></div>
-        <span class="logo-text">VISU<em>tire</em></span>
-    </a>
+  <nav class="navbar" id="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html#alicanto" class="nav-highlight">Alicanto</a></li>
+      <li><a href="index.html#tecnologia">Tecnología</a></li>
+      <li><a href="index.html#ciencia">Ciencia</a></li>
+      <li><a href="index.html#pilares">Pilares</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="index.html#contacto" class="nav-cta-btn">Demo</a>
+      <a href="agenda-en.html" class="nav-lang-btn" onclick="localStorage.setItem('vizutire-lang','en')">EN</a>
+    </div>
+    <button class="menu-toggle" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 </header>
+
+<!-- Mobile drawer -->
+<div class="side-panel-overlay" id="mobileOverlay"></div>
+<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="side-panel-header">
+    <div class="side-panel-logo">
+      <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
+    </div>
+    <button class="close-panel" id="drawerClose" aria-label="Cerrar menú">×</button>
+  </div>
+  <div class="side-panel-content">
+    <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería.</p>
+    <ul class="panel-nav">
+      <li><a href="index.html#alicanto" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3"/></svg></span>
+        Alicanto
+      </a></li>
+      <li><a href="index.html#tecnologia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg></span>
+        Tecnología
+      </a></li>
+      <li><a href="index.html#ciencia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
+        Ciencia
+      </a></li>
+    </ul>
+    <a href="index.html#contacto" class="panel-cta">Solicitar Demo</a>
+  </div>
+</div>
 
 <div class="page">
 <div class="wrap">
@@ -630,6 +683,28 @@
 </div>
 
 <script>
+/* ─── Navbar / Mobile Drawer ──────────────────────── */
+var _panel   = document.querySelector('.side-panel');
+var _overlay = document.querySelector('.side-panel-overlay');
+var _toggle  = document.querySelector('.menu-toggle');
+var _close   = document.getElementById('drawerClose');
+function toggleSidePanel() {
+  if (!_panel) return;
+  var isOpening = !_panel.classList.contains('active');
+  requestAnimationFrame(function () {
+    _panel.classList.toggle('active');
+    _overlay.classList.toggle('active');
+    if (_toggle) _toggle.classList.toggle('open');
+    document.body.style.overflow = isOpening ? 'hidden' : '';
+  });
+}
+if (_toggle)  _toggle.addEventListener('click', toggleSidePanel);
+if (_close)   _close.addEventListener('click', toggleSidePanel);
+if (_overlay) _overlay.addEventListener('click', toggleSidePanel);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _panel && _panel.classList.contains('active')) toggleSidePanel();
+});
+
 /* ══════════════════════════════════════════════════
    CONFIGURACIÓN
    ══════════════════════════════════════════════════ */
