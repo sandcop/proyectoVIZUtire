@@ -2,6 +2,15 @@
    VIZUtire — Estilo Lamosa/Framer
    =========================== */
 
+/* ── Validación inline del formulario de contacto ── */
+.form-group--error { border-bottom-color: var(--danger) !important; }
+@keyframes shake-x {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-5px); }
+  40%,80% { transform: translateX(5px); }
+}
+.form-group--shake { animation: shake-x 0.38s ease; }
+
 @property --scan {
   syntax: '<percentage>';
   inherits: false;
@@ -43,7 +52,10 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+body::-webkit-scrollbar { display: none; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
@@ -271,6 +283,18 @@ section[id] { position: relative; }
 @media (max-width: 768px) {
   .hitos-iframe { display: none; }
   .hitos-iframe-mobile { display: block; }
+  /* Tapa la barra de controles del bundler (Reproducir / porcentaje) con el
+     color de fondo del propio iframe — sin necesidad de acceder al documento
+     del iframe (que en file:// es cross-origin y bloquea JS). */
+  .historia-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 90px;
+    background: #fbfaf7;
+    z-index: 20;
+    pointer-events: none;
+  }
 }
 
 .nav-links {
