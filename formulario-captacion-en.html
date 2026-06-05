@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Evaluation — VIZUtire</title>
+    <script>(function(){try{var d=JSON.parse(sessionStorage.getItem('viz_access')||'{}');if(!d.t||Date.now()>(d.exp||0))throw 0;}catch(e){location.replace('index.html#contacto');}})();</script>
+    <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --red:        #E1443A;
+            --red-dark:   #c73930;
+            --bg:         #f0f1f3;
+            --surface:    #ffffff;
+            --surface-2:  #f4f4f5;
+            --border:     rgba(0,0,0,0.09);
+            --text:       #030712;
+            --text-sub:   #5d636f;
+            --text-muted: #aab0bb;
+        }
+
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* ─── Layout ─────────────────────────────── */
+        .page { display: flex; justify-content: center; padding: 40px 24px 60px; }
+        .form-wrap {
+            width: 100%; max-width: 560px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 28px;
+            padding: 36px 40px 44px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.07);
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 640px) {
+            .form-wrap { border-radius: 20px; padding: 24px 20px 32px; }
+        }
+
+        /* ─── Progress Bar ───────────────────────── */
+        .progress { display: flex; align-items: center; margin-bottom: 20px; }
+        .prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .prog-num {
+            width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: var(--text-muted); transition: all 0.3s ease;
+        }
+        .prog-label { font-size: 12px; font-weight: 500; color: var(--text-muted); transition: color 0.3s; white-space: nowrap; }
+        .prog-line { flex: 1; height: 1px; background: var(--border); margin: 0 10px; transition: background 0.4s ease; }
+        .prog-step.done  .prog-num   { border-color: var(--red); color: var(--red); }
+        .prog-step.done  .prog-label { color: var(--text-sub); }
+        .prog-step.active .prog-num  { border-color: var(--red); background: var(--red); color: #fff; }
+        .prog-step.active .prog-label { color: var(--text); }
+        .prog-line.done  { background: var(--red); }
+
+        /* ─── Steps ──────────────────────────────── */
+        .step { display: none; }
+        .step.visible { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ─── Form Header ────────────────────────── */
+        .form-head { margin-bottom: 14px; }
+
+        /* ─── Indicador de flujo (correo iniciado) ── */
+        .flujo-pill {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(3,7,18,0.05);
+            border: 1px solid rgba(3,7,18,0.1);
+            border-radius: 100px;
+            padding: 6px 14px 6px 10px;
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 16px;
+            width: fit-content;
+        }
+        .flujo-pill.visible { display: inline-flex; }
+        .flujo-pill-dot {
+            width: 7px; height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.22);
+            animation: blink 2s ease-in-out infinite;
+        }
+        .flujo-pill strong { color: var(--text); font-weight: 600; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(225,68,58,0.10); border: 1px solid rgba(225,68,58,0.28);
+            color: var(--red); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            padding: 5px 11px; border-radius: 4px; margin-bottom: 18px;
+        }
+        .badge-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: blink 2s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .form-title { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 10px; }
+        .form-desc { font-size: 14px; color: var(--text-sub); line-height: 1.65; }
+
+        /* ─── Section ────────────────────────────── */
+        .section { margin-bottom: 10px; padding: 0; }
+        .section-title {
+            font-size: 11px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* ─── Grid + Fields ──────────────────────── */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .col-full { grid-column: 1 / -1; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field label { font-size: 12px; font-weight: 500; color: var(--text-sub); }
+        .req { color: var(--red); margin-left: 2px; }
+
+        input, select {
+            width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); font-family: inherit; font-size: 14px;
+            padding: 11px 14px; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input::placeholder { color: var(--text-muted); }
+        input:focus, select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
+        input.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+        select option { background: #fff; }
+        select.error { border-color: #f87171 !important; }
+
+        /* ─── Input con prefijo ───────────────────── */
+        .input-prefix-wrap { position: relative; }
+        .input-prefix-wrap .prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-muted); pointer-events: none; }
+        .input-prefix-wrap input { padding-left: 38px; }
+
+        /* ─── Nav Buttons ────────────────────────── */
+        .nav-row { display: flex; gap: 10px; margin-top: 8px; }
+        .btn-back {
+            flex: 0 0 auto; background: transparent; border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-sub); font-family: inherit; font-size: 14px; font-weight: 500;
+            padding: 12px 18px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .btn-back:hover { border-color: var(--text-muted); color: var(--text); }
+        .btn-next {
+            flex: 1; background: var(--red); border: none; border-radius: 8px;
+            color: #fff; font-family: inherit; font-size: 15px; font-weight: 600;
+            padding: 13px 20px; cursor: pointer; transition: background 0.15s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-next:hover  { background: var(--red-dark); }
+        .btn-next:active { transform: scale(0.99); }
+        .btn-next:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .spin { animation: spin 0.8s linear infinite; }
+
+        /* ─── Category Buttons ───────────────────── */
+        .cat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .cat-btn {
+            background: var(--surface-2); border: 2px solid var(--border); border-radius: 12px;
+            padding: 22px 16px; cursor: pointer; text-align: center;
+            transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .cat-btn:hover { border-color: rgba(225,68,58,0.4); }
+        .cat-btn.active { border-color: var(--red); background: rgba(225,68,58,0.07); }
+        .cat-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--border); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .cat-btn.active .cat-icon { background: rgba(225,68,58,0.18); }
+        .cat-icon svg { stroke: var(--text-muted); transition: stroke 0.2s; }
+        .cat-btn.active .cat-icon svg { stroke: var(--red); }
+        .cat-name { font-size: 15px; font-weight: 600; color: var(--text-sub); transition: color 0.2s; }
+        .cat-btn.active .cat-name { color: var(--text); }
+        .cat-sub { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+        /* ─── PDF Cards ──────────────────────────── */
+        .check-set { display: none; flex-direction: column; gap: 8px; }
+        .check-set.visible { display: flex; animation: fadeUp 0.25s ease; }
+        .pdf-card {
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+            cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none;
+        }
+        .pdf-card:hover { border-color: rgba(225,68,58,0.35); background: rgba(225,68,58,0.03); }
+        .pdf-card:has(input:checked) { border-color: var(--red); background: rgba(225,68,58,0.08); }
+        .pdf-icon { width: 38px; height: 38px; border-radius: 7px; background: rgba(225,68,58,0.10); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pdf-info { flex: 1; }
+        .pdf-name { font-size: 14px; font-weight: 600; color: var(--text-sub); transition: color 0.15s; }
+        .pdf-card:has(input:checked) .pdf-name { color: var(--text); }
+        .pdf-tag { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .pdf-check { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--red); cursor: pointer; }
+        .hint { font-size: 12px; color: #f87171; margin-bottom: 12px; display: none; }
+        .hint.visible { display: block; }
+
+        /* ─── Cargo banner (step 2) ──────────────── */
+        .cargo-banner {
+            display: none; background: rgba(225,68,58,0.06); border: 1px solid rgba(225,68,58,0.22);
+            border-radius: 12px; padding: 16px 20px; margin-bottom: 22px; animation: fadeUp 0.3s ease;
+        }
+        .cargo-banner.visible { display: block; }
+        .cargo-msg { font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 6px; }
+        .cargo-desc { font-size: 13px; color: var(--text-sub); line-height: 1.55; }
+
+        /* ─── Decisión calculadora ───────────────── */
+        .decision-banner {
+            background: linear-gradient(135deg, rgba(225,68,58,0.07), rgba(225,68,58,0.02));
+            border: 1px solid rgba(225,68,58,0.22); border-radius: 16px;
+            padding: 32px 28px; margin-bottom: 20px; text-align: center;
+        }
+        .decision-icon-wrap { width: 60px; height: 60px; border-radius: 16px; background: rgba(225,68,58,0.14); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+        .decision-q { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px; }
+        .decision-sub { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+        .decision-bullets { list-style: none; text-align: left; display: inline-block; margin-top: 14px; }
+        .decision-bullets li { font-size: 13px; color: var(--text-sub); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+        .decision-bullets li::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+        /* ─── Calculadora ────────────────────────── */
+        .calc-section { display: none; margin-top: 4px; }
+        .calc-section.visible { display: block; animation: fadeUp 0.3s ease; }
+        .calc-divider { display: flex; align-items: center; gap: 14px; margin: 28px 0 24px; }
+        .calc-divider span { font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        .calc-divider::before, .calc-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* ─── Resultados ─────────────────────────── */
+        .results-wrap { margin-bottom: 28px; }
+        .results-header { margin-bottom: 20px; }
+        .results-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+        .results-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .results-sub { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .metric-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; }
+        .metric-card.highlight { border-color: rgba(225,68,58,0.3); background: rgba(225,68,58,0.06); }
+        .metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+        .metric-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+        .metric-card.highlight .metric-value { color: var(--red); }
+        .metric-unit { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        .total-card {
+            background: linear-gradient(135deg, rgba(225,68,58,0.10), rgba(225,68,58,0.04));
+            border: 1px solid rgba(225,68,58,0.3); border-radius: 14px;
+            padding: 22px 20px; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+        }
+        .total-label { font-size: 14px; font-weight: 600; color: var(--text-sub); }
+        .total-label span { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+        .total-value { font-size: 32px; font-weight: 800; letter-spacing: -0.04em; color: var(--red); }
+
+        .disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.6; font-style: italic; padding: 10px 0; }
+
+        /* ─── Confirmation ───────────────────────── */
+        .confirm-head { text-align: center; margin-bottom: 36px; }
+        .check-anim {
+            width: 68px; height: 68px; border-radius: 50%;
+            background: rgba(225,68,58,0.10); border: 2px solid var(--red);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 22px; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
+        .confirm-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .confirm-sub { font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+        .confirm-sub strong { color: var(--text); }
+
+        .summary-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+        .summary-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+        .summary-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+        .summary-row:last-child { border-bottom: none; }
+        .s-key { font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
+        .s-val { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
+
+        /* ─── CTA Cards ──────────────────────────── */
+        .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .cta-card {
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px;
+            padding: 22px 16px; text-align: center; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s; text-decoration: none;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .cta-card:hover { border-color: rgba(225,68,58,0.45); background: rgba(225,68,58,0.05); }
+        .cta-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(225,68,58,0.12); display: flex; align-items: center; justify-content: center; }
+        .cta-name { font-size: 14px; font-weight: 600; color: var(--text); }
+        .cta-desc { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+        .note { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px; line-height: 1.6; }
+        .note a { color: var(--text-sub); }
+
+        /* ─── Error banner ───────────────────────── */
+        .error-banner { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #f87171; display: none; }
+        .error-banner.visible { display: block; }
+
+        /* ─── Tel wrap ───────────────────────────── */
+        .tel-wrap { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface-2); transition: border-color 0.15s, box-shadow 0.15s; }
+        .tel-wrap:focus-within { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); }
+        .tel-wrap.error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        .tel-code { border: none !important; border-right: 1px solid var(--border) !important; border-radius: 0 !important; box-shadow: none !important; width: 118px !important; flex-shrink: 0; font-size: 13px; background: transparent; }
+        .tel-num  { border: none !important; border-radius: 0 !important; box-shadow: none !important; flex: 1; min-width: 0; background: transparent !important; }
+
+        /* ─── Skip link ──────────────────────────── */
+        .skip-link { display: block; text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+        .skip-link:hover { color: var(--text-sub); }
+
+        /* ─── Responsive ─────────────────────────── */
+        @media (max-width: 540px) {
+            .grid-2, .cta-grid, .cat-row, .metrics-grid { grid-template-columns: 1fr; }
+            .form-title { font-size: 22px; }
+            .page { padding: 32px 16px 64px; }
+            .prog-label { display: none; }
+            .total-value { font-size: 26px; }
+        }
+
+        /* ─── Cursor dot-reveal ──────────────────── */
+        .cursor-dots {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            -webkit-mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+            mask-image: radial-gradient(circle 120px at var(--dot-x, -9999px) var(--dot-y, -9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+        }
+
+        /* ─── Custom select — estilo caja (contexto formulario) ── */
+        .field-cs { position: relative; }
+        .field-cs .cs-trigger {
+            width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; padding: 11px 14px; font-family: inherit; font-size: 14px;
+            font-weight: 400; color: var(--text-muted); cursor: pointer; text-align: left;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: border-color 0.15s, box-shadow 0.15s, color 0.2s;
+        }
+        .field-cs .cs-trigger.has-value { color: var(--text); font-weight: 500; }
+        .field-cs.open .cs-trigger,
+        .field-cs .cs-trigger:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(225,68,58,0.14); outline: none; }
+        .field-cs.error .cs-trigger { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        .field-cs .cs-arrow { color: var(--text-muted); flex-shrink: 0; transition: transform 0.3s ease, color 0.2s; }
+        .field-cs.open .cs-arrow { transform: rotate(180deg); color: var(--text-sub); }
+        .field-cs .cs-panel {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background: #fff; border-radius: 14px; border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10); padding: 6px; z-index: 300;
+            opacity: 0; transform: translateY(-8px) scale(0.98); pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .field-cs.open .cs-panel { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .field-cs .cs-opt {
+            display: flex; align-items: center; justify-content: space-between; width: 100%;
+            gap: 10px; background: transparent; border: none; border-radius: 8px;
+            padding: 10px 12px; cursor: pointer; text-align: left; font-family: inherit;
+            font-size: 13px; color: var(--text); transition: background 0.15s;
+        }
+        .field-cs .cs-opt:hover { background: rgba(0,0,0,0.04); }
+        .field-cs .cs-opt.selected { background: rgba(225,68,58,0.06); }
+        .field-cs .cs-opt .cs-opt-label { flex: 1; }
+        .field-cs .cs-opt .cs-opt-check {
+            color: var(--red); flex-shrink: 0; opacity: 0; transform: scale(0.6);
+            transition: opacity 0.18s, transform 0.18s ease;
+        }
+        .field-cs .cs-opt.selected .cs-opt-check { opacity: 1; transform: scale(1); }
+
+        /* ─── Logo fijo (form page no tiene hero) ── */
+        .page-logo {
+            position: fixed;
+            top: 16px;
+            left: 200px;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            pointer-events: all;
+            text-decoration: none;
+        }
+        .page-logo .logo-img { height: 60px; width: auto; display: block; }
+        @media (max-width: 1400px) { .page-logo { left: 80px; } }
+        @media (max-width: 1100px) { .page-logo { left: 60px; } }
+        @media (max-width: 900px)  { .page-logo { left: 24px; } }
+
+        /* ─── Offset por el header fijo ─────────── */
+        .page { padding-top: 110px !important; }
+
+        /* ─── Footer ajustes en esta página ─────── */
+        .footer { margin-top: 0; }
+
+        /* ─── Ocultar header antiguo ─────────────── */
+        .header-old { display: none; }
+    </style>
+</head>
+<body>
+<div class="cursor-dots" aria-hidden="true"></div>
+
+<!-- Fixed top-left logo -->
+<a href="index.html" class="page-logo" aria-label="VIZUtire — home">
+  <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="logo-img" width="619" height="315" />
+</a>
+
+<!-- Floating navbar pill -->
+<header class="header">
+  <nav class="navbar" id="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html#alicanto" class="nav-highlight">Alicanto</a></li>
+      <li><a href="index.html#tecnologia">Technology</a></li>
+      <li><a href="index.html#ciencia">Science</a></li>
+      <li><a href="index.html#pilares">Pillars</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="index.html#contacto" class="nav-cta-btn">Demo</a>
+      <a href="formulario-captacion.html" class="nav-lang-btn" onclick="localStorage.setItem('vizutire-lang','es')">ES</a>
+    </div>
+    <button class="menu-toggle" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile drawer -->
+<div class="side-panel-overlay" id="mobileOverlay"></div>
+<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="side-panel-header">
+    <div class="side-panel-logo">
+      <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
+    </div>
+    <button class="close-panel" id="drawerClose" aria-label="Close menu">×</button>
+  </div>
+  <div class="side-panel-content">
+    <p class="panel-description">Non-destructive structural diagnostics for OTR mining tyres. Operational intelligence for zero unplanned failures.</p>
+    <ul class="panel-nav">
+      <li><a href="index.html#alicanto" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
+        Alicanto
+      </a></li>
+      <li><a href="index.html#tecnologia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
+        Technology
+      </a></li>
+      <li><a href="index.html#ciencia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
+        Science
+      </a></li>
+      <li><a href="index.html#pilares" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        Pillars
+      </a></li>
+    </ul>
+    <a href="index.html#contacto" class="panel-cta">Request Demo</a>
+    <div class="panel-contact">
+      <div class="panel-contact-item">
+        <span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+        <span class="panel-contact-text">digital@vizutire.com</span>
+      </div>
+      <div class="panel-contact-item">
+        <span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="panel-contact-text">Antofagasta, Chile</span>
+      </div>
+    </div>
+    <div class="panel-social">
+      <a href="https://www.instagram.com/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/company/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+<div class="form-wrap">
+
+    <!-- ─── Progress 4 steps ──────────────────────── -->
+    <div class="progress">
+        <div class="prog-step active" id="ps1">
+            <div class="prog-num">1</div>
+            <span class="prog-label">Data</span>
+        </div>
+        <div class="prog-line" id="pl1"></div>
+        <div class="prog-step" id="ps2">
+            <div class="prog-num">2</div>
+            <span class="prog-label">Interests</span>
+        </div>
+        <div class="prog-line" id="pl2"></div>
+        <div class="prog-step" id="ps3">
+            <div class="prog-num">3</div>
+            <span class="prog-label">Evaluation</span>
+        </div>
+        <div class="prog-line" id="pl3"></div>
+        <div class="prog-step" id="ps4">
+            <div class="prog-num">4</div>
+            <span class="prog-label">Results</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         STEP 1 — Basic data
+    ══════════════════════════════════════════════════ -->
+    <div id="step-1" class="step visible">
+
+        <div class="form-head">
+            <div class="flujo-pill" id="flujoIndicator">
+                <span class="flujo-pill-dot"></span>
+                Flow started with <strong id="flujoEmail"></strong>
+            </div>
+            <h1 class="form-title">Request your OTR<br>fleet diagnosis</h1>
+            <p class="form-desc">Complete the form and a specialist will contact you<br>within 24 hours.</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Contact Details</div>
+            <div class="grid-2">
+                <div class="field">
+                    <label>Full name <span class="req">*</span></label>
+                    <input type="text" id="nombre" placeholder="John Smith">
+                </div>
+                <div class="field">
+                    <label>Role / Area <span class="req">*</span></label>
+                    <input type="hidden" id="cargo">
+                    <div class="field-cs cs-wrap" data-field="cargo">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Select your area</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Operations Management" role="option"><span class="cs-opt-label">Operations Management</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Maintenance Manager" role="option"><span class="cs-opt-label">Maintenance Manager</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="CFO / Finance" role="option"><span class="cs-opt-label">CFO / Finance</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Email address <span class="req">*</span></label>
+                    <input type="email" id="correo" placeholder="john@company.com">
+                </div>
+                <div class="field">
+                    <label>Phone <span class="req">*</span></label>
+                    <div class="tel-wrap" id="tel-wrap">
+                        <select id="tel-codigo" class="tel-code">
+                            <option value="+56">🇨🇱 +56</option>
+                            <option value="+51">🇵🇪 +51</option>
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+54">🇦🇷 +54</option>
+                            <option value="+55">🇧🇷 +55</option>
+                            <option value="+57">🇨🇴 +57</option>
+                            <option value="+58">🇻🇪 +58</option>
+                            <option value="+591">🇧🇴 +591</option>
+                            <option value="+593">🇪🇨 +593</option>
+                            <option value="+595">🇵🇾 +595</option>
+                            <option value="+598">🇺🇾 +598</option>
+                            <option value="+507">🇵🇦 +507</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+34">🇪🇸 +34</option>
+                        </select>
+                        <input type="tel" id="telefono" class="tel-num" placeholder="9 1234 5678">
+                    </div>
+                </div>
+                <div class="field col-full">
+                    <label>Contact preference <span class="req">*</span></label>
+                    <input type="hidden" id="pref-contacto">
+                    <div class="field-cs cs-wrap" data-field="pref-contacto">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">How would you prefer to be contacted?</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Email" role="option"><span class="cs-opt-label">Email</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="WhatsApp" role="option"><span class="cs-opt-label">WhatsApp</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Phone call" role="option"><span class="cs-opt-label">Phone call</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Video call" role="option"><span class="cs-opt-label">Video call</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Operation Details</div>
+            <div class="grid-2">
+                <div class="field col-full">
+                    <label>Company / Mining company <span class="req">*</span></label>
+                    <input type="text" id="empresa" placeholder="Example Mining Ltd.">
+                </div>
+                <div class="field">
+                    <label>Country <span class="req">*</span></label>
+                    <input type="hidden" id="pais">
+                    <div class="field-cs cs-wrap" data-field="pais">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Select country</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Chile" role="option"><span class="cs-opt-label">Chile</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Peru" role="option"><span class="cs-opt-label">Peru</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Mexico" role="option"><span class="cs-opt-label">Mexico</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Argentina" role="option"><span class="cs-opt-label">Argentina</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Brazil" role="option"><span class="cs-opt-label">Brazil</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Colombia" role="option"><span class="cs-opt-label">Colombia</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Bolivia" role="option"><span class="cs-opt-label">Bolivia</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Ecuador" role="option"><span class="cs-opt-label">Ecuador</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Panama" role="option"><span class="cs-opt-label">Panama</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Spain" role="option"><span class="cs-opt-label">Spain</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="United States" role="option"><span class="cs-opt-label">United States</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Other" role="option"><span class="cs-opt-label">Other</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>City / Site <span class="req">*</span></label>
+                    <input type="text" id="ciudad" placeholder="Antofagasta">
+                </div>
+                <div class="field">
+                    <label>No. of CAEX / trucks</label>
+                    <input type="number" id="num-caex-p1" placeholder="e.g. 12" min="1" max="500">
+                </div>
+                <div class="field col-full">
+                    <label>Main equipment type</label>
+                    <input type="hidden" id="equipo">
+                    <div class="field-cs cs-wrap" data-field="equipo">
+                        <button type="button" class="cs-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cs-val">Select equipment</span>
+                            <svg class="cs-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 5.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="cs-panel" role="listbox">
+                            <button type="button" class="cs-opt" data-value="Haul trucks" role="option"><span class="cs-opt-label">Haul trucks</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Front loaders" role="option"><span class="cs-opt-label">Front loaders</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Drill rigs" role="option"><span class="cs-opt-label">Drill rigs</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Bulldozers / Tractors" role="option"><span class="cs-opt-label">Bulldozers / Tractors</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Mixed (multiple types)" role="option"><span class="cs-opt-label">Mixed (multiple types)</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button type="button" class="cs-opt" data-value="Other" role="option"><span class="cs-opt-label">Other</span><svg class="cs-opt-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-next" onclick="goStep2()">
+                Continue →
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         STEP 2 — Technical information selector
+    ══════════════════════════════════════════════════ -->
+    <div id="step-2" class="step">
+
+        <div class="form-head">
+            <h1 class="form-title" id="step2-title">What information<br>do you need?</h1>
+            <p class="form-desc" id="step2-desc">Choose the category and select the documents<br>you want to receive by email.</p>
+        </div>
+
+        <div class="cargo-banner" id="cargo-banner"></div>
+
+        <div class="cat-row">
+            <div class="cat-btn" id="cat-tecnica" onclick="selectCat('tecnica')">
+                <div class="cat-icon">
+                    <svg width="22" height="22" fill="none" stroke-width="1.7" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="cat-name">Technical</div>
+                    <div class="cat-sub">Inspection, ultrasound<br>and predictive analysis</div>
+                </div>
+            </div>
+            <div class="cat-btn" id="cat-beneficios" onclick="selectCat('beneficios')">
+                <div class="cat-icon">
+                    <svg width="22" height="22" fill="none" stroke-width="1.7" viewBox="0 0 24 24">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="cat-name">Benefits</div>
+                    <div class="cat-sub">Operational impact,<br>ROI and safety</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="hint" id="hint-pdf">Select at least one document to continue.</p>
+
+        <!-- PDFs Technical -->
+        <div class="check-set" id="checks-tecnica">
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Structural monitoring</div>
+                    <div class="pdf-tag">Technical report · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Monitoreo estructural">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Ultrasound 2.4 MHz</div>
+                    <div class="pdf-tag">Diagnostic methodology · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Ultrasonido">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">AI — Rotation moment</div>
+                    <div class="pdf-tag">Predictive model · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="IA Momento de rotación">
+            </label>
+        </div>
+
+        <!-- PDFs Benefits -->
+        <div class="check-set" id="checks-beneficios">
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Operational benefits</div>
+                    <div class="pdf-tag">Efficiency and continuity · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios operativos">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Productivity benefits</div>
+                    <div class="pdf-tag">ROI and performance metrics · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Beneficios productivos">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Operational safety</div>
+                    <div class="pdf-tag">Protocols and prevention · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Seguridad">
+            </label>
+            <label class="pdf-card">
+                <div class="pdf-icon"><svg width="18" height="18" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+                <div class="pdf-info">
+                    <div class="pdf-name">Supply / Procurement</div>
+                    <div class="pdf-tag">Inventory and chain management · PDF coming soon</div>
+                </div>
+                <input type="checkbox" class="pdf-check" name="pdf" value="Supply Abastecimiento">
+            </label>
+        </div>
+
+        <div class="nav-row" style="margin-top: 28px;">
+            <button class="btn-back" onclick="showStep(1)">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Back
+            </button>
+            <button class="btn-next" onclick="goStep3()">
+                Continue →
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         STEP 3 — Benefits calculator
+    ══════════════════════════════════════════════════ -->
+    <div id="step-3" class="step">
+
+        <!-- Decision -->
+        <div class="decision-banner">
+            <div class="decision-icon-wrap">
+                <svg width="28" height="28" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+            </div>
+            <div class="decision-q">Would you like a preliminary<br>benefits estimate?</div>
+            <p class="decision-sub">Calculate the savings potential for your operation in 2 minutes.</p>
+            <ul class="decision-bullets">
+                <li>Estimated savings from extended tyre life</li>
+                <li>Cost reduction from blowouts / failures</li>
+                <li>ROI estimate for your specific fleet</li>
+            </ul>
+        </div>
+
+        <!-- Calculator (shown when Yes is clicked) -->
+        <div class="calc-section" id="calc-section">
+            <div class="calc-divider"><span>Your operation data</span></div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label>No. of CAEX / trucks <span class="req">*</span></label>
+                    <input type="number" id="c-caex" placeholder="e.g. 12" min="1" max="500">
+                </div>
+                <div class="field">
+                    <label>Tyres per CAEX <span class="req">*</span></label>
+                    <input type="number" id="c-neu" placeholder="e.g. 6" value="6" min="1" max="20">
+                </div>
+                <div class="field col-full">
+                    <label>Tyre size</label>
+                    <input type="text" id="c-medida" placeholder="e.g. 40.00R57 or 53/80R63">
+                </div>
+                <div class="field">
+                    <label>Operating hours / day <span class="req">*</span></label>
+                    <input type="number" id="c-horas" placeholder="e.g. 20" value="20" min="1" max="24">
+                </div>
+                <div class="field">
+                    <label>Operating days / year <span class="req">*</span></label>
+                    <input type="number" id="c-dias" placeholder="e.g. 330" value="330" min="1" max="365">
+                </div>
+                <div class="field">
+                    <label>Current tyre life (hours) <span class="req">*</span></label>
+                    <input type="number" id="c-vida" placeholder="e.g. 4000" min="100">
+                </div>
+                <div class="field">
+                    <label>Failures / blowouts per year</label>
+                    <input type="number" id="c-fallas" placeholder="e.g. 3" min="0">
+                </div>
+                <div class="field">
+                    <label>OTR tyre cost (USD) <span class="req">*</span></label>
+                    <div class="input-prefix-wrap">
+                        <span class="prefix">USD</span>
+                        <input type="number" id="c-costo" placeholder="e.g. 35000" min="1000">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Scrap value per tyre (USD)</label>
+                    <div class="input-prefix-wrap">
+                        <span class="prefix">USD</span>
+                        <input type="number" id="c-scrap" placeholder="e.g. 2000" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-calc" class="error-banner">Please complete the required fields to calculate.</div>
+
+            <div class="nav-row" style="margin-top: 8px;">
+                <button class="btn-next" id="btn-calcular" onclick="goStep4calc()">
+                    Calculate estimate
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-row" id="dec-nav" style="margin-top: 20px;">
+            <button class="btn-back" onclick="showStep(2)">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Back
+            </button>
+            <button class="btn-next" id="btn-si" onclick="mostrarCalculadora()">
+                Yes, calculate benefits
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <span class="skip-link" onclick="goStep4sin()">No, continue without calculator →</span>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         STEP 4 — Results + Confirmation
+    ══════════════════════════════════════════════════ -->
+    <div id="step-4" class="step">
+
+        <div class="confirm-head">
+            <div class="check-anim">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h1 class="confirm-title" id="confirm-title">Request submitted!</h1>
+            <p class="confirm-sub">
+                We have registered your request for <strong id="confirm-email"></strong>.<br>
+                A specialist will contact you within 24 hours.
+            </p>
+        </div>
+
+        <!-- Calculator results (conditional) -->
+        <div class="results-wrap" id="results-block" style="display:none;">
+            <div class="results-header">
+                <div class="results-tag">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg>
+                    Preliminary estimate
+                </div>
+                <div class="results-title">Savings potential for your fleet</div>
+                <div class="results-sub">Based on your operation data. Actual results vary by specific conditions.</div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card highlight">
+                    <div class="metric-label">Savings from tyre life (+20%)</div>
+                    <div class="metric-value" id="r-vida">—</div>
+                    <div class="metric-unit">annual estimate</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Savings from failure reduction (−50%)</div>
+                    <div class="metric-value" id="r-fallas">—</div>
+                    <div class="metric-unit">annual estimate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Tyres in your fleet</div>
+                    <div class="metric-value" id="r-total-neum">—</div>
+                    <div class="metric-unit">units</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Current replacements / year</div>
+                    <div class="metric-value" id="r-reemplazos">—</div>
+                    <div class="metric-unit">tyres</div>
+                </div>
+            </div>
+
+            <div class="total-card">
+                <div class="total-label">
+                    Estimated annual savings
+                    <span>For your fleet of <span id="r-caex">—</span> CAEX</span>
+                </div>
+                <div class="total-value" id="r-total">—</div>
+            </div>
+
+            <p class="disclaimer">* Preliminary estimate based on benchmarks from similar OTR mining operations. Actual results depend on specific operating conditions. A VIZUtire specialist will carry out a detailed analysis for your operation.</p>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-card">
+            <div class="summary-label">Your request summary</div>
+            <div class="summary-row">
+                <span class="s-key">Contact</span>
+                <span class="s-val" id="sum-contacto">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Company</span>
+                <span class="s-val" id="sum-empresa">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Operation</span>
+                <span class="s-val" id="sum-operacion">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Fleet</span>
+                <span class="s-val" id="sum-flota">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Interest</span>
+                <span class="s-val" id="sum-pdfs">—</span>
+            </div>
+            <div class="summary-row">
+                <span class="s-key">Contact via</span>
+                <span class="s-val" id="sum-pref">—</span>
+            </div>
+        </div>
+
+        <div id="error-envio" class="error-banner">
+            There was a problem submitting. Please try again or contact us directly.
+        </div>
+
+        <div class="cta-grid">
+            <a href="agenda-en.html" class="cta-card">
+                <div class="cta-icon">
+                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8"  y1="2" x2="8"  y2="6"/>
+                        <line x1="3"  y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <div class="cta-name">Schedule a meeting</div>
+                <div class="cta-desc">Talk directly with a<br>VIZUtire specialist</div>
+            </a>
+            <a href="index.html" class="cta-card">
+                <div class="cta-icon">
+                    <svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <div class="cta-name">Back to home</div>
+                <div class="cta-desc">Learn more about<br>VIZUtire technology</div>
+            </a>
+        </div>
+
+        <p class="note">
+            Automatic follow-up to your email in the coming days.<br>
+            Questions? <a href="mailto:contacto@vizutire.cl">contacto@vizutire.cl</a>
+        </p>
+    </div>
+
+</div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="footer-watermark" aria-hidden="true">
+    <img src="imagenes/SVG/Alicanto_foooter.svg" alt="" width="405" height="81" />
+  </div>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo-link">
+          <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
+        </a>
+        <p class="footer-brand-desc">Non-destructive structural diagnostics<br />for OTR mining tyres.</p>
+        <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <a href="index.html#problema">Ultrasonic Inspection</a>
+          <a href="index.html#problema">Benefits</a>
+          <a href="index.html#problema">AI Analytics</a>
+          <a href="index.html#problema">Diagnostic Reports</a>
+        </div>
+        <div class="footer-col">
+          <h4>COMPANY</h4>
+          <a href="index.html#alicanto">Alicanto</a>
+          <a href="index.html#ciencia">Success stories</a>
+          <a href="index.html#historia">Milestones</a>
+          <a href="index.html#contacto">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 VIZUtire. All rights reserved.</p>
+      <p>Antofagasta, Chile</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── Navbar / Mobile Drawer ──────────────────────── */
+var _panel   = document.querySelector('.side-panel');
+var _overlay = document.querySelector('.side-panel-overlay');
+var _toggle  = document.querySelector('.menu-toggle');
+var _close   = document.getElementById('drawerClose');
+
+function toggleSidePanel() {
+  if (!_panel) return;
+  var isOpening = !_panel.classList.contains('active');
+  requestAnimationFrame(function () {
+    _panel.classList.toggle('active');
+    _overlay.classList.toggle('active');
+    if (_toggle) _toggle.classList.toggle('open');
+    document.body.style.overflow = isOpening ? 'hidden' : '';
+  });
+}
+if (_toggle) _toggle.addEventListener('click', toggleSidePanel);
+if (_close)  _close.addEventListener('click', toggleSidePanel);
+if (_overlay) _overlay.addEventListener('click', toggleSidePanel);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _panel && _panel.classList.contains('active')) toggleSidePanel();
+});
+
+/* ══════════════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════════════ */
+const CONFIG = {
+    sheets: {
+        url: 'https://script.google.com/macros/s/AKfycbxAaigYWnx9dPfH6mIB2dfmULtweW4Q8uelPlu4U04kZjzJ3oOLdC-QmujNceMm4IY/exec'
+    }
+};
+
+/* ─── State ──────────────────────────────────────────── */
+const state = {};
+let calcVisible = false;
+
+/* ─── Step navigation ────────────────────────────────── */
+function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('step-' + n).classList.add('visible');
+    updateProgress(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(n) {
+    [1, 2, 3, 4].forEach(i => {
+        const ps = document.getElementById('ps' + i);
+        if (!ps) return;
+        ps.classList.remove('active', 'done');
+        if (i < n)  ps.classList.add('done');
+        if (i === n) ps.classList.add('active');
+    });
+    [1, 2, 3].forEach(i => {
+        const pl = document.getElementById('pl' + i);
+        if (pl) pl.classList.toggle('done', i < n);
+    });
+}
+
+/* ─── Custom selects (box-style) ───────────────────────── */
+(function () {
+    function initCS(wrap) {
+        var fieldId = wrap.dataset.field;
+        var hidden  = document.getElementById(fieldId);
+        if (!hidden) return;
+        var trigger = wrap.querySelector('.cs-trigger');
+        var valSpan = wrap.querySelector('.cs-val');
+        var opts    = wrap.querySelectorAll('.cs-opt');
+
+        trigger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var opening = !wrap.classList.contains('open');
+            document.querySelectorAll('.field-cs.open').forEach(function (w) {
+                w.classList.remove('open');
+                w.querySelector('.cs-trigger').setAttribute('aria-expanded', 'false');
+            });
+            if (opening) {
+                wrap.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        opts.forEach(function (opt) {
+            opt.addEventListener('click', function () {
+                opts.forEach(function (o) { o.classList.remove('selected'); });
+                opt.classList.add('selected');
+                valSpan.textContent = opt.querySelector('.cs-opt-label').textContent;
+                trigger.classList.add('has-value');
+                hidden.value = opt.dataset.value;
+                wrap.classList.remove('open', 'error');
+                trigger.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    document.querySelectorAll('.field-cs[data-field]').forEach(initCS);
+
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.field-cs.open').forEach(function (w) {
+            w.classList.remove('open');
+            w.querySelector('.cs-trigger').setAttribute('aria-expanded', 'false');
+        });
+    });
+})();
+
+/* ─── Step 1 → 2 ─────────────────────────────────────── */
+function goStep2() {
+    const required = ['nombre', 'cargo', 'correo', 'telefono', 'empresa', 'pais', 'ciudad', 'pref-contacto'];
+    let ok = true;
+    required.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (id === 'telefono') document.getElementById('tel-wrap').classList.remove('error');
+        const cs = el.parentElement && el.parentElement.querySelector('.field-cs');
+        if (cs) cs.classList.remove('error');
+        if (!el.value.trim()) {
+            el.classList.add('error');
+            if (id === 'telefono') document.getElementById('tel-wrap').classList.add('error');
+            if (cs) cs.classList.add('error');
+            ok = false;
+        }
+    });
+    if (!ok) { document.querySelector('.field-cs.error, .error')?.scrollIntoView({ block: 'center' }); return; }
+
+    state.nombre        = document.getElementById('nombre').value.trim();
+    state.cargo         = document.getElementById('cargo').value.trim();
+    state.correo        = document.getElementById('correo').value.trim();
+    state.telefono      = document.getElementById('tel-codigo').value + ' ' + document.getElementById('telefono').value.trim();
+    state.prefContacto  = document.getElementById('pref-contacto').value;
+    state.empresa       = document.getElementById('empresa').value.trim();
+    state.pais          = document.getElementById('pais').value;
+    state.ciudad        = document.getElementById('ciudad').value.trim();
+    state.flota         = '';
+    state.numCaexP1     = document.getElementById('num-caex-p1').value || '';
+    state.equipo        = document.getElementById('equipo').value || 'Not specified';
+
+    localStorage.setItem('vizutire_contacto', JSON.stringify({
+        nombre: state.nombre, cargo: state.cargo, correo: state.correo,
+        telefono: state.telefono, empresa: state.empresa
+    }));
+
+    showStep(2);
+    filtrarPorCargo(state.cargo);
+}
+
+/* ─── Filter by role ────────────────────────────────── */
+function filtrarPorCargo(cargo) {
+    var cfgMap = {
+        'Operations Management': {
+            cat: 'beneficios',
+            pdfs: ['Beneficios operativos', 'Beneficios productivos'],
+            msg: 'Your operation doesn\'t need more alerts. It needs fewer interruptions.',
+            desc: 'Content selected for your role: operational continuity, fleet availability and throughput.'
+        },
+        'Maintenance Manager': {
+            cat: 'tecnica',
+            pdfs: ['Monitoreo estructural', 'Ultrasonido', 'IA Momento de rotación'],
+            msg: 'Every decision backed by real physical evidence.',
+            desc: 'Recommended technical content: predictive diagnostics, ultrasound and maintenance traceability.'
+        },
+        'CFO / Finance': {
+            cat: 'beneficios',
+            pdfs: ['Beneficios productivos', 'Supply Abastecimiento'],
+            msg: 'Invisible degradation turned into predictable financial control.',
+            desc: 'Metrics for your role: CAPEX, OPEX, EBITDA and ROI on OTR fleet.'
+        }
+    };
+
+    var cfg = cfgMap[cargo];
+    if (!cfg) return;
+
+    // Uncheck all, then pre-check role-specific PDFs
+    document.querySelectorAll('input[name="pdf"]').forEach(function(cb) {
+        cb.checked = cfg.pdfs.indexOf(cb.value) !== -1;
+    });
+
+    // Auto-select category
+    selectCat(cfg.cat);
+
+    // Show contextual banner
+    var banner = document.getElementById('cargo-banner');
+    banner.innerHTML = '<div class="cargo-msg">' + cfg.msg + '</div><div class="cargo-desc">' + cfg.desc + '</div>';
+    banner.classList.add('visible');
+}
+
+/* ─── Categories ──────────────────────────────────────── */
+function selectCat(cat) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('cat-' + cat).classList.add('active');
+    document.querySelectorAll('.check-set').forEach(s => s.classList.remove('visible'));
+    document.getElementById('checks-' + cat).classList.add('visible');
+    document.getElementById('hint-pdf').classList.remove('visible');
+}
+
+/* ─── Step 2 → 3 ─────────────────────────────────────── */
+function goStep3() {
+    const checked = [...document.querySelectorAll('input[name="pdf"]:checked')];
+    if (checked.length === 0) {
+        document.getElementById('hint-pdf').classList.add('visible');
+        return;
+    }
+    state.pdfs = checked.map(c => c.value).join(' · ');
+
+    // Pre-fill CAEX in calculator if already entered in step 1
+    if (state.numCaexP1) {
+        document.getElementById('c-caex').value = state.numCaexP1;
+    }
+
+    showStep(3);
+}
+
+/* ─── Show/hide calculator ────────────────────────────── */
+function mostrarCalculadora() {
+    if (calcVisible) return;
+    calcVisible = true;
+    document.getElementById('calc-section').classList.add('visible');
+    document.getElementById('dec-nav').style.display = 'none';
+    document.querySelector('.skip-link').style.display = 'none';
+    document.getElementById('calc-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ─── Benefits calculator ──────────────────────────────── */
+function calcular() {
+    const numCaex     = parseFloat(document.getElementById('c-caex').value)  || 0;
+    const neuPorCaex  = parseFloat(document.getElementById('c-neu').value)   || 6;
+    const horasDia    = parseFloat(document.getElementById('c-horas').value) || 20;
+    const diasAnio    = parseFloat(document.getElementById('c-dias').value)  || 330;
+    const vidaActual  = parseFloat(document.getElementById('c-vida').value)  || 0;
+    const fallasAnio  = parseFloat(document.getElementById('c-fallas').value)|| 0;
+    const costoPorNeum= parseFloat(document.getElementById('c-costo').value) || 0;
+    const scrapValor  = parseFloat(document.getElementById('c-scrap').value) || 0;
+    const medida      = document.getElementById('c-medida').value.trim();
+
+    if (!numCaex || !vidaActual || !costoPorNeum) return false;
+
+    const costoNeto           = costoPorNeum - scrapValor;
+    const totalNeum           = numCaex * neuPorCaex;
+    const horasAnio           = horasDia * diasAnio;
+    const reemplazosActuales  = (totalNeum * horasAnio) / vidaActual;
+    const reemplazosNuevos    = (totalNeum * horasAnio) / (vidaActual * 1.20);
+    const ahorroVida          = Math.round((reemplazosActuales - reemplazosNuevos) * costoNeto);
+    const ahorroFallas        = Math.round(fallasAnio * 0.50 * (costoNeto * 3));
+    const totalAhorro         = ahorroVida + ahorroFallas;
+
+    state.calc = {
+        numCaex, neuPorCaex, horasDia, diasAnio, vidaActual, fallasAnio,
+        costoPorNeum, scrapValor, costoNeto, medida,
+        ahorroVida, ahorroFallas, totalAhorro,
+        totalNeum: Math.round(totalNeum),
+        reemplazosActuales: Math.round(reemplazosActuales)
+    };
+    return true;
+}
+
+function formatUSD(n) {
+    if (n >= 1000000) return 'US$' + (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000)    return 'US$' + Math.round(n / 1000) + 'K';
+    return 'US$' + n.toLocaleString('en-US');
+}
+
+/* ─── Step 3 → 4 with calculator ──────────────────────── */
+async function goStep4calc() {
+    const btn = document.getElementById('btn-calcular');
+    if (btn.disabled) return;
+
+    const calcOk = calcular();
+    if (!calcOk) {
+        document.getElementById('error-calc').classList.add('visible');
+        return;
+    }
+    document.getElementById('error-calc').classList.remove('visible');
+
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Calculating...';
+
+    state.usaCalculadora = true;
+    try {
+        await enviarYMostrar();
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Calculate estimate <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+}
+
+/* ─── Step 3 → 4 without calculator ───────────────────── */
+async function goStep4sin() {
+    state.usaCalculadora = false;
+    await enviarYMostrar();
+}
+
+/* ─── Anti-spam cooldown ────────────────────────────────── */
+const SPAM_KEY = 'vizu_form_cooldown';
+const SPAM_COOLDOWN = 60000;
+function checkFormCooldown() {
+    const ts = parseInt(localStorage.getItem(SPAM_KEY) || '0');
+    if (Date.now() - ts < SPAM_COOLDOWN) {
+        const wait = Math.ceil((SPAM_COOLDOWN - (Date.now() - ts)) / 1000);
+        alert('Please wait ' + wait + ' seconds before submitting again.');
+        return false;
+    }
+    return true;
+}
+
+/* ─── Sanitize payload fields ───────────────────────────── */
+function sanitizePayloadField(v, maxLen) {
+    return String(v == null ? '' : v).trim().slice(0, maxLen);
+}
+
+/* ─── Email validation ──────────────────────────────────── */
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
+}
+
+/* ─── Submit and show step 4 ────────────────────────────── */
+async function enviarYMostrar() {
+    if (!checkFormCooldown()) return;
+    if (!isValidEmail(state.correo)) {
+        alert('The email address entered is not valid.');
+        return;
+    }
+    state.fecha = new Date().toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' });
+
+    await guardarEnSheets().catch(() => {});
+    localStorage.setItem(SPAM_KEY, String(Date.now()));
+
+    renderResumen();
+    showStep(4);
+}
+
+/* ─── Google Sheets ─────────────────────────────────────── */
+function guardarEnSheets() {
+    if (!CONFIG.sheets.url) return Promise.resolve();
+    const c = state.calc || {};
+    const payload = {
+        fecha:         state.fecha,
+        nombre:        sanitizePayloadField(state.nombre,        200),
+        cargo:         sanitizePayloadField(state.cargo,         200),
+        correo:        sanitizePayloadField(state.correo,        200),
+        telefono:      sanitizePayloadField(state.telefono,       50),
+        pref_contacto: sanitizePayloadField(state.prefContacto,   50),
+        empresa:       sanitizePayloadField(state.empresa,       200),
+        pais:          sanitizePayloadField(state.pais,          100),
+        ciudad:        sanitizePayloadField(state.ciudad,        100),
+        flota:         state.flota,
+        num_caex:      state.numCaexP1 || (c.numCaex || ''),
+        equipo:        state.equipo,
+        pdfs:          state.pdfs,
+        usa_calculadora: state.usaCalculadora ? 'Yes' : 'No',
+        calc_caex:     c.numCaex      || '',
+        calc_vida:     c.vidaActual   || '',
+        calc_fallas:   c.fallasAnio   || '',
+        calc_costo:    c.costoPorNeum || '',
+        calc_scrap:    c.scrapValor   || '',
+        calc_medida:   c.medida       || '',
+        calc_ahorro_vida:   c.ahorroVida   || '',
+        calc_ahorro_fallas: c.ahorroFallas || '',
+        calc_total_ahorro:  c.totalAhorro  || '',
+    };
+    const url = CONFIG.sheets.url + '?data=' + encodeURIComponent(JSON.stringify(payload));
+    return fetch(url, { method: 'GET', mode: 'no-cors' });
+}
+
+/* ─── Render results and summary ────────────────────────── */
+function renderResumen() {
+    document.getElementById('confirm-email').textContent = state.correo;
+
+    if (state.usaCalculadora && state.calc) {
+        const c = state.calc;
+        document.getElementById('results-block').style.display = 'block';
+        document.getElementById('r-vida').textContent    = formatUSD(c.ahorroVida);
+        document.getElementById('r-fallas').textContent  = formatUSD(c.ahorroFallas);
+        document.getElementById('r-total-neum').textContent = c.totalNeum;
+        document.getElementById('r-reemplazos').textContent = c.reemplazosActuales;
+        document.getElementById('r-caex').textContent    = c.numCaex;
+        document.getElementById('r-total').textContent   = formatUSD(c.totalAhorro);
+        document.getElementById('confirm-title').textContent = 'Excellent! Here is your estimate';
+    }
+
+    document.getElementById('sum-contacto').textContent  = state.nombre + ' · ' + state.cargo;
+    document.getElementById('sum-empresa').textContent   = state.empresa;
+    document.getElementById('sum-operacion').textContent = state.pais + ' — ' + state.ciudad;
+    document.getElementById('sum-flota').textContent     = state.flota + (state.numCaexP1 ? ' · ' + state.numCaexP1 + ' CAEX' : '');
+    document.getElementById('sum-pdfs').textContent      = state.pdfs;
+    document.getElementById('sum-pref').textContent      = state.prefContacto;
+}
+
+/* ─── Pre-fill from main form ───────────────────────────── */
+(function () {
+    try {
+        const pre = JSON.parse(localStorage.getItem('vizutire_prefill') || '{}');
+        if (pre.nombre)  document.getElementById('nombre').value  = pre.nombre;
+        if (pre.empresa) document.getElementById('empresa').value = pre.empresa;
+        if (pre.correo)  document.getElementById('correo').value  = pre.correo;
+    } catch (_) {}
+})();
+
+/* ─── Clear errors on input ────────────────────────────── */
+document.querySelectorAll('input, select').forEach(el =>
+    el.addEventListener('input', () => el.classList.remove('error'))
+);
+document.getElementById('telefono').addEventListener('input', () =>
+    document.getElementById('tel-wrap').classList.remove('error')
+);
+</script>
+
+<script>
+(function () {
+    var dot = document.querySelector('.cursor-dots');
+    document.addEventListener('mousemove', function (e) {
+        dot.style.setProperty('--dot-x', e.clientX + 'px');
+        dot.style.setProperty('--dot-y', e.clientY + 'px');
+    });
+}());
+
+/* ─── Flow indicator (email flow started) ────────────── */
+(function () {
+    try {
+        const pre = JSON.parse(localStorage.getItem('vizutire_prefill') || '{}');
+        if (pre.correo) {
+            const pill  = document.getElementById('flujoIndicator');
+            const span  = document.getElementById('flujoEmail');
+            if (pill && span) {
+                span.textContent = pre.correo;
+                pill.classList.add('visible');
+            }
+        }
+    } catch (_) {}
+})();
+</script>
+
+</body>
+</html>
