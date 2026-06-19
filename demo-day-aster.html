@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="VIZUtire presentó Alicanto en el Demo Day de ASTER durante EXPONOR 2026 y obtuvo el 2° lugar entre 5 startups mineras. Conoce cómo la inteligencia estructural predictiva transforma la operación de neumáticos OTR."/>
+<title>Demo Day ASTER · VIZUtire obtuvo el 2° lugar — Alicanto validado en minería</title>
+
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+
+<style>
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --text:      #030712;
+  --text-2:    #5d636f;
+  --text-3:    #9ca3af;
+  --accent:    #c0312b;
+  --accent-2:  #e3001b;
+  --bg:        #f0f1f3;
+  --bg-2:      #e8e9eb;
+  --white:     #ffffff;
+  --dark:      #0d1117;
+  --border:    rgba(0,0,0,0.08);
+  --font:      'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --radius:    12px;
+  --radius-lg: 20px;
+  --radius-xl: 999px;
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow:    0 6px 32px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 56px rgba(0,0,0,0.1);
+  --t:         0.32s;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: 1560px; margin: 0 auto; padding: 0 200px; }
+@media (max-width: 1100px) { .container { padding: 0 60px; } }
+@media (max-width: 768px)  { .container { padding: 0 20px; } }
+
+.section { padding: 96px 0; }
+@media (max-width: 768px)  { .section { padding: 72px 0; } }
+
+/* ─────────────────────────────────────────
+   LOGO — position absolute dentro del hero
+   (igual que el sitio principal)
+───────────────────────────────────────── */
+.hero-logo {
+  position: absolute;
+  top: 16px;
+  left: 200px;
+  z-index: 110;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+.logo-img { height: 60px; width: auto; display: block; }
+
+@media (max-width: 1100px) { .hero-logo { left: 60px; } }
+@media (max-width: 900px)  { .hero-logo { left: 24px; } }
+
+/* ─────────────────────────────────────────
+   HEADER / NAVBAR
+───────────────────────────────────────── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 16px 200px; pointer-events: none;
+}
+.navbar {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 8px 20px;
+  box-shadow: var(--shadow); pointer-events: all;
+  transition: box-shadow var(--t);
+}
+.navbar.scrolled { box-shadow: var(--shadow-lg); }
+
+.nav-links { display: flex; align-items: center; justify-content: center; gap: 2px; flex: 1; list-style: none; }
+.nav-links a {
+  font-family: var(--font);
+  font-size: 0.875rem; font-weight: 500; color: var(--text-2);
+  padding: 8px 14px; border-radius: var(--radius-xl);
+  transition: color var(--t), background var(--t);
+  white-space: nowrap; display: flex; align-items: center; gap: 5px;
+  text-decoration: none;
+}
+.nav-links a:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+.nav-links .nav-highlight { font-weight: 600; color: var(--text); }
+
+.nav-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: 8px; }
+.nav-cta-btn {
+  display: flex; align-items: center;
+  background: var(--text); color: #fff;
+  font-family: var(--font); font-weight: 600; font-size: 0.875rem;
+  padding: 10px 22px; border-radius: var(--radius-xl);
+  transition: background var(--t), box-shadow var(--t), color var(--t);
+  flex-shrink: 0; white-space: nowrap; text-decoration: none;
+}
+.nav-cta-btn:hover { background: #e3001b; color: #fff; box-shadow: 0 4px 16px rgba(227,0,27,0.25); }
+.nav-lang-btn {
+  display: flex; align-items: center;
+  background: transparent; border: 1px solid rgba(0,0,0,0.12);
+  color: var(--text-2); font-family: var(--font); font-weight: 600; font-size: 0.8rem;
+  padding: 9px 16px; border-radius: var(--radius-xl);
+  cursor: pointer; text-decoration: none;
+  transition: background var(--t), border-color var(--t);
+}
+.nav-lang-btn:hover { background: rgba(0,0,0,0.04); }
+
+/* Hamburguesa */
+.menu-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px;
+  width: 38px; height: 38px; align-items: center; justify-content: center;
+}
+.menu-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.25s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 1100px) { .header { padding: 16px 60px; } }
+@media (max-width: 768px)  {
+  .header      { padding: 14px 16px; }
+  .nav-links   { display: none; }
+  .nav-cta-btn { display: none; }
+  .menu-toggle { display: flex; }
+}
+
+/* ─────────────────────────────────────────
+   SIDE PANEL
+───────────────────────────────────────── */
+.side-panel {
+  position: fixed; top: 0; right: 0;
+  width: 420px; height: 100%;
+  background: var(--white); z-index: 9000;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.22,1,0.36,1);
+  overflow-y: auto; will-change: transform;
+}
+.side-panel.active { transform: translateX(0); }
+@media (max-width: 480px) { .side-panel { width: 100vw; } }
+
+.side-panel-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 8999;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+.side-panel-overlay.active { opacity: 1; visibility: visible; }
+
+.side-panel-header {
+  padding: 28px 28px 24px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.side-panel-logo-img { height: 30px; width: auto; }
+.close-panel {
+  background: none; border: none; font-size: 1.8rem; line-height: 1;
+  cursor: pointer; color: var(--text-2); padding: 0; transform-origin: center;
+  transition: color 0.22s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.close-panel:hover { color: var(--text); }
+.close-panel.spinning { color: var(--accent-2); transform: rotate(90deg) scale(1.1); }
+
+.side-panel-content { padding: 28px; }
+.panel-description { font-size: 0.88rem; color: var(--text-2); line-height: 1.7; margin-bottom: 28px; }
+.panel-nav { list-style: none; margin: 0 0 28px; padding: 0; }
+.panel-nav li { margin-bottom: 4px; }
+.panel-nav a {
+  display: flex; align-items: center; gap: 14px; padding: 13px 14px;
+  color: var(--text); text-decoration: none; font-size: 1rem; border-radius: 10px;
+  transition: background 0.22s, color 0.22s, transform 0.22s;
+}
+.panel-nav a:hover { background: var(--bg); color: var(--accent-2); transform: translateX(4px); }
+.panel-nav-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(0,0,0,0.04); color: var(--text-2); flex-shrink: 0;
+  transition: background 0.22s, color 0.22s;
+}
+.panel-nav a:hover .panel-nav-icon { background: rgba(227,0,27,0.08); color: var(--accent-2); }
+.panel-cta {
+  display: block; padding: 15px 24px; background: var(--text); color: #fff;
+  border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 1rem;
+  text-align: center; margin-bottom: 28px;
+  transition: background var(--t), transform var(--t);
+}
+.panel-cta:hover { background: var(--accent-2); transform: translateY(-2px); }
+.panel-contact { margin-bottom: 24px; }
+.panel-contact-item { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.panel-contact-item:last-child { border-bottom: none; }
+.panel-contact-icon { display: flex; align-items: center; color: var(--text-2); flex-shrink: 0; }
+.panel-contact-text { font-size: 0.88rem; color: var(--text-2); }
+.panel-social { display: flex; gap: 10px; }
+.panel-social .social-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border); color: var(--text-2); text-decoration: none;
+  transition: color var(--t), border-color var(--t), background var(--t);
+}
+.panel-social .social-icon:hover { color: var(--text); border-color: rgba(0,0,0,0.22); background: var(--bg); }
+
+/* ─────────────────────────────────────────
+   1. HERO
+───────────────────────────────────────── */
+.hero {
+  height: clamp(720px, 100svh, 900px);
+  background: #0d1117 url('images/aster/hero.webp') center center / cover no-repeat;
+  position: relative;
+  display: flex; align-items: center;
+  padding: 0 200px; overflow: hidden; z-index: 0;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(105deg, rgba(3,7,18,0.92) 0%, rgba(3,7,18,0.70) 50%, rgba(3,7,18,0.20) 100%);
+  pointer-events: none; z-index: 1;
+}
+@media (max-width: 1100px) { .hero { padding: 0 60px; } }
+@media (max-width: 900px)  { .hero { padding: 100px 24px 60px; height: auto; min-height: 100svh; align-items: flex-start; } }
+
+.hero-inner {
+  width: 100%; max-width: 680px;
+  position: relative; z-index: 2;
+  padding-top: 80px;
+}
+
+.hero-title {
+  font-family: var(--font);
+  font-size: clamp(2.2rem,3.8vw,3.4rem); font-weight: 700;
+  line-height: 1.1; color: #fff;
+  margin-bottom: 20px; letter-spacing: -.02em;
+}
+.hero-title em { color: #fff; font-style: normal; }
+.hero-sub {
+  font-size: 1rem; line-height: 1.65; color: rgba(255,255,255,0.70);
+  margin-bottom: 32px; max-width: 480px;
+}
+.hero-sub strong { color: #fff; font-weight: 600; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(192,49,43,0.18); border: 1px solid rgba(192,49,43,0.4);
+  border-radius: var(--radius-xl); padding: 6px 14px 6px 8px;
+  margin-bottom: 20px;
+}
+.hero-badge-num { font-family: var(--font); font-size: 1.1rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.hero-badge-txt { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.75); letter-spacing: .04em; }
+
+.hero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 480px) { .hero-actions { flex-direction: column; align-items: stretch; } }
+
+/* CTA buttons */
+.hero-btn-dark {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  background: var(--text); color: #fff;
+  font-family: var(--font); font-weight: 600; font-size: 0.95rem; line-height: 1;
+  padding: 0 14px 0 19px; height: 56px; border-radius: var(--radius-xl);
+  text-decoration: none; transition: background var(--t), box-shadow var(--t), transform var(--t);
+}
+.hero-btn-dark:hover { background: #1f2937; box-shadow: 0 8px 28px rgba(0,0,0,0.2); transform: translateY(-2px); }
+
+.arr-btn { display: block; position: relative; width: 36px; height: 36px; overflow: hidden; flex-shrink: 0; }
+.arr-btn::before,.arr-btn::after { content:""; position:absolute; border-radius:50%; inset:5px; }
+.arr-btn::before { border:3px solid rgba(255,255,255,0.45); transition: opacity .4s cubic-bezier(.77,0,.175,1) 80ms, transform .5s cubic-bezier(.455,.03,.515,.955) 80ms; }
+.arr-btn::after  { border:3px solid var(--accent); transform:scale(1.3); opacity:0; transition: opacity .4s cubic-bezier(.165,.84,.44,1), transform .5s cubic-bezier(.25,.46,.45,.94); }
+.hero-btn-dark:hover .arr-btn::before,
+.cta-btn-primary:hover .arr-btn::before { opacity:0; transform:scale(0.7); }
+.hero-btn-dark:hover .arr-btn::after,
+.cta-btn-primary:hover .arr-btn::after  { opacity:1; transform:scale(1); }
+.arr-btn-box { display:flex; position:absolute; top:0; left:0; transform:translateX(-36px); }
+.arr-btn-elem { display:flex; align-items:center; justify-content:center; width:36px; height:36px; flex-shrink:0; }
+.arr-btn-elem svg { width:13px; height:13px; fill:#fff; display:block; }
+.hero-btn-dark:hover .arr-btn-box,
+.cta-btn-primary:hover .arr-btn-box { transform:translateX(0); transition:transform .4s cubic-bezier(.455,.03,.515,.955); }
+
+.hero-btn-light {
+  display: inline-flex; align-items: center;
+  background: rgba(255,255,255,0.10); color: #fff;
+  font-family: var(--font); font-weight: 600; font-size: 0.95rem;
+  padding: 14px 28px; border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,0.25);
+  text-decoration: none; transition: background var(--t), border-color var(--t), transform var(--t);
+  backdrop-filter: blur(6px);
+}
+.hero-btn-light:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.45); transform: translateY(-2px); }
+
+/* Hero visual / foto */
+.hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+.photo-frame {
+  width: 100%; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(192,49,43,.08);
+}
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Placeholder cuando no hay foto */
+.photo-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg,#1a2030 0%,#2a1010 60%,#1a1520 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+}
+.ph-icon { width:52px; height:52px; border-radius:50%; border:2px dashed rgba(192,49,43,.4); display:flex; align-items:center; justify-content:center; }
+.ph-icon svg { width:22px; height:22px; stroke:rgba(192,49,43,.5); fill:none; stroke-width:1.5; stroke-linecap:round; }
+.ph-label { font-size:0.75rem; color:rgba(255,255,255,.4); font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+.ph-sub   { font-size:0.65rem; color:rgba(255,255,255,.25); }
+
+.photo-corner-badge {
+  position:absolute; bottom:16px; left:16px;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:8px 12px;
+  display:flex; align-items:center; gap:8px;
+}
+.pcb-logo { font-size:0.55rem; font-weight:800; color:rgba(255,255,255,.5); letter-spacing:.1em; }
+.pcb-div  { width:1px; height:20px; background:rgba(255,255,255,.1); }
+.pcb-text { font-size:0.58rem; color:rgba(255,255,255,.45); line-height:1.3; }
+.pcb-text strong { display:block; color:rgba(255,255,255,.8); font-size:0.65rem; }
+
+.floating-stat {
+  position:absolute; top:-14px; right:-14px;
+  background:var(--white); border:1px solid rgba(192,49,43,.2);
+  border-radius:12px; padding:10px 14px; text-align:center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1);
+}
+.fs-num { display:block; font-size:1.4rem; font-weight:800; color:var(--accent); line-height:1; }
+.fs-lbl { display:block; font-size:0.58rem; color:var(--text-2); margin-top:2px; }
+
+/* ─────────────────────────────────────────
+   2. GALERÍA
+───────────────────────────────────────── */
+.gallery-section { background: var(--white); }
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font); font-size: 0.72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.section-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
+.section-title { font-family: var(--font); font-size: clamp(1.6rem,2.8vw,2.2rem); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; margin-bottom: 12px; }
+.section-sub { font-size: 1rem; color: var(--text-2); line-height: 1.6; max-width: 520px; margin-bottom: 48px; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+.gallery-item { border-radius: var(--radius); overflow: hidden; position: relative; }
+.gallery-item.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.gallery-item:hover img { transform: scale(1.04); }
+
+/* Placeholder galería */
+.gallery-ph {
+  width: 100%; background: var(--bg-2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  color: var(--text-3); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+}
+.gallery-item.featured .gallery-ph { aspect-ratio: 4/3; }
+.gallery-item:not(.featured) .gallery-ph { aspect-ratio: 3/2; }
+.gallery-ph svg { width: 28px; height: 28px; stroke: var(--text-3); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+
+@media (max-width: 768px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item.featured { grid-column: span 2; grid-row: span 1; }
+}
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item.featured { grid-column: span 1; }
+}
+
+/* ─────────────────────────────────────────
+   3. EL EVENTO
+───────────────────────────────────────── */
+.event-section { background: var(--bg); }
+.event-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+}
+@media (max-width: 768px) { .event-layout { grid-template-columns: 1fr; gap: 40px; } }
+
+.event-timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item {
+  display: flex; gap: 20px; padding-bottom: 32px; position: relative;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item:not(:last-child)::after {
+  content: ''; position: absolute; left: 19px; top: 40px; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.tl-dot {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white); border: 2px solid var(--border);
+  color: var(--text-2); position: relative; z-index: 1;
+}
+.tl-dot.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tl-dot svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+.tl-content { padding-top: 8px; }
+.tl-date { font-size: 0.72rem; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.tl-title { font-family: var(--font); font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.tl-desc  { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; }
+
+.aster-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 36px; border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.aster-card-logo {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: .15em; color: var(--text-3);
+  text-transform: uppercase; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.aster-card-logo::before { content: ''; display: block; width: 24px; height: 2px; background: var(--accent); }
+.aster-card-title { font-family: var(--font); font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+.aster-card-desc { font-size: 0.9rem; color: var(--text-2); line-height: 1.65; margin-bottom: 24px; }
+.aster-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.aster-stat { background: var(--bg); border-radius: 10px; padding: 14px 16px; }
+.aster-stat-num { font-family: var(--font); font-size: 1.5rem; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 2px; }
+.aster-stat-num em { color: var(--accent); font-style: normal; }
+.aster-stat-lbl { font-size: 0.72rem; color: var(--text-2); font-family: var(--font-body); }
+
+/* ─────────────────────────────────────────
+   4. ALICANTO — EL PRODUCTO
+───────────────────────────────────────── */
+.product-section { background: var(--white); }
+
+.product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+@media (max-width: 768px) { .product-layout { grid-template-columns: 1fr; gap: 40px; } }
+
+.product-features { display: flex; flex-direction: column; gap: 24px; }
+.feature-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px;
+  display: flex; gap: 16px; align-items: flex-start;
+  transition: background var(--t), border-color var(--t), box-shadow var(--t);
+}
+.feature-card:hover { background: var(--bg-2); border-color: rgba(192,49,43,0.25); box-shadow: var(--shadow-sm); }
+.feature-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(192,49,43,0.08); border: 1px solid rgba(192,49,43,0.2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
+.feature-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.feature-title { font-family: var(--font); font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.feature-desc  { font-size: 0.83rem; color: var(--text-2); line-height: 1.55; }
+
+.product-visual { position: relative; }
+.product-image-frame {
+  width: 100%; aspect-ratio: 4/3; border-radius: var(--radius-lg); overflow: hidden;
+  background: linear-gradient(135deg,#1a2030 0%,#2a1010 70%,#1a1520 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.product-image-frame img { width:100%; height:100%; object-fit:cover; display:block; }
+.product-badge {
+  position: absolute; bottom: -16px; right: -16px;
+  background: var(--accent); color: #fff; border-radius: 14px;
+  padding: 14px 18px; box-shadow: 0 8px 32px rgba(192,49,43,0.4);
+}
+.product-badge-num  { font-size: 1.6rem; font-weight: 800; line-height: 1; }
+.product-badge-lbl  { font-size: 0.65rem; font-weight: 600; opacity: .85; }
+@media (max-width: 768px) { .product-badge { bottom: 12px; right: 12px; } }
+
+/* ─────────────────────────────────────────
+   5. LO QUE SE VALIDÓ
+───────────────────────────────────────── */
+.validated-section { background: var(--bg); }
+.validated-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+@media (max-width: 900px) { .validated-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .validated-grid { grid-template-columns: 1fr; } }
+
+.val-card {
+  border-radius: var(--radius-lg); padding: 28px; position: relative; overflow: hidden;
+  border: 1px solid var(--border); background: var(--white);
+  transition: box-shadow var(--t), transform var(--t);
+}
+.val-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
+.val-card-num { font-family: var(--font); font-size: 2.2rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.val-card-title { font-family: var(--font); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.val-card-desc  { font-size: 0.83rem; color: var(--text-2); line-height: 1.55; }
+.val-card-accent { border-top: 3px solid var(--accent); }
+
+/* ─────────────────────────────────────────
+   6. CTA FINAL
+───────────────────────────────────────── */
+.cta-section {
+  background: var(--white); position: relative; overflow: hidden;
+  padding: 96px 0;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
+  background-size: 20px 20px; pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle 80px at var(--local-x,-9999px) var(--local-y,-9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 50%, transparent 100%);
+          mask-image: radial-gradient(circle 80px at var(--local-x,-9999px) var(--local-y,-9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 50%, transparent 100%);
+}
+.cta-inner { position: relative; z-index: 2; text-align: center; max-width: 640px; margin: 0 auto; }
+.cta-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.cta-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); }
+.cta-title { font-family: var(--font); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; line-height: 1.12; color: var(--text); margin-bottom: 16px; letter-spacing: -.02em; }
+.cta-sub   { font-size: 1rem; color: var(--text-2); line-height: 1.65; margin-bottom: 36px; }
+.cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+.cta-btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  background: var(--text); color: #fff;
+  font-family: var(--font); font-weight: 700; font-size: 0.95rem; line-height: 1;
+  padding: 0 14px 0 19px; height: 56px; border-radius: var(--radius-xl);
+  text-decoration: none; transition: background var(--t), box-shadow var(--t), transform var(--t);
+}
+.cta-btn-primary:hover { background: #1f2937; box-shadow: 0 8px 28px rgba(0,0,0,0.2); transform: translateY(-2px); }
+.cta-btn-secondary {
+  display: inline-flex; align-items: center;
+  background: var(--white); color: var(--text);
+  font-family: var(--font); font-weight: 600; font-size: 0.95rem;
+  padding: 14px 28px; border-radius: var(--radius-xl);
+  border: 1px solid rgba(0,0,0,0.1); box-shadow: var(--shadow-sm); text-decoration: none;
+  transition: box-shadow var(--t), transform var(--t);
+}
+.cta-btn-secondary:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+
+/* ─────────────────────────────────────────
+   FOOTER — idéntico al sitio principal
+───────────────────────────────────────── */
+.footer {
+  position: relative; overflow: hidden;
+  background: #0d0d0d; padding: 100px 0 260px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.footer-watermark {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap; pointer-events: none; user-select: none; line-height: 1; opacity: 0.12;
+}
+.footer-watermark img { display: block; height: clamp(8rem,22vw,18rem); width: auto; }
+.footer .container { position: relative; z-index: 1; }
+.footer-top { display: flex; gap: 80px; margin-bottom: 44px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.footer-brand { max-width: 260px; }
+.footer-logo-link { display: inline-block; background: transparent; border-radius: 10px; padding: 0; margin-bottom: 20px; }
+.footer-logo-img { height: 36px; width: auto; display: block; }
+.footer-brand-desc { font-size: 0.83rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-bottom: 14px; }
+.footer-email { font-size: 0.83rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color var(--t); }
+.footer-email:hover { color: #fff; }
+.footer-social { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.footer-social-link {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.45); text-decoration: none;
+  transition: color var(--t), border-color var(--t), background var(--t);
+}
+.footer-social-link:hover { color: #fff; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+.footer-nav { display: flex; gap: 60px; margin-left: auto; }
+.footer-col { display: flex; flex-direction: column; }
+.footer-col h4 { font-family: var(--font); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; color: #fff; margin-bottom: 18px; }
+.footer-col a { font-size: 0.83rem; color: rgba(255,255,255,0.45); margin-bottom: 12px; transition: color var(--t); text-decoration: none; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+@media (max-width: 900px) {
+  .footer-top { flex-direction: column; gap: 36px; }
+  .footer-nav { flex-wrap: wrap; gap: 36px; }
+  .footer-brand { max-width: 100%; }
+  .footer-watermark { left: 0; transform: none; width: 100%; }
+  .footer-watermark img { width: 100%; height: auto; }
+}
+@media (max-width: 480px) {
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+}
+
+/* ─────────────────────────────────────────
+   REVEAL ANIMATION
+───────────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+@media (prefers-reduced-motion: reduce) { .reveal { transform: none; transition: opacity 0.3s linear; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAVBAR (pill flotante — igual al sitio principal)
+════════════════════════════════════════ -->
+<header class="header">
+  <nav class="navbar" id="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html#alicanto" class="nav-highlight">Alicanto</a></li>
+      <li><a href="index.html#tecnologia">Tecnología</a></li>
+      <li><a href="index.html#ciencia">Ciencia</a></li>
+      <li><a href="index.html#pilares">Pilares</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#cta" class="nav-cta-btn">Demo</a>
+      <a href="demo-day-aster-en.html" class="nav-lang-btn">EN</a>
+    </div>
+    <button class="menu-toggle" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════
+     SIDE PANEL
+════════════════════════════════════════ -->
+<div class="side-panel-overlay" id="mobileOverlay"></div>
+<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="side-panel-header">
+    <img src="images/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img"/>
+    <button class="close-panel" id="drawerClose" aria-label="Cerrar menú">×</button>
+  </div>
+  <div class="side-panel-content">
+    <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería. Inteligencia operacional para cero fallas imprevistas.</p>
+    <ul class="panel-nav">
+      <li><a href="index.html#alicanto" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>Alicanto</a></li>
+      <li><a href="index.html#tecnologia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>Tecnología</a></li>
+      <li><a href="index.html#ciencia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>Ciencia</a></li>
+      <li><a href="index.html#pilares" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Pilares</a></li>
+    </ul>
+    <a href="#cta" class="panel-cta" onclick="toggleSidePanel()">Solicitar Demo</a>
+    <div class="panel-contact">
+      <div class="panel-contact-item"><span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span class="panel-contact-text">digital@vizutire.com</span></div>
+      <div class="panel-contact-item"><span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="panel-contact-text">Antofagasta, Chile</span></div>
+    </div>
+    <div class="panel-social">
+      <a href="#" class="social-icon" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" class="social-icon" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     1. HERO
+════════════════════════════════════════ -->
+<section class="hero" id="heroSection">
+  <a href="index.html" class="hero-logo" aria-label="VIZUtire — inicio">
+    <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img"/>
+  </a>
+  <div class="hero-inner">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-num">2°</span>
+      <span class="hero-badge-txt">lugar · Demo Day ASTER 2026</span>
+    </div>
+    <h1 class="hero-title">Alicanto<br/>demostrado<br/>en <em>minería real</em></h1>
+    <p class="hero-sub">
+      El 9 de junio, VIZUtire presentó Alicanto en el <strong>Demo Day de ASTER</strong> durante <strong>EXPONOR 2026</strong> ante evaluadores de operaciones Tier 1, validando la inteligencia estructural predictiva para neumáticos OTR.
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="hero-btn-dark">
+        Solicitar Demo
+        <span class="arr-btn"><span class="arr-btn-box">
+          <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
+          <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
+        </span></span>
+      </a>
+      <a href="#galeria" class="hero-btn-light">Ver el evento</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     2. GALERÍA
+════════════════════════════════════════ -->
+<section class="gallery-section section" id="galeria">
+  <div class="container">
+
+    <h2 class="section-title reveal delay-1">El día que Alicanto<br/>pisó el escenario</h2>
+    <p class="section-sub reveal delay-2">9 de junio de 2026 · EXPONOR · Antofagasta · Demo Day ASTER</p>
+
+    <div class="gallery-grid reveal delay-1">
+      <div class="gallery-item featured">
+        <img src="images/aster/foto-1.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+      </div>
+      <div class="gallery-item">
+        <img src="images/aster/foto-2.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+      </div>
+      <div class="gallery-item">
+        <img src="images/aster/foto-3.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+      </div>
+      <div class="gallery-item">
+        <img src="images/aster/foto-4.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+      </div>
+      <div class="gallery-item">
+        <img src="images/aster/foto-5.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     3. EL EVENTO
+════════════════════════════════════════ -->
+<section class="event-section section" id="evento">
+  <div class="container">
+    <div class="event-layout">
+      <div>
+
+        <h2 class="section-title reveal delay-1">¿Qué fue el<br/>Demo Day de ASTER?</h2>
+        <p class="section-sub reveal delay-2">ASTER Aceleradora seleccionó a las 5 startups más prometedoras del sector minero para presentar sus soluciones ante un panel de evaluadores de operaciones Tier 1 en el marco de <strong>EXPONOR 2026</strong>, la feria minera más importante de Latinoamérica.</p>
+
+        <div class="event-timeline">
+          <div class="timeline-item reveal delay-1">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">5 startups seleccionadas</div>
+              <div class="tl-title">Convocatoria ASTER Minería 2026</div>
+              <div class="tl-desc">Proceso competitivo abierto a soluciones tecnológicas para la industria minera. VIZUtire clasificó con Alicanto.</div>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-2">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">9 de junio 2026, 16:30 · EXPONOR</div>
+              <div class="tl-title">Presentación Alicanto</div>
+              <div class="tl-desc">VIZUtire presentó Alicanto en EXPONOR 2026 ante evaluadores de operaciones Tier 1, validando la tecnología en el evento minero más importante de Latinoamérica.</div>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-3">
+            <div class="tl-dot accent">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Resultado final</div>
+              <div class="tl-title">2° lugar entre 5 startups</div>
+              <div class="tl-desc">Validación externa del modelo de negocio y la tecnología de Alicanto por evaluadores independientes del sector.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="aster-card reveal delay-2">
+        <div class="aster-card-logo">ASTER Aceleradora</div>
+        <div class="aster-card-title">Programa de aceleración para startups mineras</div>
+        <div class="aster-card-desc">ASTER es uno de los programas de aceleración más relevantes de Latinoamérica para soluciones tecnológicas en minería. Sus Demo Days conectan startups con tomadores de decisión de las principales operaciones del norte de Chile.</div>
+        <div class="aster-card-stats">
+          <div class="aster-stat">
+            <div class="aster-stat-num"><em>5</em></div>
+            <div class="aster-stat-lbl">startups en competencia</div>
+          </div>
+          <div class="aster-stat">
+            <div class="aster-stat-num"><em>2°</em></div>
+            <div class="aster-stat-lbl">lugar obtenido</div>
+          </div>
+          <div class="aster-stat">
+            <div class="aster-stat-num">Tier 1</div>
+            <div class="aster-stat-lbl">evaluadores de operaciones</div>
+          </div>
+          <div class="aster-stat">
+            <div class="aster-stat-num">OTR</div>
+            <div class="aster-stat-lbl">foco de la solución</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     4. ALICANTO — EL PRODUCTO
+════════════════════════════════════════ -->
+<section class="product-section section" id="alicanto">
+  <div class="container">
+    <div class="product-layout">
+      <div>
+
+        <h2 class="section-title reveal delay-1">Alicanto: inteligencia<br/>estructural para OTR</h2>
+        <p class="section-sub reveal delay-2">La tecnología que VIZUtire presentó en ASTER redefine cómo las operaciones mineras anticipan fallas en neumáticos OTR.</p>
+        <div class="product-features">
+          <div class="feature-card reveal delay-1">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+            <div>
+              <div class="feature-title">Diagnóstico estructural no destructivo</div>
+              <div class="feature-desc">Ultrasonido de alta frecuencia que mapea el estado interno del neumático sin detener la operación.</div>
+            </div>
+          </div>
+          <div class="feature-card reveal delay-2">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+            <div>
+              <div class="feature-title">Predicción de fallas antes del evento</div>
+              <div class="feature-desc">Modelos de degradación que anticipan la vida útil remanente y alertan con días de anticipación.</div>
+            </div>
+          </div>
+          <div class="feature-card reveal delay-3">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div>
+              <div class="feature-title">Cero fallas imprevistas en operación</div>
+              <div class="feature-desc">El objetivo central: eliminar las paradas no planificadas generadas por falla de neumático OTR.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-visual reveal delay-2">
+        <div class="product-image-frame">
+          <img src="images/aster/alicanto-demo.webp" alt="Alicanto — Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        </div>
+        <div class="product-badge">
+          <div class="product-badge-num">2°</div>
+          <div class="product-badge-lbl">ASTER 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     5. LO QUE SE VALIDÓ
+════════════════════════════════════════ -->
+<section class="validated-section section" id="validacion">
+  <div class="container">
+
+    <h2 class="section-title reveal delay-1">Lo que el Demo Day confirmó</h2>
+    <p class="section-sub reveal delay-2">La evaluación de expertos de operaciones Tier 1 validó tres capacidades clave de Alicanto.</p>
+    <div class="validated-grid">
+      <div class="val-card val-card-accent reveal delay-1">
+        <div class="val-card-num">01</div>
+        <div class="val-card-title">Aplicabilidad en terreno</div>
+        <div class="val-card-desc">La tecnología es compatible con las condiciones de operación de minas Tier 1 en el norte de Chile.</div>
+      </div>
+      <div class="val-card val-card-accent reveal delay-2">
+        <div class="val-card-num">02</div>
+        <div class="val-card-title">Propuesta de valor clara</div>
+        <div class="val-card-desc">El modelo de prevención de fallas se diferencia de otras soluciones presentes en el mercado.</div>
+      </div>
+      <div class="val-card val-card-accent reveal delay-3">
+        <div class="val-card-num">03</div>
+        <div class="val-card-title">Equipo técnico sólido</div>
+        <div class="val-card-desc">Evaluadores destacaron la profundidad técnica detrás de Alicanto y la capacidad de ejecución del equipo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     6. CTA FINAL
+════════════════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-inner">
+
+      <h2 class="cta-title reveal delay-1">Agenda una demo de Alicanto</h2>
+      <p class="cta-sub reveal delay-2">Muéstranos tu flota OTR y te entregamos un análisis de riesgo estructural en tu primera visita. Sin costo, sin compromiso.</p>
+      <div class="cta-actions reveal delay-3">
+        <a href="mailto:digital@vizutire.com?subject=Solicitud%20Demo%20Alicanto%20%E2%80%94%20Demo%20Day%20ASTER" class="cta-btn-primary">
+          Solicitar Demo
+          <span class="arr-btn"><span class="arr-btn-box">
+            <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
+            <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
+          </span></span>
+        </a>
+        <a href="index.html" class="cta-btn-secondary">Conocer VIZUtire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER — idéntico al sitio principal
+════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-watermark" aria-hidden="true">
+    <img src="images/svg/Alicanto_foooter.svg" alt="" width="405" height="81" />
+  </div>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo-link">
+          <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
+        </a>
+        <p class="footer-brand-desc">Diagnóstico estructural no destructivo<br/>para neumáticos OTR de minería.</p>
+        <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4.5"/>
+              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/company/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="3"/>
+              <path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <h4>SERVICIOS</h4>
+          <a href="index.html#pilares">Inspección Ultrasónica</a>
+          <a href="index.html#tecnologia">Beneficios</a>
+          <a href="index.html#alicanto">Analítica Con IA</a>
+          <a href="index.html#ciencia">Reportes De Diagnóstico</a>
+        </div>
+        <div class="footer-col">
+          <h4>EMPRESA</h4>
+          <a href="index.html#alicanto">Alicanto</a>
+          <a href="index.html#ciencia">Casos de éxito</a>
+          <a href="index.html#historia">Hitos</a>
+          <a href="index.html#contacto">Contacto</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 VIZUtire. Todos los derechos reservados.</p>
+      <p>Antofagasta, Chile</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Dot reveal (hero + CTA) ──
+var dotSections = document.querySelectorAll('.hero, .cta-section');
+
+document.addEventListener('mousemove', function(e) {
+  dotSections.forEach(function(sec) {
+    var r = sec.getBoundingClientRect();
+    sec.style.setProperty('--local-x', (e.clientX - r.left) + 'px');
+    sec.style.setProperty('--local-y', (e.clientY - r.top) + 'px');
+  });
+}, { passive: true });
+
+// ── Navbar scroll ──
+var navbar = document.getElementById('navbar');
+window.addEventListener('scroll', function() {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+// ── Side panel / Hamburger ──
+var _panel   = document.getElementById('mobileDrawer');
+var _overlay = document.getElementById('mobileOverlay');
+var _toggle  = document.getElementById('hamburger');
+var _close   = document.getElementById('drawerClose');
+
+function toggleSidePanel() {
+  var isOpening = !_panel.classList.contains('active');
+  _panel.classList.toggle('active');
+  _overlay.classList.toggle('active');
+  _toggle.classList.toggle('open');
+  document.body.style.overflow = isOpening ? 'hidden' : '';
+}
+_toggle.addEventListener('click', toggleSidePanel);
+_overlay.addEventListener('click', toggleSidePanel);
+_close.addEventListener('click', function() {
+  _close.classList.add('spinning');
+  toggleSidePanel();
+  _panel.addEventListener('transitionend', function reset() {
+    _close.classList.remove('spinning');
+    _panel.removeEventListener('transitionend', reset);
+  });
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _panel.classList.contains('active')) toggleSidePanel();
+});
+
+// ── Reveal on scroll ──
+var reveals = document.querySelectorAll('.reveal');
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(function(el) { revealObs.observe(el); });
+
+// ── Smooth scroll para anclajes ──
+document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    var y = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
