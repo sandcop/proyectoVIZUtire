@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mapa de Hitos · Móvil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f4f4f2;
+    --ink: #1a1a1a;
+    --ink-soft: #5a5a5a;
+    --red: #ef3b3b;
+    --gray-line: #2c2c2c;
+    --card: #ffffff;
+    --card-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  .device { max-width: 420px; margin: 0 auto; padding: 20px 16px 80px; position: relative; }
+
+  /* Sticky controls */
+  .controls-mobile {
+    position: sticky; top: 8px; z-index: 50;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 999px; padding: 6px;
+    box-shadow: 0 4px 14px rgba(20,20,30,.08);
+  }
+  .ctrl-btn {
+    appearance: none; border: 0; background: transparent;
+    width: 36px; height: 36px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--ink); transition: background .15s; flex-shrink: 0;
+  }
+  .ctrl-btn:hover { background: rgba(0,0,0,.06); }
+  .ctrl-btn.primary {
+    background: var(--ink); color: #fff; flex: 1; border-radius: 999px;
+    font-weight: 600; font-size: 13px; gap: 6px; font-family: inherit;
+  }
+  .ctrl-btn.primary:hover { background: #333; }
+  .progress-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-soft); padding: 0 10px 0 4px;
+    letter-spacing: .04em; flex-shrink: 0;
+  }
+
+  /* Timeline */
+  .timeline { position: relative; }
+  .timeline svg.rail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  .stops { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .stop { position: relative; padding: 0 0 32px 92px; min-height: 90px; }
+  .stop:last-child { padding-bottom: 12px; }
+
+  /* Year row */
+  .year-row { position: absolute; left: 0; top: 0; width: 92px; height: 36px; display: flex; align-items: center; }
+  .yeardot {
+    position: absolute; left: 60px; top: 50%;
+    transform: translate(-50%, -50%) scale(0.4);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--red); border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    opacity: 0; transition: opacity .35s, transform .35s cubic-bezier(.2,.8,.2,1.4); z-index: 3;
+  }
+  .yeardot.shown { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .yeardot.idle { background: var(--gray-line); }
+  .yearlabel {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 52px; text-align: right; padding-right: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink); opacity: 0; transition: opacity .35s;
+  }
+  .yearlabel.shown { opacity: 1; }
+  .yearlabel.muted { color: var(--ink-soft); font-weight: 400; }
+
+  /* Pin */
+  .pin {
+    position: absolute; left: 60px; top: 18px;
+    transform: translate(-50%, -100%) translateY(-6px);
+    width: 26px; height: 32px; opacity: 0; z-index: 4;
+  }
+  .pin.shown { animation: pinDrop .55s cubic-bezier(.2,.8,.2,1.2) forwards; }
+  @keyframes pinDrop {
+    0%   { opacity: 0; transform: translate(-50%, -100%) translateY(-22px) scale(.6); }
+    60%  { opacity: 1; transform: translate(-50%, -100%) translateY(-2px) scale(1.05); }
+    100% { opacity: 1; transform: translate(-50%, -100%) translateY(-6px) scale(1); }
+  }
+  .pin svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.22)); }
+  .pin .num {
+    position: absolute; left: 0; right: 0; top: 6px;
+    text-align: center; color: #fff; font-weight: 700; font-size: 11px; line-height: 1; pointer-events: none;
+  }
+
+  /* Content */
+  .content {
+    padding-top: 4px; display: flex; flex-direction: column;
+    align-items: flex-start; gap: 8px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .content.shown { opacity: 1; transform: translateY(0); }
+  .card-label { font-size: 14px; line-height: 1.4; color: var(--ink); font-weight: 500; white-space: pre-line; }
+  .logo-box {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 88px; min-height: 42px; padding: 7px 12px;
+    border: 1px dashed rgba(0,0,0,.18); border-radius: 8px;
+    background: repeating-linear-gradient(45deg, #f5f5f3 0 6px, #eeeeec 6px 12px);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .03em; color: #555; font-weight: 500;
+    text-align: center; line-height: 1.3; white-space: pre-line;
+  }
+  .logo-box.tall { min-height: 56px; }
+  .logo-box.wide { min-width: 170px; }
+  .logos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; max-width: 230px; }
+  .logos-grid .logo-box { min-width: 0; width: 100%; padding: 6px 8px; min-height: 36px; font-size: 9.5px; }
+
+  /* Scrub fixed at bottom of iframe viewport */
+  .scrub {
+    position: fixed; left: 12px; right: 12px; bottom: 12px;
+    height: 4px; border-radius: 999px;
+    background: rgba(0,0,0,.1); overflow: hidden; z-index: 40;
+  }
+  .scrub-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--red), #f56a6a); transition: width .12s linear; }
+
+  /* Legend */
+  .legend { margin-top: 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; color: var(--ink-soft); font-size: 11px; font-family: 'JetBrains Mono', monospace; letter-spacing: .03em; }
+  .legend .sw { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .legend .sw.active { background: var(--red); }
+  .legend .sw.idle   { background: var(--gray-line); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script>
+(function() {
+  const { useState, useEffect, useRef, useMemo, useLayoutEffect, Fragment } = React;
+  const h = React.createElement;
+
+  const STOPS = [
+    { year: "2007",   active: true,  pin: 1 },
+    { year: "2010",   active: false, pin: 2 },
+    { year: "2011",   active: true,  pin: 3 },
+    { year: "2012",   active: false, pin: 4 },
+    { year: "2013",   active: true,  pin: 5 },
+    { year: "2015",   active: false, pin: 6 },
+    { year: "2018",   active: true,  pin: null },
+    { year: "2021",   active: true,  pin: 7 },
+    { year: "2023 →", active: true,  pin: 8 }
+  ];
+
+  const CONTENT = {
+    "2007":   [{ k:"logo", n:"UCN", s:"tall" }, { k:"label", t:"Inicio de Investigación" }, { k:"label", t:"Convenio UCN" }],
+    "2010":   [{ k:"logo", n:"CORE — Consejo Regional", s:"wide" }],
+    "2011":   [{ k:"label", t:"Patente en 6 países." }],
+    "2012":   [{ k:"label", t:"Fabricación Prototipo" }],
+    "2013":   [{ k:"logo", n:"CORFO — Empaquetamiento", s:"wide" }, { k:"label", t:"Gestión Innovación" }, { k:"logo", n:"3M" }],
+    "2015":   [{ k:"logo", n:"Avonni — Premio Nac. Innovación", s:"wide" }],
+    "2018":   [{ k:"label", t:"Servicios" }, { k:"grid", logos:["BHP","CODELCO","Antofagasta\nMinerals","AngloAmerican"] }],
+    "2021":   [],
+    "2023 →": [{ k:"logo", n:"Avonni — Premio Nac. Innovación", s:"wide" }]
+  };
+
+  function PinSVG({ color }) {
+    return h('svg', { viewBox:"0 0 30 38" },
+      h('path', { d:"M15 0 C6.7 0 0 6.4 0 14.4 C0 25 15 38 15 38 C15 38 30 25 30 14.4 C30 6.4 23.3 0 15 0 Z", fill: color })
+    );
+  }
+
+  function Item({ item }) {
+    if (item.k === "logo") {
+      const cls = ["logo-box", item.s==="tall"?"tall":"", item.s==="wide"?"wide":""].filter(Boolean).join(" ");
+      return h('div', { className: cls }, item.n);
+    }
+    if (item.k === "label") return h('div', { className:"card-label" }, item.t);
+    if (item.k === "grid") return h('div', { className:"logos-grid" },
+      item.logos.map((n,i) => h('div', { key:i, className:"logo-box" }, n))
+    );
+    return null;
+  }
+
+  function SegPath({ d, active, progress }) {
+    const ref = useRef(null);
+    const [len, setLen] = useState(0);
+    useEffect(() => { if (ref.current) setLen(ref.current.getTotalLength()); }, [d]);
+    return h('path', {
+      ref, d, fill:"none",
+      stroke: active ? "#ef3b3b" : "#2c2c2c",
+      strokeWidth: active ? 4 : 3,
+      strokeLinecap:"round",
+      strokeDasharray: len || 0,
+      strokeDashoffset: len ? len*(1-progress) : 0
+    });
+  }
+
+  function App() {
+    const [progress, setProgress] = useState(0);
+    const [playing, setPlaying] = useState(true);
+    const rafRef = useRef(null);
+    const lastTRef = useRef(null);
+    const loopTimer = useRef(null);
+    const timelineRef = useRef(null);
+    const dotRefs = useRef([]);
+    const [dotYs, setDotYs] = useState([]);
+    const [tlSize, setTlSize] = useState({ w:0, h:0 });
+    const DURATION = 7.5;
+
+    useLayoutEffect(() => {
+      const measure = () => {
+        const tl = timelineRef.current;
+        if (!tl) return;
+        const tlRect = tl.getBoundingClientRect();
+        setTlSize({ w: tlRect.width, h: tlRect.height });
+        const ys = dotRefs.current.map(el => {
+          if (!el) return 0;
+          const r = el.getBoundingClientRect();
+          return r.top - tlRect.top + r.height / 2;
+        });
+        setDotYs(ys);
+      };
+      measure();
+      const ro = new ResizeObserver(measure);
+      if (timelineRef.current) ro.observe(timelineRef.current);
+      window.addEventListener("resize", measure);
+      return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
+    }, []);
+
+    const segments = useMemo(() => {
+      if (dotYs.length !== STOPS.length) return [];
+      return STOPS.slice(0,-1).map((a,i) => {
+        const b = STOPS[i+1];
+        return { d:`M 60 ${dotYs[i]} L 60 ${dotYs[i+1]}`, active: a.active && b.active };
+      });
+    }, [dotYs]);
+
+    const total = segments.length || 1;
+
+    useEffect(() => {
+      if (!playing) { cancelAnimationFrame(rafRef.current); lastTRef.current = null; return; }
+      function tick(t) {
+        if (lastTRef.current == null) lastTRef.current = t;
+        const dt = (t - lastTRef.current) / 1000;
+        lastTRef.current = t;
+        setProgress(p => {
+          const np = p + dt / DURATION;
+          if (np >= 1) {
+            setPlaying(false);
+            clearTimeout(loopTimer.current);
+            loopTimer.current = setTimeout(() => { setProgress(0); setPlaying(true); }, 1800);
+            return 1;
+          }
+          return np;
+        });
+        rafRef.current = requestAnimationFrame(tick);
+      }
+      rafRef.current = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(rafRef.current);
+    }, [playing]);
+
+    useEffect(() => () => clearTimeout(loopTimer.current), []);
+
+    const drawn = progress * total;
+    const reveals = useMemo(
+      () => STOPS.map((s,i) => i===0 ? progress>0.005 : drawn >= i-0.05),
+      [drawn, progress]
+    );
+
+    const restart = () => { clearTimeout(loopTimer.current); setProgress(0); setPlaying(true); };
+    const togglePlay = () => {
+      clearTimeout(loopTimer.current);
+      if (progress >= 1) { setProgress(0); setPlaying(true); }
+      else setPlaying(p => !p);
+    };
+    const skipEnd = () => { clearTimeout(loopTimer.current); setPlaying(false); setProgress(1); };
+
+    const PlayIcon = playing
+      ? h(Fragment, null,
+          h('svg', { width:12, height:12, viewBox:"0 0 24 24", fill:"currentColor" },
+            h('rect', { x:6, y:5, width:4, height:14, rx:1 }),
+            h('rect', { x:14, y:5, width:4, height:14, rx:1 })
+          ), "Pausar")
+      : h(Fragment, null,
+          h('svg', { width:12, height:12, viewBox:"0 0 24 24", fill:"currentColor" },
+            h('path', { d:"M7 5v14l12-7z" })
+          ), "Reproducir");
+
+    return h('div', { className:"device" },
+
+      h('div', { className:"timeline", ref:timelineRef },
+        tlSize.h > 0 && h('svg', {
+          className:"rail",
+          width:tlSize.w, height:tlSize.h,
+          viewBox:`0 0 ${tlSize.w} ${tlSize.h}`,
+          preserveAspectRatio:"none"
+        },
+          segments.map((seg,i) =>
+            h(SegPath, { key:i, d:seg.d, active:seg.active, progress:Math.max(0,Math.min(1,drawn-i)) })
+          )
+        ),
+        h('ul', { className:"stops" },
+          STOPS.map((s,i) => {
+            const items = CONTENT[s.year] || [];
+            const shown = reveals[i];
+            return h('li', { className:"stop", key:s.year },
+              h('div', { className:"year-row" },
+                h('span', { className:`yearlabel${shown?" shown":""}${s.active?"":" muted"}` }, s.year),
+                h('span', { ref:el=>(dotRefs.current[i]=el), className:`yeardot${shown?" shown":""}${s.active?"":" idle"}` }),
+                s.pin != null && h('div', { className:`pin${shown?" shown":""}` },
+                  h(PinSVG, { color: s.active?"#ef3b3b":"#2c2c2c" }),
+                  h('div', { className:"num" }, s.pin)
+                )
+              ),
+              h('div', { className:`content${shown?" shown":""}` },
+                items.map((item,k) => h(Item, { key:k, item }))
+              )
+            );
+          })
+        ),
+        h('div', { className:"legend" },
+          h('span', null, h('span', { className:"sw active" }), "Tramo activo"),
+          h('span', null, h('span', { className:"sw idle" }), "Tramo intermedio")
+        )
+      ),
+
+      h('div', { className:"scrub" },
+        h('div', { className:"scrub-fill", style:{ width:`${progress*100}%` } })
+      )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(h(App, null));
+})();
+</script>
+</body>
+</html>

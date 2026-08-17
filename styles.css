@@ -799,7 +799,7 @@ section[id] { position: relative; }
   max-width: 1560px;
   width: 100%;
   padding: 0 200px;
-  align-items: stretch;
+  align-items: start;
   z-index: 1;
   position: relative;
 }
@@ -902,7 +902,7 @@ section[id] { position: relative; }
 .ani-desc {
   font-family: var(--font-body);
   font-size: 0.88rem;
-  color: var(--text-3);
+  color: var(--text-2);
   line-height: 1.6;
   max-height: 0;
   overflow: hidden;
@@ -921,8 +921,11 @@ section[id] { position: relative; }
 /* Right — tarjeta activa según click en nav */
 .story-right {
   position: relative;
-  min-height: 520px;
-  height: 100%;
+  height: 560px;
+  margin-top: 56px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
 }
 
 /* Carrusel — oculto en desktop, activo en móvil */
@@ -987,7 +990,7 @@ section[id] { position: relative; }
 .sc-img-ph span { font-size: 0.72rem; letter-spacing: 0.03em; }
 
 .sc-content {
-  padding: 32px 44px 40px;
+  padding: 28px 44px 40px;
 }
 
 /* Steps (card 05 — Tecnología) */
@@ -1147,7 +1150,7 @@ section[id] { position: relative; }
   font-size: 0.87rem;
   color: var(--text-2);
   line-height: 1.72;
-  margin-bottom: 24px !important;
+  margin-bottom: 0 !important;
 }
 
 .sc-proof {
@@ -1353,7 +1356,7 @@ section[id] { position: relative; }
 .hero--ended .logo-pos { opacity: 1; }
 
 /* Botones del hero — igual que Lamosa */
-.hero-actions { display: flex; align-items: center; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; justify-content: center; }
+.hero-actions { display: flex; align-items: center; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; justify-content: flex-start; }
 
 .hero-btn-dark {
   display: inline-flex; align-items: center; justify-content: center; gap: 4px;
@@ -1445,6 +1448,8 @@ button.hero-btn-dark { border: none; cursor: pointer; }
   transition: box-shadow var(--t), transform var(--t);
 }
 .hero-btn-light:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.hero-btn-exponor .exponor-star { transition: stroke var(--t), fill var(--t); }
+.hero-btn-exponor:hover .exponor-star { stroke: #c0312b; fill: #c0312b; }
 
 /* Social proof */
 .hero-proof { display: flex; align-items: center; gap: 12px; }
@@ -2334,13 +2339,12 @@ button.hero-btn-dark { border: none; cursor: pointer; }
   pointer-events: none;
   user-select: none;
   line-height: 1;
-  opacity: 0.06;
+  opacity: 0.12;
 }
 .footer-watermark img {
   display: block;
   height: clamp(8rem, 22vw, 18rem);
   width: auto;
-  filter: invert(1);
 }
 .footer .container { position: relative; z-index: 1; }
 .footer-top { display: flex; gap: 80px; margin-bottom: 44px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -2400,6 +2404,7 @@ button.hero-btn-dark { border: none; cursor: pointer; }
 
 @media (max-width: 1400px) {
   .story-layout { padding: 0 80px; gap: 60px; grid-template-columns: 360px 1fr; }
+  .story-right { height: 580px; }
 }
 
 @media (max-width: 1100px) {
@@ -2409,7 +2414,7 @@ button.hero-btn-dark { border: none; cursor: pointer; }
   .header { padding: 16px 60px; }
   .hero-layout { gap: 24px; }
   .story-layout { gap: 40px; padding: 0 60px; grid-template-columns: 300px 1fr; }
-  .story-right { height: 660px; }
+  .story-right { height: 620px; }
   .diag-main { padding-left: 60px; padding-right: 60px; }
 }
 
@@ -2456,11 +2461,11 @@ button.hero-btn-dark { border: none; cursor: pointer; }
   .apple-nav { display: none; }
 
   /* Carrusel: imagen llena todo, contenido flotante encima */
-  .story-right { height: auto; overflow: visible; position: relative; }
+  .story-right { height: auto; min-height: 400px; overflow: visible; position: relative; }
   .carousel-window {
     display: block; position: relative;
     overflow: hidden; border-radius: var(--radius-lg);
-    height: 400px;
+    height: 280px;
   }
   .story-card {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -2604,6 +2609,8 @@ button.hero-btn-dark { border: none; cursor: pointer; }
   .footer-top { flex-direction: column; gap: 36px; }
   .footer-nav { flex-wrap: wrap; gap: 36px; }
   .footer-brand { max-width: 100%; }
+  .footer-watermark { left: 0; transform: none; width: 100%; }
+  .footer-watermark img { width: 100%; height: auto; }
 }
 
 @media (max-width: 768px) {

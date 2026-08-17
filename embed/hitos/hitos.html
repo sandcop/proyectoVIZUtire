@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mapa de Hitos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f4f4f2;
+    --ink: #1a1a1a;
+    --ink-soft: #5a5a5a;
+    --red: #ef3b3b;
+    --red2: #f56a6a;
+    --gray-line: #3a3a3a;
+    --card: #ffffff;
+    --card-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  .page { max-width: 1300px; margin: 0 auto; padding: 28px 32px 40px; }
+
+  /* Controls */
+  .controls {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 999px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    margin-bottom: 20px;
+  }
+  .ctrl-btn {
+    appearance: none; border: 0; background: transparent;
+    width: 38px; height: 38px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--ink); transition: background .15s; font-family: inherit;
+  }
+  .ctrl-btn:hover { background: rgba(0,0,0,.06); }
+  .ctrl-btn.primary {
+    background: var(--ink); color: #fff; width: auto; padding: 0 16px;
+    gap: 8px; font-weight: 600; font-size: 13px;
+  }
+  .ctrl-btn.primary:hover { background: #333; }
+  .progress-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-soft); padding: 0 12px 0 6px; letter-spacing: .04em;
+  }
+
+  /* Stage */
+  .stage {
+    position: relative; background: var(--card);
+    border: 1px solid var(--card-border); border-radius: 24px;
+    padding: 32px 24px; overflow: hidden;
+    box-shadow: 0 4px 14px rgba(20,20,30,.08), 0 12px 28px rgba(20,20,30,.06);
+  }
+  /* Timeline */
+  .timeline-wrap {
+    position: relative; width: 100%; padding: 0 8px;
+    aspect-ratio: 1280 / 680; min-height: 480px;
+  }
+  .timeline-wrap svg.tl { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  /* Pins */
+  .pin {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 30px; height: 38px; pointer-events: auto; cursor: pointer;
+    opacity: 0; z-index: 3;
+  }
+  .pin.shown { animation: pinDrop .55s cubic-bezier(.2,.8,.2,1.2) forwards; }
+  @keyframes pinDrop {
+    0%   { opacity: 0; transform: translate(-50%, calc(-50% - 18px)) scale(.6); }
+    60%  { opacity: 1; transform: translate(-50%, calc(-50% + 4px)) scale(1.05); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .pin svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.22)); }
+  .pin .num {
+    position: absolute; left: 0; right: 0; text-align: center;
+    color: #fff; font-weight: 700; font-size: 13px; line-height: 1;
+    font-family: 'Inter', sans-serif; pointer-events: none;
+  }
+
+  /* Year dots & labels */
+  .yeardot {
+    position: absolute; width: 14px; height: 14px; border-radius: 50%;
+    transform: translate(-50%, -50%); background: var(--red);
+    border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    opacity: 0; transition: opacity .3s;
+  }
+  .yeardot.shown { opacity: 1; }
+  .yeardot.idle  { background: var(--gray-line); }
+  .yearlabel {
+    position: absolute; transform: translate(-50%, 0);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink); opacity: 0; transition: opacity .4s; white-space: nowrap;
+  }
+  .yearlabel.shown { opacity: 1; }
+  .yearlabel.muted { color: var(--ink-soft); font-weight: 400; }
+
+  /* Cards */
+  .card {
+    position: absolute; width: 200px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; text-align: center;
+    opacity: 0; transition: opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none; z-index: 2;
+  }
+  .card.up   { transform: translate(-50%, 8px); }
+  .card.down { transform: translate(-50%, -8px); }
+  .card.shown { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .card-label { font-size: 13px; line-height: 1.35; color: var(--ink); font-weight: 500; white-space: pre-line; }
+  .logo-box {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 96px; min-height: 44px; padding: 7px 12px;
+    border: 1px dashed rgba(0,0,0,.18); border-radius: 8px;
+    background: repeating-linear-gradient(45deg, #f5f5f3 0 6px, #eeeeec 6px 12px);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .03em;
+    color: #555; font-weight: 500; text-align: center; line-height: 1.3;
+    white-space: pre-line; max-width: 100%;
+  }
+  .logo-box.tall { min-height: 58px; }
+  .logo-box.wide { min-width: 150px; }
+  .logos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; width: 230px; }
+  .logos-grid .logo-box { min-width: 0; width: 100%; }
+
+  /* Progress & legend */
+  .scrub {
+    position: relative; margin-top: 16px; height: 4px;
+    border-radius: 999px; background: rgba(0,0,0,.1); overflow: hidden;
+  }
+  .scrub-fill {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 0%;
+    background: linear-gradient(90deg, var(--red), var(--red2));
+    transition: width .12s linear;
+  }
+  .legend {
+    margin-top: 18px; display: flex; gap: 20px; flex-wrap: wrap;
+    align-items: center; justify-content: center;
+    color: var(--ink-soft); font-size: 11.5px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+  }
+  .legend .sw { display: inline-block; width: 20px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 7px; }
+  .legend .sw.active { background: var(--red); }
+  .legend .sw.idle   { background: var(--gray-line); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+
+<script>
+(function() {
+  const { useState, useEffect, useRef, useMemo, createElement: h, Fragment } = React;
+
+  const VB_W = 1280, VB_H = 680;
+  const Y_BASE = 340, BUMP_UP = 34, BUMP_DOWN = 34;
+
+  const STOPS = [
+    { x: 90,   year: "2007",   side: "up",   pin: 1, pinSide: "up"   },
+    { x: 220,  year: "2010",   side: "down", pin: 2, pinSide: "down" },
+    { x: 360,  year: "2011",   side: "up",   pin: 3, pinSide: "up"   },
+    { x: 490,  year: "2012",   side: "down", pin: 4, pinSide: "down" },
+    { x: 625,  year: "2013",   side: "up",   pin: 5, pinSide: "up"   },
+    { x: 760,  year: "2015",   side: "down", pin: 6, pinSide: "down" },
+    { x: 895,  year: "2018",   side: "up",   pin: null               },
+    { x: 1035, year: "2021",   side: "up",   pin: 7, pinSide: "up"   },
+    { x: 1160, year: "2023 →", side: "up",   pin: 8, pinSide: "down" }
+  ];
+
+  const CONTENT = {
+    "2007":   { above: [{ k:"logo", n:"UCN", s:"tall" }, { k:"label", t:"Inicio de\nInvestigación" }, { k:"label", t:"Convenio UCN" }], below: [] },
+    "2010":   { above: [], below: [{ k:"logo", n:"CORE — Consejo Regional", s:"wide" }] },
+    "2011":   { above: [{ k:"label", t:"Patente en 6 países." }], below: [] },
+    "2012":   { above: [{ k:"label", t:"Fabricación\nPrototipo" }], below: [] },
+    "2013":   { above: [{ k:"logo", n:"CORFO — Empaquetamiento", s:"wide" }, { k:"label", t:"Gestión Innovación" }, { k:"logo", n:"3M" }], below: [] },
+    "2015":   { above: [], below: [{ k:"logo", n:"Avonni — Premio Nac. Innovación", s:"wide" }] },
+    "2018":   { above: [{ k:"label", t:"Servicios" }, { k:"grid", logos:["BHP","CODELCO","Antofagasta\nMinerals","AngloAmerican"] }], below: [] },
+    "2021":   { above: [], below: [] },
+    "2023 →": { above: [{ k:"logo", n:"Avonni — Premio Nac. Innovación", s:"wide" }], below: [] }
+  };
+
+  const stopY = s => Y_BASE + (s.side === "up" ? -BUMP_UP : BUMP_DOWN);
+
+  function buildSegments() {
+    return STOPS.slice(0,-1).map((a,i) => {
+      const b = STOPS[i+1];
+      return { a, b, active: a.side==="up" && b.side==="up" };
+    });
+  }
+
+  function segD(seg) {
+    const ay = stopY(seg.a), by = stopY(seg.b);
+    const c1x = seg.a.x + (seg.b.x-seg.a.x)*0.4;
+    const c2x = seg.a.x + (seg.b.x-seg.a.x)*0.6;
+    return `M ${seg.a.x} ${ay} C ${c1x} ${ay}, ${c2x} ${by}, ${seg.b.x} ${by}`;
+  }
+
+  // SVG Pin shape
+  function PinSVG({ color, flip }) {
+    return h('svg', { viewBox:"0 0 30 38", xmlns:"http://www.w3.org/2000/svg", style:{ transform: flip?"rotate(180deg)":"none" } },
+      h('path', { d:"M15 0 C6.7 0 0 6.4 0 14.4 C0 25 15 38 15 38 C15 38 30 25 30 14.4 C30 6.4 23.3 0 15 0 Z", fill: color })
+    );
+  }
+
+  // Animated segment
+  function Seg({ d, active, progress }) {
+    const ref = useRef(null);
+    const [len, setLen] = useState(0);
+    useEffect(() => { if (ref.current) setLen(ref.current.getTotalLength()); }, [d]);
+    return h('path', {
+      ref, d, fill:"none",
+      stroke: active ? "#ef3b3b" : "#2c2c2c",
+      strokeWidth: active ? 5 : 4,
+      strokeLinecap:"round",
+      strokeDasharray: len || 0,
+      strokeDashoffset: len ? len*(1-progress) : 0
+    });
+  }
+
+  // Content item
+  function Item({ item }) {
+    if (item.k === "logo") {
+      const cls = ["logo-box", item.s==="tall"?"tall":"", item.s==="wide"?"wide":""].filter(Boolean).join(" ");
+      return h('div', { className: cls }, item.n);
+    }
+    if (item.k === "label") return h('div', { className:"card-label" }, item.t);
+    if (item.k === "grid") return h('div', { className:"logos-grid" },
+      item.logos.map((n,i) => h('div', { key:i, className:"logo-box" }, n))
+    );
+    return null;
+  }
+
+  // Main App
+  function App() {
+    const [progress, setProgress] = useState(0);
+    const [playing, setPlaying] = useState(true);
+    const rafRef = useRef(null);
+    const lastTRef = useRef(null);
+    const DURATION = 8.5;
+    const LOOP_DELAY = 1800;
+
+    useEffect(() => {
+      if (!playing) { cancelAnimationFrame(rafRef.current); lastTRef.current = null; return; }
+      function tick(t) {
+        if (lastTRef.current == null) lastTRef.current = t;
+        const dt = (t - lastTRef.current) / 1000;
+        lastTRef.current = t;
+        setProgress(p => {
+          const np = p + dt / DURATION;
+          if (np >= 1) {
+            setPlaying(false);
+            setTimeout(() => { setProgress(0); setPlaying(true); }, LOOP_DELAY);
+            return 1;
+          }
+          return np;
+        });
+        rafRef.current = requestAnimationFrame(tick);
+      }
+      rafRef.current = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(rafRef.current);
+    }, [playing]);
+
+    const segments = useMemo(() => buildSegments(), []);
+    const drawn = progress * segments.length;
+    const reveals = useMemo(() =>
+      STOPS.map((s,i) => i===0 ? progress>0.005 : drawn >= i-0.05),
+      [drawn, progress]
+    );
+
+    const xp = x => `${(x/VB_W)*100}%`;
+    const yp = y => `${(y/VB_H)*100}%`;
+
+    const restart = () => { setProgress(0); setPlaying(true); };
+    const togglePlay = () => {
+      if (progress >= 1) { setProgress(0); setPlaying(true); }
+      else setPlaying(p => !p);
+    };
+    const skipEnd = () => { setPlaying(false); setProgress(1); };
+
+    // Play/pause icon
+    const PlayIcon = playing
+      ? h('svg', { width:12, height:12, viewBox:"0 0 24 24", fill:"currentColor" },
+          h('rect', { x:6, y:5, width:4, height:14, rx:1 }),
+          h('rect', { x:14, y:5, width:4, height:14, rx:1 })
+        )
+      : h('svg', { width:12, height:12, viewBox:"0 0 24 24", fill:"currentColor" },
+          h('path', { d:"M7 5v14l12-7z" })
+        );
+
+    return h('div', { className:"page" },
+      // Stage
+      h('div', { className:"stage" },
+        h('div', { className:"timeline-wrap" },
+          // SVG lines
+          h('svg', { className:"tl", viewBox:`0 0 ${VB_W} ${VB_H}`, preserveAspectRatio:"none" },
+            segments.map((seg,i) =>
+              h(Seg, { key:i, d:segD(seg), active:seg.active, progress: Math.max(0,Math.min(1,drawn-i)) })
+            )
+          ),
+
+          // Year dots
+          STOPS.map((s,i) => {
+            const shown = reveals[i], isUp = s.side==="up";
+            return h(Fragment, { key:`y${i}` },
+              h('div', { className:`yeardot${shown?" shown":""}${isUp?"":" idle"}`, style:{ left:xp(s.x), top:yp(stopY(s)) } }),
+              h('div', { className:`yearlabel${shown?" shown":""}${isUp?"":" muted"}`, style:{ left:xp(s.x), top:yp(stopY(s)+16) } }, s.year)
+            );
+          }),
+
+          // Pins
+          STOPS.map((s,i) => {
+            const c = CONTENT[s.year];
+            if (!c || s.pin==null) return null;
+            const shown = reveals[i], isTop = s.pinSide==="up";
+            const baseY = stopY(s);
+            const cy = isTop ? baseY-8-19 : baseY+8+19;
+            return h('div', { key:`p${i}`, className:`pin${shown?" shown":""}`, style:{ left:xp(s.x), top:yp(cy) } },
+              h(PinSVG, { color: isTop?"#ef3b3b":"#2c2c2c", flip:!isTop }),
+              h('div', { className:"num", style:{ top: isTop?8:18 } }, s.pin)
+            );
+          }),
+
+          // Above-line content
+          STOPS.map((s,i) => {
+            const c = CONTENT[s.year];
+            if (!c || c.above.length===0) return null;
+            const shown = reveals[i], baseY = stopY(s);
+            const clr = s.pin!=null && s.pinSide==="up" ? 64 : 18;
+            return h('div', { key:`a${i}`, className:`card up${shown?" shown":""}`,
+              style:{ left:xp(s.x), bottom:`calc(${100-(baseY/VB_H)*100}% + ${clr}px)` } },
+              [...c.above].reverse().map((item,k) => h(Item, { key:k, item }))
+            );
+          }),
+
+          // Below-line content
+          STOPS.map((s,i) => {
+            const c = CONTENT[s.year];
+            if (!c || c.below.length===0) return null;
+            const shown = reveals[i], baseY = stopY(s);
+            const clr = s.pin!=null && s.pinSide==="down" ? 64 : 38;
+            return h('div', { key:`b${i}`, className:`card down${shown?" shown":""}`,
+              style:{ left:xp(s.x), top:`calc(${(baseY/VB_H)*100}% + ${clr}px)` } },
+              c.below.map((item,k) => h(Item, { key:k, item }))
+            );
+          })
+        ),
+
+        h('div', { className:"scrub" }, h('div', { className:"scrub-fill", style:{ width:`${progress*100}%` } })),
+        h('div', { className:"legend" },
+          h('span', null, h('span', { className:"sw active" }), "Tramo activo"),
+          h('span', null, h('span', { className:"sw idle" }), "Tramo intermedio")
+        )
+      )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(h(App, null));
+})();
+</script>
+</body>
+</html>

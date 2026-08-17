@@ -201,7 +201,7 @@ revealEls.forEach(el => observer.observe(el));
 
   const items = Array.from(cycle.querySelectorAll('.hero-cycle-item'));
   const bar   = document.getElementById('cycleBar');
-  if (items.length < 2) return;
+  if (items.length < 1) return;
 
   /* Sin animación si el usuario prefiere movimiento reducido */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -361,6 +361,32 @@ revealEls.forEach(el => observer.observe(el));
         step();
       });
     });
+  }
+
+  /* ── Un solo párrafo: no hay a qué rotar → solo animación de entrada, sin ciclo ── */
+  if (items.length === 1) {
+    const heroVideo   = document.getElementById('heroVideo');
+    let   cycleActive = false;
+
+    function kickoffSingle() {
+      if (cycleActive) return;
+      cycleActive = true;
+      showItem(0);
+    }
+
+    if (window.innerWidth <= 900) {
+      kickoffSingle();
+      return;
+    }
+
+    if (heroVideo && !heroVideo.ended) {
+      heroVideo.addEventListener('ended', kickoffSingle, { once: true });
+      const fallbackTO = setTimeout(kickoffSingle, 25000);
+      heroVideo.addEventListener('ended', () => clearTimeout(fallbackTO), { once: true });
+    } else {
+      kickoffSingle();
+    }
+    return;
   }
 
   /* ── El primer párrafo se muestra estático durante el vídeo ── */

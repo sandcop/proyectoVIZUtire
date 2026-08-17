@@ -1,11 +1,42 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VIZUtire — Structural Diagnostics for OTR Tires</title>
   <meta name="description" content="Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures." />
-  <link rel="icon" type="image/svg+xml" href="imagenes/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self';" />
+
+  <!-- ── SEO: Canonical + Hreflang ── -->
+  <link rel="canonical" href="https://vizutire.com/index-en.html" />
+  <link rel="alternate" hreflang="en" href="https://vizutire.com/index-en.html" />
+  <link rel="alternate" hreflang="es" href="https://vizutire.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://vizutire.com/" />
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://vizutire.com/index-en.html" />
+  <meta property="og:title"       content="VIZUtire — Structural Diagnostics for OTR Tires" />
+  <meta property="og:description" content="Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures." />
+  <meta property="og:image"       content="https://vizutire.com/images/og-vizutire.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale"      content="en_US" />
+  <meta property="og:site_name"   content="VIZUtire" />
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="VIZUtire — Structural Diagnostics for OTR Tires" />
+  <meta name="twitter:description" content="Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures." />
+  <meta name="twitter:image"       content="https://vizutire.com/images/og-vizutire.png" />
+
+  <!-- ── PWA / Theme ── -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#c0312b" />
   <!-- ── Preloader VIZUtire — CSS crítico inline (no bloquea render) ── -->
   <style>
     #preloader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;
@@ -37,7 +68,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
   <!-- Preload LCP: imagen principal del diagnóstico -->
-  <link rel="preload" as="image" href="imagenes/tire-inner 2.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="images/tire-inner-2.webp" type="image/webp" fetchpriority="high" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
   <script defer src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/embla-carousel@8/embla-carousel.umd.js"></script>
@@ -111,7 +142,7 @@
   <div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="side-panel-header">
       <div class="side-panel-logo">
-        <img src="imagenes/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
+        <img src="images/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img" width="619" height="315" />
       </div>
       <button class="close-panel" id="drawerClose" aria-label="Close menu">×</button>
     </div>
@@ -147,10 +178,10 @@
         </div>
       </div>
       <div class="panel-social">
-        <a href="https://www.instagram.com/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="https://www.instagram.com/vizutire" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
         </a>
-        <a href="https://www.linkedin.com/company/vizutire" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/company/vizutire" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg>
         </a>
       </div>
@@ -161,24 +192,24 @@
   <section class="hero" id="inicio">
     <div class="hero-dots"></div>
     <a href="#" class="hero-logo">
-      <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" width="619" height="315" />
-      <img src="imagenes/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" width="619" height="315" />
+      <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" width="619" height="315" />
+      <img src="images/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" width="619" height="315" />
     </a>
 
     <div class="hero-layout">
       <div class="hero-text">
         <h1 class="hero-title">
-          Operational<br />
-          Intelligence<br />
+          Structural<br />
+          Management<br />
           for OTR<br />
           <em>Tires</em>
         </h1>
         <div class="hero-cycle" id="heroCycle">
-          <p class="hero-sub hero-cycle-item" data-cycle="0" data-dwell="7000">
-            VIZUtire predicts structural degradation before operational failure occurs. Alicanto transforms that prediction into prescriptive operational control.
+          <p class="hero-sub hero-cycle-item" data-cycle="0" data-dwell="5000">
+            Do you know how your tire's structure is evolving as a result of operation?
           </p>
-          <p class="hero-body hero-cycle-item" data-cycle="1" data-dwell="12000">
-            Most mining operations detect tire failure after operational risk already exists. VIZUtire changes that. Through predictive structural intelligence, ultrasonic validation, and prescriptive operational recommendations, Alicanto by VIZUtire transforms tire management from reactive maintenance into operational certainty.
+          <p class="hero-body hero-cycle-item" data-cycle="1" data-dwell="13000">
+            Every operating cycle subjects the tire to loads, deformations, and impacts that generate a structural response. Understanding how that response evolves unlocks a new dimension in OTR tire management.
           </p>
           <div class="cycle-progress" aria-hidden="true">
             <div class="cycle-progress-bar" id="cycleBar"></div>
@@ -201,19 +232,22 @@
           <a href="#tecnologia" class="hero-btn-light">
             See Technology
           </a>
+          <a href="demo-day-aster-en.html" class="hero-btn-light hero-btn-exponor" style="display:inline-flex;align-items:center;gap:8px;">
+            <svg class="exponor-star" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            2nd place EXPONOR 2026
+          </a>
         </div>
       </div>
     </div>
 
     <div class="hero-visual">
       <video class="hero-video" muted playsinline preload="none" disablepictureinpicture
-             poster="imagenes/neumatico 1.webp" id="heroVideo">
-        <source data-src="imagenes/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
+             poster="images/neumatico-1.webp" id="heroVideo">
+        <source data-src="images/magnific_premium-website-hero-anim_EqzGcvzuuO.mp4" type="video/mp4">
       </video>
-      <script>if(window.innerWidth<=900){var _v=document.getElementById('heroVideo');if(_v)_v.remove();}</script>
       <div class="hero-scanner" id="heroScanner">
-        <img class="scanner-base" src="header vizu/assets/tire.webp" alt="OTR Tire" width="1200" height="640" />
-        <img class="scanner-scan" src="header vizu/assets/tire.webp" alt="" aria-hidden="true" width="1200" height="640" />
+        <img class="scanner-base" src="scanner/tire.webp" alt="OTR Tire" width="1200" height="640" />
+        <img class="scanner-scan" src="scanner/tire.webp" alt="" aria-hidden="true" width="1200" height="640" />
       </div>
     </div>
 
@@ -222,7 +256,7 @@
   <!-- ===================== CLIENTS BANNER ===================== -->
   <section class="clients-banner">
     <iframe
-      src="assets/clientes-banner.html"
+      src="embed/clientes-banner.html"
       class="clientes-iframe"
       frameborder="0"
       scrolling="no"
@@ -240,7 +274,7 @@
         </div>
         <div class="diag-two-col reveal delay-1">
           <div class="diag-tire-wrap">
-            <img src="imagenes/tire-inner 2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" width="800" height="800" />
+            <img src="images/tire-inner-2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" width="800" height="800" />
             <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
             <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
             <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
@@ -255,9 +289,9 @@
                 F-1
               </div>
               <h3 class="diag-card-title">Internal Microcrack</h3>
-              <p class="diag-card-desc">Internal discontinuities detected via 2.4 MHz ultrasound. Early stage with high probability of progression under operational load.</p>
+              <p class="diag-card-desc">Internal microcrack identified through non-destructive ultrasonic inspection and predictive analysis. Early stage with elevated risk of propagation under operational load.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Internal microcrack" width="600" height="600" loading="lazy" />
+                <img src="images/neumatico-1.webp" alt="Internal microcrack" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -270,7 +304,7 @@
               <h3 class="diag-card-title">Layer Separation</h3>
               <p class="diag-card-desc">Delamination between structural tire layers. Tensional analysis identifies the extent and depth of damage with millimetric precision.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Layer separation" width="600" height="600" loading="lazy" />
+                <img src="images/neumatico-1.webp" alt="Layer separation" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -281,9 +315,9 @@
                 F-3
               </div>
               <h3 class="diag-card-title">Belt Fracture</h3>
-              <p class="diag-card-desc">Broken steel cords in the steel belt. Critical structural risk. The AI model predicts failure window with ±8% precision.</p>
+              <p class="diag-card-desc">Broken steel cords detected in the steel belt. Critical structural risk. The AI predictive model estimates imminent failure if current operating conditions persist.</p>
               <div class="diag-card-thumb">
-                <img src="imagenes/neumatico 1.webp" alt="Belt fracture" width="600" height="600" loading="lazy" />
+                <img src="images/neumatico-1.webp" alt="Belt fracture" width="600" height="600" loading="lazy" />
               </div>
             </div>
 
@@ -311,9 +345,9 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
                 </div>
                 <h3>Predictive<br/>Visibility</h3>
-                <p>VIZUtire models 150 variables in real time to predict structural failure before it occurs.</p>
+                <p>VIZUtire applies predictive modeling to 150 real-time variables to predict structural failure before it happens.</p>
                 <div class="pilar-metric-box">
-                  <span class="pilar-met-num">48–72h</span>
+                  <span class="pilar-met-num">170h</span>
                   <span class="pilar-met-lbl">before failure</span>
                 </div>
                 <button class="pilar-flip-btn" aria-label="See pillar detail">
@@ -405,8 +439,8 @@
                 <h3>Prescriptive<br/>Optimization</h3>
                 <p>Not an alert. It's a decision already made, justified, quantified and auditable.</p>
                 <div class="pilar-metric-box">
-                  <span class="pilar-met-num">$800K</span>
-                  <span class="pilar-met-lbl">savings per decision</span>
+                  <span class="pilar-met-num">X10</span>
+                  <span class="pilar-met-lbl">cost-benefit</span>
                 </div>
                 <button class="pilar-flip-btn" aria-label="See pillar detail">
                   Learn more
@@ -419,7 +453,7 @@
                 <p class="pilar-back-body">Most systems generate alerts. Alicanto generates operational decisions.</p>
                 <div class="pilar-back-contrast">
                   <p class="pilar-back-no">"Potential anomaly detected."</p>
-                  <p class="pilar-back-sino">"Rotate Tire #47 within the next 36 hours. Expected life extension: +280 hours. Projected savings: $800,000."</p>
+                  <p class="pilar-back-sino">"Rotate Tire #47 within the next 36 hours. Expected life extension: +280 hours."</p>
                 </div>
                 <div class="pilar-back-tags">
                   <span>Justified</span><span>Quantified</span>
@@ -535,106 +569,78 @@
           <div class="carousel-window">
           <div class="story-card" data-card="0">
             <div class="sc-image">
-              <img src="fotos/Produccion_adicional.webp" alt="Additional production — mining trucks" class="sc-img-real" />
+              <img src="images/photos/Produccion_adicional.webp" alt="Additional production — mining trucks" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">01</div>
               <p class="sc-intro">More productive hours without expanding the fleet.</p>
               <p class="sc-explain">VIZUtire identifies opportunities to capture operational availability that is normally lost to unexpected tire failures. Every recovered hour translates into more tons moved and greater utilization of existing assets.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">US$ 13M/yr</span>
-                <span class="sc-proof-label">Potential value generated</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="1">
             <div class="sc-image">
-              <img src="fotos/planificacion predicrtiva.webp" alt="Predictive planning" class="sc-img-real" />
+              <img src="images/photos/planificacion predicrtiva.webp" alt="Predictive planning" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">02</div>
               <p class="sc-intro">Know what will happen before it impacts the mining plan.</p>
               <p class="sc-explain">Our technology delivers early visibility into the structural condition of each tire, enabling maintenance and rotation planning in advance, reducing reactive decision-making.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">US$ 1.5M</span>
-                <span class="sc-proof-label">Estimated operational savings</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="2">
             <div class="sc-image">
-              <img src="fotos/mayor vida util.webp" alt="Extended tire life" class="sc-img-real" />
+              <img src="images/photos/mayor vida util.webp" alt="Extended tire life" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">03</div>
               <p class="sc-intro">Extend tire life with data-backed decisions.</p>
               <p class="sc-explain">We transform technical expertise into a parameterized, scalable process that allows informed deferrals of replacements, increasing average performance without compromising operational safety.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">US$ 11M</span>
-                <span class="sc-proof-label">Potential combined savings</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="3">
             <div class="sc-image">
-              <img src="fotos/eliminacion de reventones.webp" alt="Blowout elimination" class="sc-img-real" />
+              <img src="images/photos/eliminacion de reventones.webp" alt="Blowout elimination" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">04</div>
               <p class="sc-intro">Operational safety based on evidence.</p>
               <p class="sc-explain">We detect mechanical separations early before they lead to catastrophic failures. This eliminates the primary cause of blowouts and strengthens the traceability of operational decisions.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">0</span>
-                <span class="sc-proof-label">Blowouts from mechanical separation</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="4">
             <div class="sc-image">
-              <img src="fotos/sustentabilidad.webp" alt="Sustainability" class="sc-img-real" />
+              <img src="images/photos/sustentabilidad.webp" alt="Sustainability" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">05</div>
               <p class="sc-intro">Greater operational efficiency with lower environmental impact.</p>
               <p class="sc-explain">Every tire that reaches a longer life reduces the need for replacements, decreasing waste, associated transport and resource consumption throughout the full lifecycle.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">1,200 t</span>
-                <span class="sc-proof-label">Waste avoided per year</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="5">
             <div class="sc-image">
-              <img src="fotos/ROI.webp" alt="Proven ROI" class="sc-img-real" />
+              <img src="images/photos/ROI.webp" alt="Proven ROI" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">06</div>
               <p class="sc-intro">A business case backed by real data.</p>
               <p class="sc-explain">Operational benefits, reduction of unplanned events and optimization of tire consumption generate measurable returns with financial models validated in real mining operations.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">10:1</span>
-                <span class="sc-proof-label">Potential ROI</span>
-              </div>
             </div>
           </div>
 
           <div class="story-card" data-card="6">
             <div class="sc-image">
-              <img src="fotos/optimizacion.webp" alt="Cost optimization" class="sc-img-real" />
+              <img src="images/photos/optimizacion.webp" alt="Cost optimization" class="sc-img-real" />
             </div>
             <div class="sc-content">
               <div class="sc-num">07</div>
               <p class="sc-intro">Fewer tires consumed, more value generated.</p>
               <p class="sc-explain">Reducing unnecessary replacements allows a significant decrease in annual tire-related expenditure without affecting fleet availability or existing operational contracts.</p>
-              <div class="sc-proof">
-                <span class="sc-proof-num">13%</span>
-                <span class="sc-proof-label">Lower annual tire expenditure</span>
-              </div>
             </div>
           </div>
           <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
@@ -677,27 +683,27 @@
         <div class="ali-visual reveal delay-1">
           <div class="ali-accordion" id="aliAccordion">
             <div class="ali-acc-item">
-              <img class="ali-acc-img" src="fotos/alicanto.webp" alt="Predictive Analysis" />
+              <img class="ali-acc-img" src="images/photos/alicanto.webp" alt="Predictive Analysis" />
               <div class="ali-acc-overlay"></div>
               <span class="ali-acc-label">Predictive Analysis</span>
             </div>
             <div class="ali-acc-item">
-              <img class="ali-acc-img" src="fotos/alicanto2.webp" alt="Ultrasonic Validation" />
+              <img class="ali-acc-img" src="images/photos/alicanto2.webp" alt="Ultrasonic Validation" />
               <div class="ali-acc-overlay"></div>
               <span class="ali-acc-label">Ultrasonic Validation</span>
             </div>
             <div class="ali-acc-item">
-              <img class="ali-acc-img" src="fotos/alicanto3.webp" alt="Structural Diagnosis" />
+              <img class="ali-acc-img" src="images/photos/alicanto3.webp" alt="Structural Diagnosis" />
               <div class="ali-acc-overlay"></div>
               <span class="ali-acc-label">Structural Diagnosis</span>
             </div>
             <div class="ali-acc-item">
-              <img class="ali-acc-img" src="fotos/alicanto4.webp" alt="Operational Intelligence" />
+              <img class="ali-acc-img" src="images/photos/alicanto4.webp" alt="Operational Intelligence" />
               <div class="ali-acc-overlay"></div>
               <span class="ali-acc-label">Operational Intelligence</span>
             </div>
             <div class="ali-acc-item active">
-              <img class="ali-acc-img" src="fotos/alicanto5.webp" alt="Prescriptive Action" />
+              <img class="ali-acc-img" src="images/photos/alicanto5.webp" alt="Prescriptive Action" />
               <div class="ali-acc-overlay"></div>
               <span class="ali-acc-label">Prescriptive Action</span>
             </div>
@@ -732,7 +738,7 @@
             <div class="caso-op-name">BHP</div>
             <div class="caso-metrics">
               <div class="caso-metric">
-                <div class="caso-num">+8–12%</div>
+                <div class="caso-num">0.11%</div>
                 <div class="caso-lbl">Fleet availability</div>
               </div>
               <div class="caso-metric">
@@ -875,7 +881,7 @@
           <div class="cta-contact-card">
             <span class="cta-contact-label">Location</span>
             <span class="cta-contact-val">Las Encinas 353,<br />Antofagasta — Chile</span>
-            <a href="https://maps.app.goo.gl/ojtexXBu2NvL8qjv9" target="_blank" rel="noopener" class="cta-contact-maps-link">View on Google Maps →</a>
+            <a href="https://maps.app.goo.gl/ojtexXBu2NvL8qjv9" target="_blank" rel="noopener noreferrer" class="cta-contact-maps-link">View on Google Maps →</a>
           </div>
           <div class="cta-contact-card">
             <span class="cta-contact-label">Contact</span>
@@ -983,25 +989,25 @@
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="footer-watermark" aria-hidden="true">
-      <img src="imagenes/SVG/Alicanto_foooter.svg" alt="" width="405" height="81" />
+      <img src="images/svg/Alicanto_foooter.svg" alt="" width="405" height="81" />
     </div>
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
           <a href="#" class="footer-logo-link">
-            <img src="imagenes/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
+            <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
           </a>
           <p class="footer-brand-desc">Non-destructive structural diagnostics<br />for mining OTR tires.</p>
           <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
           <div class="footer-social">
-            <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <circle cx="12" cy="12" r="4.5"/>
                 <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
               </svg>
             </a>
-            <a href="https://www.linkedin.com/company/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/company/vizutire" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="3"/>
                 <path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/>
@@ -1012,10 +1018,10 @@
         <div class="footer-nav">
           <div class="footer-col">
             <h4>SERVICES</h4>
-            <a href="#problema">Ultrasonic Inspection</a>
-            <a href="#problema">Benefits</a>
-            <a href="#problema">AI Analytics</a>
-            <a href="#problema">Diagnostic Reports</a>
+            <a href="#pilares">Ultrasonic Inspection</a>
+            <a href="#tecnologia">Benefits</a>
+            <a href="#alicanto">AI Analytics</a>
+            <a href="#ciencia">Diagnostic Reports</a>
           </div>
           <div class="footer-col">
             <h4>COMPANY</h4>
@@ -1032,6 +1038,46 @@
       </div>
     </div>
   </footer>
+
+  <!-- ── Schema.org JSON-LD ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://vizutire.com/#org",
+        "name": "VIZUtire",
+        "url": "https://vizutire.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://vizutire.com/images/Logo_VIZUtire.svg"
+        },
+        "description": "Non-destructive structural diagnostics for mining OTR tires. Ultrasonic technology and AI for zero unexpected failures.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Las Encinas 353",
+          "addressLocality": "Antofagasta",
+          "addressCountry": "CL"
+        },
+        "email": "digital@vizutire.com",
+        "telephone": "+56995434402",
+        "sameAs": [
+          "https://www.instagram.com/vizutire",
+          "https://www.linkedin.com/company/vizutire"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://vizutire.com/#website",
+        "url": "https://vizutire.com",
+        "name": "VIZUtire",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://vizutire.com/#org" }
+      }
+    ]
+  }
+  </script>
 
 </body>
 </html>

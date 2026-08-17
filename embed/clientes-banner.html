@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clientes validados</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    background: #ffffff;
+    height: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+  }
+
+  .banner {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .track-wrap {
+    flex: 1 1 0;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    height: 48px;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0,0,0,1) 48%,
+      rgba(0,0,0,1) 52%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0,0,0,1) 48%,
+      rgba(0,0,0,1) 52%,
+      transparent 100%
+    );
+  }
+
+  .track {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    animation: marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(-100% / 3)); }
+  }
+
+  .track:hover { animation-play-state: paused; }
+
+  .logo-cell {
+    flex: 0 0 auto;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-cell img {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.65);
+    transition: filter 350ms ease;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  /* Optical sizing per-logo — compensate for internal whitespace */
+  .logo-cell.lg-bhp       { padding: 0 18px; }
+  .logo-cell.lg-bhp       img { height: 92%; transform: scale(1.67); }
+  .logo-cell.lg-codelco   { padding: 0 14px; }
+  .logo-cell.lg-codelco   img { height: 95%; transform: scale(1.60); }
+  .logo-cell.lg-pelambres { padding: 0 60px; }
+  .logo-cell.lg-pelambres img { height: 95%; transform: scale(2.86); }
+  .logo-cell.lg-lomas     { padding: 0 8px; }
+  .logo-cell.lg-lomas     img { height: 90%; transform: scale(1.20); }
+  .logo-cell.lg-kaltire   img { height: 78%; }
+  .logo-cell.lg-michelin  img { height: 88%; }
+
+  .logo-cell:hover img {
+    filter: grayscale(0) opacity(1);
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation-duration: 90s; }
+  }
+</style>
+</head>
+<body>
+  <div class="banner">
+    <div class="track-wrap">
+      <div class="track" id="track"></div>
+    </div>
+  </div>
+
+  <script>
+    const LOGOS = [
+      { src: 'logos/bhp.png',          alt: 'BHP',          cls: 'lg-bhp' },
+      { src: 'logos/codelco.png',      alt: 'Codelco',      cls: 'lg-codelco' },
+      { src: 'logos/kaltire.png',      alt: 'Kal Tire',     cls: 'lg-kaltire' },
+      { src: 'logos/lomas-bayas.png',  alt: 'Lomas Bayas',  cls: 'lg-lomas' },
+      { src: 'logos/los-pelambres.jpg',alt: 'Los Pelambres',cls: 'lg-pelambres' },
+      { src: 'logos/michelin.png',     alt: 'Michelin',     cls: 'lg-michelin' },
+    ];
+
+    const track = document.getElementById('track');
+    // Triple the list for seamless infinite scroll
+    [...LOGOS, ...LOGOS, ...LOGOS].forEach(({ src, alt, cls }) => {
+      const cell = document.createElement('div');
+      cell.className = `logo-cell ${cls}`;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = alt;
+      cell.appendChild(img);
+      // Hover: restore color on cell, pause on img (img pointer-events toggled via CSS)
+      cell.addEventListener('mouseenter', () => { img.style.pointerEvents = 'auto'; });
+      cell.addEventListener('mouseleave', () => { img.style.pointerEvents = 'none'; });
+      track.appendChild(cell);
+    });
+  </script>
+</body>
+</html>
