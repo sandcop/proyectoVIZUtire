@@ -67,6 +67,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" /></noscript>
+  <!-- "Why does VIZUtire exist" section — 3D scroll-story (engine deferred, see before </body>) -->
+  <link rel="stylesheet" href="vizutire-story/story.css" />
   <!-- Preload LCP: imagen principal del diagnóstico -->
   <link rel="preload" as="image" href="images/tire-inner-2.webp" type="image/webp" fetchpriority="high" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
@@ -263,6 +265,25 @@
       title="Validated clients"
     ></iframe>
   </section>
+
+  <!-- ===================== WHY DOES VIZUTIRE EXIST (3D scroll-story) ===================== -->
+  <section id="vizutire-story" aria-label="Why does VIZUtire exist"></section>
+  <script type="module">
+    (function () {
+      const el = document.getElementById('vizutire-story');
+      if (!el || !('IntersectionObserver' in window)) return;
+      let mounted = false;
+      const io = new IntersectionObserver((entries) => {
+        if (mounted || !entries.some((e) => e.isIntersecting)) return;
+        mounted = true;
+        io.disconnect();
+        import('./vizutire-story/story-en.js')
+          .then(({ createStructuralStory }) => createStructuralStory(el))
+          .catch((err) => console.error('VIZUtire story load failed:', err));
+      }, { rootMargin: '200px' });
+      io.observe(el);
+    })();
+  </script>
 
   <!-- ===================== DIAGNOSTIC SYSTEM ===================== -->
   <section class="diag-section" id="problema">

@@ -21430,135 +21430,135 @@ const Ct = {
     lowFpsThreshold: 28
     // por debajo de esto se degrada la calidad
   }
-}, Ah = `<div id="gl" role="img" aria-label="Neumático OTR en 3D que gira y revela su estructura interna"></div>
+}, Ah = `<div id="gl" role="img" aria-label="3D OTR tire spinning and revealing its internal structure"></div>
 <div id="vignette" aria-hidden="true"></div>
 <div id="scrim-c" aria-hidden="true"></div>
 <div id="scrim-b" aria-hidden="true"></div>
 <svg id="wires" aria-hidden="true"></svg>
 <noscript><p style="position:relative;z-index:5;max-width:60ch;margin:12vh auto;padding:0 24px;font:300 1.1rem/1.6 Barlow,system-ui,sans-serif;color:#14181a">
-Un neumático OTR no solo se desgasta: durante cada ciclo de operación soporta cargas, deformaciones, impactos y variaciones de las condiciones de trabajo, y cada una genera una respuesta en su estructura. Conocer el estado visible de un neumático no necesariamente significa conocer su estado estructural. <span class="mark">VIZU</span>tire existe para hacer visible esa dimensión de la operación.</p></noscript>
+An OTR tire doesn't just wear out: during every operating cycle it withstands loads, deformations, impacts, and variations in working conditions, and each one generates a response in its structure. Knowing a tire's visible condition doesn't necessarily mean knowing its structural condition. <span class="mark">VIZU</span>tire exists to make that dimension of operation visible.</p></noscript>
 
-<div id="overlay" role="region" aria-label="¿Por qué existe VIZUtire?">
+<div id="overlay" role="region" aria-label="Why does VIZUtire exist?">
   <!-- 0 · INTRO -->
   <div class="beat" data-beat="0">
     <div class="panel">
-      <h1 class="veil fx" data-range="-.1,.04,.5,.62">¿Por qué existe <span class="mark">VIZU</span>tire?</h1>
-      <h2 class="veil fx" data-range="0.45,.6,.9,1">Un neumático OTR no solo se desgasta.</h2>
+      <h1 class="veil fx" data-range="-.1,.04,.5,.62">Why does <span class="mark">VIZU</span>tire exist?</h1>
+      <h2 class="veil fx" data-range="0.45,.6,.9,1">An OTR tire doesn't just wear out.</h2>
     </div>
-    <div class="bottom hint fx" data-nocenter data-range="-.1,.05,.3,.45">Desplácese para continuar ↓</div>
+    <div class="bottom hint fx" data-nocenter data-range="-.1,.05,.3,.45">Scroll to continue ↓</div>
   </div>
 
-  <!-- 1 · LA OPERACIÓN -->
+  <!-- 1 · THE OPERATION -->
   <div class="beat" data-beat="1">
     <div class="tag-list">
-      <div class="tag veil fx" data-range="0.02,.10,1.4,1.5" data-range-m="-.02,.06,.22,.30" style="left:6vw;top:26%">Carga <span class="v" id="v-carga">— t</span></div>
-      <div class="tag r veil fx" data-range="0.20,.28,1.4,1.5" data-range-m="0.26,.34,.46,.54" style="right:6vw;top:36%">Deformación <span class="v" id="v-def">— mm</span></div>
-      <div class="tag r veil fx" data-range="0.38,.46,1.4,1.5" data-range-m="0.50,.58,.70,.78" style="right:9vw;bottom:34%">Impacto <span class="v" id="v-imp">— g</span></div>
-      <div class="tag veil fx" data-range="0.56,.64,1.4,1.5" data-range-m="0.74,.82,.93,1" style="left:8vw;bottom:30%">Condiciones de operación <span class="v" id="v-cond">—</span></div>
+      <div class="tag veil fx" data-range="0.02,.10,1.4,1.5" data-range-m="-.02,.06,.22,.30" style="left:6vw;top:26%">Load <span class="v" id="v-carga">— t</span></div>
+      <div class="tag r veil fx" data-range="0.20,.28,1.4,1.5" data-range-m="0.26,.34,.46,.54" style="right:6vw;top:36%">Deformation <span class="v" id="v-def">— mm</span></div>
+      <div class="tag r veil fx" data-range="0.38,.46,1.4,1.5" data-range-m="0.50,.58,.70,.78" style="right:9vw;bottom:34%">Impact <span class="v" id="v-imp">— g</span></div>
+      <div class="tag veil fx" data-range="0.56,.64,1.4,1.5" data-range-m="0.74,.82,.93,1" style="left:8vw;bottom:30%">Operating conditions <span class="v" id="v-cond">—</span></div>
     </div>
     <div class="bottom">
-      <p class="lead veil fx" data-range="0.66,.76,.94,1" style="margin:0 auto">Durante cada ciclo de operación soporta cargas, deformaciones, impactos y variaciones de las condiciones de trabajo.</p>
+      <p class="lead veil fx" data-range="0.66,.76,.94,1" style="margin:0 auto">During every operating cycle it withstands loads, deformations, impacts, and variations in working conditions.</p>
     </div>
   </div>
 
-  <!-- 2 · CADA CICLO -->
+  <!-- 2 · EACH CYCLE -->
   <div class="beat" data-beat="2">
     <div class="bottom" style="display:flex;flex-direction:column;gap:26px">
-      <div class="eyebrow veil fx" data-range="-.05,.04,.9,1">Ciclo de operación</div>
+      <div class="eyebrow veil fx" data-range="-.05,.04,.9,1">Operating cycle</div>
       <div class="cycle veil fx" data-range="0.02,.12,.9,1">
-        <b data-step="0">Carga</b><span>→</span><b data-step="1">Respuesta</b><span>→</span><b data-step="2">Recuperación</b><span>→</span><b data-step="3">Nuevo ciclo</b>
+        <b data-step="0">Load</b><span>→</span><b data-step="1">Response</b><span>→</span><b data-step="2">Recovery</b><span>→</span><b data-step="3">New cycle</b>
       </div>
       <div class="accum fx" data-range="0.1,.25,.9,1"><span id="accum-bar"></span></div>
-      <h2 class="veil fx" data-range="0.42,.56,.9,1" style="margin:8px auto 0;max-width:24ch">Cada una de ellas genera una respuesta en su estructura.</h2>
+      <h2 class="veil fx" data-range="0.42,.56,.9,1" style="margin:8px auto 0;max-width:24ch">Each one generates a response in its structure.</h2>
     </div>
   </div>
 
-  <!-- 3 · LO QUE PODEMOS EVALUAR -->
+  <!-- 3 · WHAT WE CAN ASSESS -->
   <div class="beat" data-beat="3">
     <div class="tag-list">
-      <div class="tag veil fx" data-wire="163" data-range="0.02,.09,1.4,1.5" data-range-m="-.02,.05,.10,.15" style="left:5vw;top:24%">Presión <span class="v" id="m-pres">—</span></div>
-      <div class="tag veil fx" data-wire="180" data-range="0.13,.20,1.4,1.5" data-range-m="0.12,.18,.23,.28" style="left:4vw;top:46%">Temperatura <span class="v" id="m-temp">—</span></div>
-      <div class="tag veil fx" data-wire="200" data-range="0.24,.31,1.4,1.5" data-range-m="0.25,.31,.36,.41" style="left:6vw;bottom:30%">Desgaste <span class="v" id="m-des">—</span></div>
-      <div class="tag r veil fx" data-wire="17" data-range="0.35,.42,1.4,1.5" data-range-m="0.38,.44,.49,.54" style="right:5vw;top:24%">Daños visibles <span class="v" id="m-dan">—</span></div>
-      <div class="tag r veil fx" data-wire="0" data-range="0.46,.53,1.4,1.5" data-range-m="0.51,.57,.62,.67" style="right:4vw;top:46%">Horas de operación <span class="v" id="m-hrs">—</span></div>
-      <div class="tag r veil fx" data-wire="-20" data-range="0.57,.64,1.4,1.5" data-range-m="0.64,.70,.75,.80" style="right:6vw;bottom:30%">Condición superficial <span class="v" id="m-sup">—</span></div>
+      <div class="tag veil fx" data-wire="163" data-range="0.02,.09,1.4,1.5" data-range-m="-.02,.05,.10,.15" style="left:5vw;top:24%">Pressure <span class="v" id="m-pres">—</span></div>
+      <div class="tag veil fx" data-wire="180" data-range="0.13,.20,1.4,1.5" data-range-m="0.12,.18,.23,.28" style="left:4vw;top:46%">Temperature <span class="v" id="m-temp">—</span></div>
+      <div class="tag veil fx" data-wire="200" data-range="0.24,.31,1.4,1.5" data-range-m="0.25,.31,.36,.41" style="left:6vw;bottom:30%">Wear <span class="v" id="m-des">—</span></div>
+      <div class="tag r veil fx" data-wire="17" data-range="0.35,.42,1.4,1.5" data-range-m="0.38,.44,.49,.54" style="right:5vw;top:24%">Visible damage <span class="v" id="m-dan">—</span></div>
+      <div class="tag r veil fx" data-wire="0" data-range="0.46,.53,1.4,1.5" data-range-m="0.51,.57,.62,.67" style="right:4vw;top:46%">Operating hours <span class="v" id="m-hrs">—</span></div>
+      <div class="tag r veil fx" data-wire="-20" data-range="0.57,.64,1.4,1.5" data-range-m="0.64,.70,.75,.80" style="right:6vw;bottom:30%">Surface condition <span class="v" id="m-sup">—</span></div>
     </div>
     <div class="bottom" style="display:flex;flex-direction:column;gap:14px">
-      <div class="eyebrow veil fx" data-range="-.02,.06,1,1">Lo que podemos evaluar</div>
-      <p class="lead veil fx" data-range="0.70,.78,.98,1" style="margin:0 auto">Gran parte de la gestión tradicional del neumático se concentra en lo que podemos evaluar directamente.</p>
+      <div class="eyebrow veil fx" data-range="-.02,.06,1,1">What we can assess</div>
+      <p class="lead veil fx" data-range="0.70,.78,.98,1" style="margin:0 auto">Much of traditional tire management focuses on what we can assess directly.</p>
     </div>
   </div>
 
-  <!-- 4 · EL LÍMITE DE LO VISIBLE -->
+  <!-- 4 · THE LIMIT OF WHAT'S VISIBLE -->
   <div class="beat" data-beat="4">
-    <div class="desk-only tag fx" data-wire="163" data-range="-1,-.5,.22,.5" style="left:5vw;top:24%">Presión</div>
-    <div class="desk-only tag fx" data-wire="180" data-range="-1,-.5,.26,.54" style="left:4vw;top:46%">Temperatura</div>
-    <div class="desk-only tag fx" data-wire="200" data-range="-1,-.5,.30,.58" style="left:6vw;bottom:30%">Desgaste</div>
-    <div class="desk-only tag r fx" data-wire="17" data-range="-1,-.5,.34,.62" style="right:5vw;top:24%">Daños visibles</div>
-    <div class="desk-only tag r fx" data-wire="0" data-range="-1,-.5,.38,.66" style="right:4vw;top:46%">Horas de operación</div>
-    <div class="desk-only tag r fx" data-wire="-20" data-range="-1,-.5,.42,.70" style="right:6vw;bottom:30%">Condición superficial</div>
+    <div class="desk-only tag fx" data-wire="163" data-range="-1,-.5,.22,.5" style="left:5vw;top:24%">Pressure</div>
+    <div class="desk-only tag fx" data-wire="180" data-range="-1,-.5,.26,.54" style="left:4vw;top:46%">Temperature</div>
+    <div class="desk-only tag fx" data-wire="200" data-range="-1,-.5,.30,.58" style="left:6vw;bottom:30%">Wear</div>
+    <div class="desk-only tag r fx" data-wire="17" data-range="-1,-.5,.34,.62" style="right:5vw;top:24%">Visible damage</div>
+    <div class="desk-only tag r fx" data-wire="0" data-range="-1,-.5,.38,.66" style="right:4vw;top:46%">Operating hours</div>
+    <div class="desk-only tag r fx" data-wire="-20" data-range="-1,-.5,.42,.70" style="right:6vw;bottom:30%">Surface condition</div>
     <div class="bottom">
-      <h2 class="veil fx" data-range="0.14,.30,.80,.94" style="margin:0 auto;max-width:24ch">Pero existe una dimensión que permanece menos visible.</h2>
+      <h2 class="veil fx" data-range="0.14,.30,.80,.94" style="margin:0 auto;max-width:24ch">But there's a dimension that remains less visible.</h2>
     </div>
   </div>
 
-  <!-- 5 · COMPARACIÓN -->
+  <!-- 5 · COMPARISON -->
   <div class="beat" data-beat="5">
     <div class="col side-l veil fx" data-wire="178" data-wire-r="1.78" data-range="0.04,.16,.78,.92" data-range-m="-.02,.10,.38,.48">
-      <h3>Lo que podemos ver</h3>
-      <ul><li>Presión</li><li>Temperatura</li><li>Desgaste</li><li>Daños visibles</li><li>Horas de operación</li><li>Condición superficial</li></ul>
+      <h3>What we can see</h3>
+      <ul><li>Pressure</li><li>Temperature</li><li>Wear</li><li>Visible damage</li><li>Operating hours</li><li>Surface condition</li></ul>
     </div>
     <div class="col structural side-r veil fx" data-wire="2" data-wire-r="1.30" data-range="0.24,.38,.78,.92" data-range-m="0.52,.62,.88,.96">
-      <h3>Lo que está ocurriendo</h3>
-      <ul><li>Respuesta estructural</li><li>Evolución estructural</li><li>Efecto de la operación</li></ul>
+      <h3>What's actually happening</h3>
+      <ul><li>Structural response</li><li>Structural evolution</li><li>Effect of operation</li></ul>
     </div>
     <div class="bottom">
-      <div class="eyebrow veil fx" data-range="0.46,.60,.80,.94">Superficie · Estructura · Una misma operación</div>
+      <div class="eyebrow veil fx" data-range="0.46,.60,.80,.94">Surface · Structure · One operation</div>
     </div>
   </div>
 
-  <!-- 6 · LA PREGUNTA -->
+  <!-- 6 · THE QUESTION -->
   <div class="beat" data-beat="6">
     <div class="center">
-      <div class="q veil fx" data-range="0.10,.28,.90,1">¿Cómo está evolucionando <span class="mark">estructuralmente</span> el neumático como consecuencia de la operación?</div>
+      <div class="q veil fx" data-range="0.10,.28,.90,1">How is the tire evolving <span class="mark">structurally</span> as a consequence of operation?</div>
     </div>
   </div>
 
-  <!-- 7 · LA BRECHA -->
+  <!-- 7 · THE GAP -->
   <div class="beat" data-beat="7">
     <div class="stack">
-      <div class="lbl veil fx" data-range="0.03,.14,.66,.80">Estado visible</div>
+      <div class="lbl veil fx" data-range="0.03,.14,.66,.80">Visible condition</div>
       <div class="hair fx" data-range="0.08,.20,.66,.80"></div>
-      <div class="gap-note veil fx" data-range="0.30,.44,.66,.80">no observado</div>
+      <div class="gap-note veil fx" data-range="0.30,.44,.66,.80">not observed</div>
       <div class="hair fx" data-range="0.12,.24,.66,.80"></div>
-      <div class="lbl q veil fx" data-range="0.16,.30,.66,.80">Estado estructural</div>
+      <div class="lbl q veil fx" data-range="0.16,.30,.66,.80">Structural condition</div>
     </div>
     <div class="bottom">
-      <h2 class="veil fx" data-range="0.56,.70,.94,1"><span class="mark">VIZU</span>tire nace de esa brecha.</h2>
+      <h2 class="veil fx" data-range="0.56,.70,.94,1"><span class="mark">VIZU</span>tire was born from that gap.</h2>
     </div>
   </div>
 
-  <!-- 8 · NO REEMPLAZA -->
+  <!-- 8 · IT DOESN'T REPLACE -->
   <div class="beat" data-beat="8">
     <div class="stack">
-      <div class="lbl veil fx" data-range="0.14,.28,.82,.94">Controles existentes</div>
-      <div class="lbl q veil fx" data-range="0.24,.38,.82,.94">Nueva perspectiva</div>
+      <div class="lbl veil fx" data-range="0.14,.28,.82,.94">Existing controls</div>
+      <div class="lbl q veil fx" data-range="0.24,.38,.82,.94">New perspective</div>
       <div class="hair fx" data-range="0.30,.44,.82,.94"></div>
-      <div class="lbl sum veil fx" data-range="0.40,.54,.82,.94">Gestión más completa</div>
+      <div class="lbl sum veil fx" data-range="0.40,.54,.82,.94">More complete management</div>
     </div>
     <div class="bottom">
-      <p class="lead veil fx" data-range="-.02,.10,.30,.44" style="margin:0 auto">No para reemplazar los controles existentes.</p>
-      <p class="lead veil fx" data-range="0.56,.68,.88,.98" style="margin:0 auto">Sino para incorporar una nueva perspectiva a la gestión del neumático.</p>
+      <p class="lead veil fx" data-range="-.02,.10,.30,.44" style="margin:0 auto">Not to replace existing controls.</p>
+      <p class="lead veil fx" data-range="0.56,.68,.88,.98" style="margin:0 auto">But to add a new perspective to tire management.</p>
     </div>
   </div>
 
-  <!-- 9 · CIERRE -->
+  <!-- 9 · CLOSE -->
   <div class="beat" data-beat="9">
     <div class="bottom">
-      <h2 class="veil fx" data-range="-.02,.10,.42,.56" style="margin:0 auto;max-width:30ch">Porque conocer el estado visible de un neumático no necesariamente significa conocer su estado estructural.</h2>
+      <h2 class="veil fx" data-range="-.02,.10,.42,.56" style="margin:0 auto;max-width:30ch">Because knowing a tire's visible condition doesn't necessarily mean knowing its structural condition.</h2>
     </div>
     <div class="center">
-      <div class="final veil fx" data-range="0.58,.74,1,1"><span class="mark">VIZU</span>tire existe para hacer visible esa dimensión de la operación.</div>
+      <div class="final veil fx" data-range="0.58,.74,1,1"><span class="mark">VIZU</span>tire exists to make that dimension of operation visible.</div>
     </div>
   </div>
 </div>
@@ -21703,7 +21703,7 @@ function Rh(i) {
     J && (J.textContent = U);
   }, lt = (w) => {
     const U = (J) => Math.sin(performance.now() / 1400 + J);
-    le("m-pres", (6.9 + U(1) * 0.05).toFixed(2) + " bar"), le("m-temp", (78 + U(2) * 3).toFixed(0) + " °C"), le("m-des", (41 + U(3) * 0.3).toFixed(0) + " %"), le("m-dan", "Nivel 1"), le("m-hrs", 4820 + Math.floor(w * 40) + " h"), le("m-sup", "Regular");
+    le("m-pres", (6.9 + U(1) * 0.05).toFixed(2) + " bar"), le("m-temp", (78 + U(2) * 3).toFixed(0) + " °C"), le("m-des", (41 + U(3) * 0.3).toFixed(0) + " %"), le("m-dan", "Level 1"), le("m-hrs", 4820 + Math.floor(w * 40) + " h"), le("m-sup", "Fair");
   };
   function T(w) {
     const U = ie ? 0.78 : 1, J = Math.max(0, w - 0.12), ye = J * 0.4 * U, Te = ie ? 0.62 : 0.76;
@@ -21717,7 +21717,7 @@ function Rh(i) {
         const ye = Math.floor((U - 0.48) / 0.07);
         ye !== nt && (nt = ye, Be = 0);
       }
-      $.spin = a(0.14, 0.3, l(U, 0.7, 1)), le("v-carga", (38 + $.load * 22).toFixed(0) + " t"), le("v-def", (6 + $.oval * 14).toFixed(1) + " mm"), le("v-imp", Be < 1.4 ? (2.4 + Math.random() * 1.2).toFixed(1) + " g" : "0.4 g"), le("v-cond", ["Berma", "Rampa", "Curva", "Carguío"][Math.floor(U * 8) % 4]);
+      $.spin = a(0.14, 0.3, l(U, 0.7, 1)), le("v-carga", (38 + $.load * 22).toFixed(0) + " t"), le("v-def", (6 + $.oval * 14).toFixed(1) + " mm"), le("v-imp", Be < 1.4 ? (2.4 + Math.random() * 1.2).toFixed(1) + " g" : "0.4 g"), le("v-cond", ["Berm", "Ramp", "Curve", "Loading"][Math.floor(U * 8) % 4]);
     }
     if (w === 2) {
       $.camZ = 9.6, $.rise = -1.15, $.scrimB = 0.55;
