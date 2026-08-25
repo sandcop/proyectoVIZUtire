@@ -1,1 +1,156 @@
-.vzt-story{position:relative;display:block;box-sizing:border-box}.vzt-story *{box-sizing:border-box}.vzt-story .vzt-stage{position:sticky;top:0;height:100vh;overflow:hidden}.vzt-story .vzt-scroller{position:relative;margin-top:-100vh;z-index:4;pointer-events:none}:root{--bg:#ffffff;--ink:#14181a;--dim:#5c666c;--line:#d6d4cf;--accent:#c0312b;--cool:#2f5f7a}.vzt-story{box-sizing:border-box}.vzt-story{margin:0;background:var(--bg);color:var(--ink);font-family:Plus Jakarta Sans,system-ui,sans-serif;-webkit-font-smoothing:antialiased}.vzt-story a{color:var(--accent);text-decoration:none}.vzt-story a:hover{color:#a52724}.vzt-story canvas{display:block}.vzt-story #gl{position:absolute;inset:0;z-index:0}.vzt-story #vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,#fff0 58%,#ffffff4d)}.vzt-story #scrim-b{position:absolute;left:0;right:0;top:0;height:34vh;z-index:1;pointer-events:none;opacity:0;background:linear-gradient(0deg,#fff0,#ffffff59 62%,#fff9)}.vzt-story #scrim-c{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 26% at 50% 22%,#ffffff8c,#ffffff4d 60%,#fff0 84%)}.vzt-story #overlay{position:absolute;inset:0;z-index:2;pointer-events:none}.vzt-story #wires{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}.vzt-story #wires line{stroke:#5d7d90;stroke-width:1}.vzt-story .beat{position:absolute;inset:0;opacity:0}.vzt-story .fx{opacity:0;will-change:opacity,transform}.vzt-story.no-webgl{overflow:auto}.vzt-story.no-webgl #overlay{position:static;inset:auto;height:auto;display:flex;flex-direction:column;gap:clamp(40px,7vh,90px);padding:clamp(48px,9vh,110px) clamp(22px,6vw,110px)}.vzt-story.no-webgl .beat{position:static;inset:auto;height:auto;opacity:1;display:flex;flex-direction:column;gap:16px;align-items:flex-start}.vzt-story.no-webgl .beat .fx,.vzt-story.no-webgl .beat .panel,.vzt-story.no-webgl .beat .bottom,.vzt-story.no-webgl .beat .center,.vzt-story.no-webgl .beat .stack{position:static!important;opacity:1!important;transform:none!important;inset:auto!important;width:auto!important;max-width:62ch;text-align:left!important;align-items:flex-start!important;display:flex;flex-direction:column!important;gap:14px}.vzt-story.no-webgl .veil:after{display:none}.vzt-story.no-webgl .tag:before{width:56px}.vzt-story.no-webgl .desk-only{display:none}.vzt-story #overlay .veil{padding:clamp(10px,1.8vh,22px) clamp(24px,3.6vw,68px)}.vzt-story #overlay .veil:where(:not(.tag,.vzt-story .bottom,.vzt-story .center,.vzt-story .stack,.vzt-story .panel,.vzt-story .side-l,.vzt-story .side-r)){position:relative}.vzt-story #overlay .veil:after{content:"";position:absolute;inset:-14% -6%;z-index:-1;background:#ffffffed;filter:blur(30px);pointer-events:none}.vzt-story #overlay .tag.veil:before{z-index:1}.vzt-story #overlay h1,.vzt-story #overlay h2,.vzt-story #overlay .q,.vzt-story #overlay .final,.vzt-story #overlay p.lead,.vzt-story #overlay .eyebrow,.vzt-story #overlay .hint,.vzt-story #overlay .stack .lbl,.vzt-story #overlay .gap-note,.vzt-story #overlay .col h3,.vzt-story #overlay .col li,.vzt-story #overlay .cycle{text-shadow:0 1px 2px rgba(255,255,255,.95),0 0 8px rgba(255,255,255,.9),0 0 16px rgba(255,255,255,.6)}.vzt-story .eyebrow{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:clamp(12px,1.1vw,14px);letter-spacing:.2em;text-transform:uppercase;color:#232b2f;font-weight:500}.vzt-story h1{font-size:clamp(1.7rem,4.6vw,3.1rem);font-weight:700;line-height:1.08;letter-spacing:-.05em;margin:0;text-wrap:balance}.vzt-story h2{font-size:clamp(1.35rem,4.4vw,2.75rem);font-weight:700;line-height:1.08;letter-spacing:-.05em;margin:0;text-wrap:balance}.vzt-story p.lead{font-size:clamp(.95rem,2.6vw,1.3rem);line-height:1.55;color:#333c41;max-width:46ch;margin:0;font-weight:300;font-family:Inter,system-ui,sans-serif}.vzt-story .panel{position:absolute;left:50%;top:clamp(40px,9vh,88px);transform:translate(-50%);width:min(760px,88vw);max-width:none;display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px);align-items:center;text-align:center}.vzt-story .panel .eyebrow,.vzt-story .panel h1,.vzt-story .panel h2{display:inline-block}.vzt-story .panel h2{font-size:clamp(1.05rem,2.4vw,1.5rem);font-weight:400}.vzt-story .center{position:absolute;left:50%;top:clamp(58px,13vh,130px);transform:translate(-50%);width:min(1000px,86vw);text-align:center;display:flex;flex-direction:column;gap:22px;align-items:center}.vzt-story .bottom{position:absolute;left:50%;top:clamp(58px,13vh,130px);bottom:auto;transform:translate(-50%);width:min(820px,86vw);text-align:center;display:flex;flex-direction:column;gap:clamp(14px,2.4vh,26px);align-items:center}.vzt-story #overlay .bottom p.lead{max-width:46ch;margin:0 auto}.vzt-story .beat[data-beat="0"] .bottom.hint{left:clamp(24px,4vw,72px);right:auto;transform:none;display:block;width:auto;max-width:40vw;text-align:left;top:auto;bottom:clamp(26px,4.5vh,54px)}.vzt-story .beat[data-beat="5"] .bottom,.vzt-story .beat[data-beat="7"] .bottom{top:auto;bottom:clamp(44px,8vh,96px)}.vzt-story .beat[data-beat="9"] .bottom{top:clamp(46px,9vh,96px);bottom:auto}.vzt-story .beat[data-beat="8"] .bottom{top:clamp(140px,23vh,236px);bottom:auto}.vzt-story .beat[data-beat="1"] .bottom{top:clamp(440px,50vh,470px);bottom:auto}.vzt-story .beat[data-beat="3"] .bottom{top:clamp(590px,66vh,620px);bottom:auto}.vzt-story .beat[data-beat="6"] .center{top:auto;bottom:clamp(56px,10vh,120px)}.vzt-story .beat[data-beat="7"] .stack{top:clamp(50px,11vh,110px)}.vzt-story .beat[data-beat="9"] .center{top:clamp(46px,9vh,96px);bottom:auto}.vzt-story .beat[data-beat="9"] .final{max-width:23ch;font-size:clamp(1.7rem,5.4vw,3.4rem)}.vzt-story .beat[data-beat="8"] .stack{top:clamp(40px,8vh,84px);gap:clamp(10px,2vh,22px)}.vzt-story .tag{position:absolute!important;left:50%!important;right:auto!important;top:clamp(58px,14vh,140px)!important;bottom:auto!important;transform:translate(-50%);width:min(1000px,88vw);display:flex;flex-direction:column;align-items:center;gap:14px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:clamp(2rem,4vw,4.5rem);font-weight:600;letter-spacing:.005em;line-height:1.02;text-transform:uppercase;color:#101619;text-align:center;white-space:normal;text-wrap:balance;text-shadow:0 1px 2px rgba(255,255,255,.95),0 0 10px rgba(255,255,255,.88),0 0 20px rgba(255,255,255,.55)}.vzt-story .tag:before{content:"";order:-1;width:clamp(48px,7vw,110px);height:1px;background:var(--cool);opacity:.7}.vzt-story .tag .v{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:clamp(11px,1.05vw,14px);letter-spacing:.22em;font-weight:400;color:var(--accent);text-transform:uppercase;text-shadow:none}.vzt-story .beat[data-beat="4"] .tag{display:none}.vzt-story .rail{position:absolute;right:22px;top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;gap:10px;pointer-events:none}.vzt-story .rail i{display:block;width:16px;height:1px;background:#c2c0ba;transition:background .3s,width .3s}.vzt-story .rail i.on{background:var(--accent);width:28px}.vzt-story .cycle{display:flex;align-items:center;gap:clamp(10px,2vw,26px);justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:clamp(12px,1.25vw,15px);letter-spacing:.16em;text-transform:uppercase;color:#232b2f;font-weight:500}.vzt-story .cycle b{font-weight:500;transition:color .25s}.vzt-story .cycle b.on{color:var(--accent)}.vzt-story .accum{width:min(420px,70vw);height:1px;background:#b4b1aa;margin:0 auto;position:relative}.vzt-story #overlay .accum:before{content:"";position:absolute;inset:-14px -4px;z-index:-1;border-radius:50%;background:#ffffffe6;filter:blur(16px);pointer-events:none}.vzt-story .accum span{position:absolute;left:0;top:0;height:1px;background:var(--accent);width:0%}.vzt-story .col{display:block;width:max-content;max-width:min(32vw,400px);text-align:left}.vzt-story .side-r .col,.vzt-story .col.structural{text-align:right}.vzt-story .col.structural ul{align-items:flex-end}.vzt-story .col h3{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--dim);margin:0 0 16px}.vzt-story .col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.vzt-story .col li{font-size:clamp(14px,1.4vw,19px);font-weight:400;color:#2c353a}.vzt-story .col.structural h3{color:#2f5f7a}.vzt-story .col.structural li{color:#2a5a75}.vzt-story .side-l{position:absolute;left:clamp(24px,6vw,110px);top:clamp(58px,13vh,130px);width:max-content}.vzt-story .side-r{position:absolute;right:clamp(24px,6vw,110px);top:clamp(58px,13vh,130px);width:max-content}.vzt-story .stack{position:absolute;left:50%;top:clamp(58px,13vh,130px);transform:translate(-50%);width:min(760px,84vw);display:flex;flex-direction:column;align-items:center;gap:clamp(16px,3.4vh,38px);text-align:center}.vzt-story .stack .lbl{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:clamp(11px,1.15vw,14px);letter-spacing:.24em;text-transform:uppercase;color:#232b2f;font-weight:500}.vzt-story .stack .lbl.q{color:#2f5f7a}.vzt-story .stack .lbl.sum{color:var(--accent)}.vzt-story .hair{width:min(520px,70vw);height:1px;background:linear-gradient(90deg,transparent,#bcb9b3,transparent)}.vzt-story .gap-note{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent)}.vzt-story .hint{font-family:Plus Jakarta Sans,system-ui,sans-serif;font-size:11px;letter-spacing:.2em;color:#6b747a;text-transform:uppercase}.vzt-story .final{font-size:clamp(1.9rem,7vw,4.25rem);font-weight:700;line-height:1.08;letter-spacing:-.05em}.vzt-story .q{font-size:clamp(1.5rem,5.6vw,3.6rem);font-weight:700;line-height:1.08;letter-spacing:-.05em;text-wrap:balance}.vzt-story .mark{color:var(--accent)}.vzt-story section.scroll{height:150vh}.vzt-story #scroller{position:relative;z-index:4;pointer-events:none}@media (max-width:1180px){.vzt-story .panel{top:clamp(44px,11vh,96px);width:min(700px,90vw);gap:clamp(10px,1.6vh,16px)}.vzt-story .tag{font-size:clamp(1.8rem,4.4vw,3.4rem)}.vzt-story .side-l{left:clamp(16px,3.5vw,48px)}.vzt-story .side-r{right:clamp(16px,3.5vw,48px)}.vzt-story .col li{font-size:clamp(13px,1.7vw,17px)}}@media (max-width:820px){.vzt-story .rail,.vzt-story #wires{display:none}.vzt-story .panel{left:50%;right:auto;top:clamp(36px,7vh,72px);bottom:auto;transform:translate(-50%);width:calc(100vw - 40px);gap:12px}.vzt-story .bottom{top:clamp(34px,8vh,80px);width:90vw;gap:14px}.vzt-story .center{width:90vw;top:clamp(34px,8vh,80px)}.vzt-story p.lead{max-width:34ch;margin-left:auto;margin-right:auto}.vzt-story .desk-only{display:none!important}.vzt-story .tag{top:clamp(34px,8vh,80px)!important;width:calc(100vw - 36px);font-size:clamp(1.75rem,9vw,3rem);gap:10px}.vzt-story .tag:before{width:56px}.vzt-story .tag .v{font-size:12px;letter-spacing:.18em}.vzt-story .side-l,.vzt-story .side-r{position:absolute;left:18px;right:18px;width:auto;max-width:calc(100vw - 36px);text-align:center;transform:none}.vzt-story .side-l{top:clamp(34px,8vh,80px)}.vzt-story .side-r{top:auto;bottom:clamp(30px,7vh,80px)}.vzt-story .col{width:auto;max-width:100%}.vzt-story #overlay .veil{padding:clamp(8px,1.4vh,14px) 14px}.vzt-story #overlay .col{width:auto;min-width:0;max-width:100%}.vzt-story #overlay .col h3{letter-spacing:.12em;white-space:normal}.vzt-story .side-r .col,.vzt-story .col.structural{text-align:center}.vzt-story .col{max-width:none;width:100%;text-align:center}.vzt-story .col h3{margin-bottom:14px}.vzt-story .col ul{align-items:center;gap:6px}.vzt-story .stack{width:90vw;top:clamp(34px,8vh,80px);gap:clamp(14px,3.2vh,26px)}.vzt-story .hair{width:min(320px,72vw)}.vzt-story .cycle{flex-wrap:wrap;gap:8px 12px;font-size:10px}.vzt-story .accum{width:72vw}}@media (max-height:520px) and (orientation:landscape){.vzt-story .panel{top:14px;gap:6px}.vzt-story .bottom,.vzt-story .center,.vzt-story .stack{top:12px}.vzt-story .tag{top:12px!important;font-size:clamp(1.4rem,5vw,2.2rem);gap:6px}.vzt-story .side-l,.vzt-story .side-r{top:12px}.vzt-story .stack{gap:12px}.vzt-story h2{font-size:clamp(1.1rem,3.4vw,1.6rem)}.vzt-story p.lead{font-size:.9rem}}@media (min-width:821px){.vzt-story .tag-list{position:absolute;left:50%;top:clamp(58px,14vh,140px);transform:translate(-50%);display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1vh,10px);width:min(1000px,88vw)}.vzt-story .tag-list .tag{position:static!important;transform:none!important;width:auto!important;gap:4px!important;font-size:clamp(.85rem,1.5vw,1.25rem)!important}.vzt-story .tag-list .tag.veil{padding:2px clamp(16px,2.4vw,40px)!important}}
+/* VIZUtire — explorador interactivo del neumatico OTR.
+   Todo el CSS esta acotado a .vzt-explorer: no toca estilos globales. */
+.vzt-explorer{position:relative;display:block;box-sizing:border-box}
+.vzt-explorer *{box-sizing:border-box}
+.vzt-explorer{--bg:#f2f1ee; --ink:#14181a; --dim:#5c666c; --line:#d6d4cf; --accent:#8f5a12; --cool:#2f5f7a;}
+.vzt-explorer{box-sizing:border-box}
+.vzt-explorer,
+.vzt-explorer{margin:0;overflow-x:clip;background:var(--bg)} /* NO "hidden": el propio componente
+  quedaría como contenedor de scroll y anularía el position:sticky de .vzt-stage */
+.vzt-explorer{color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.vzt-explorer a{color:var(--accent);text-decoration:none}
+.vzt-explorer a:hover{color:#b3771f}
+.vzt-explorer canvas{display:block}
+.vzt-explorer .vzt-stage{position:absolute;inset:0;overflow:hidden}
+.vzt-explorer .vzt-scroller{position:relative;z-index:4;pointer-events:none}
+.vzt-explorer #gl{position:absolute;inset:0;z-index:0}
+.vzt-explorer #veil{position:absolute;inset:0;z-index:1;pointer-events:none; background:radial-gradient(ellipse at 50% 46%, rgba(242,241,238,0) 44%, rgba(242,241,238,.5) 100%)}
+.vzt-explorer #wires{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
+.vzt-explorer #wires line{stroke:#5d7d90;stroke-width:1}
+.vzt-explorer #ui{position:absolute;inset:0;z-index:3;pointer-events:none}
+.vzt-explorer #ui button,
+.vzt-explorer #ui [data-tap]{pointer-events:auto}
+.vzt-explorer #head{position:absolute;left:clamp(20px,4.4vw,76px);top:clamp(26px,5vh,56px); width:min(44vw,560px);text-align:left;display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.vzt-explorer .eyebrow{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(10px,1vw,12px);letter-spacing:.2em; text-transform:uppercase;color:#232b2f;font-weight:500}
+/* Mismo tamaño/tipografía que .diag-title-light ("Alicanto: vemos lo que nadie ve") */
+.vzt-explorer h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;line-height:1.08;letter-spacing:-.05em;margin:0; text-wrap:balance;align-self:stretch;text-align:center}
+.vzt-explorer h1 .brand-vizu{color:#c0312b}
+.vzt-explorer .sub{font-family:Inter,system-ui,sans-serif;font-size:clamp(.9rem,1.45vw,1.1rem);font-weight:300;color:#333c41;margin:0}
+.vzt-explorer .halo{text-shadow:0 0 12px rgba(242,241,238,.98),0 0 26px rgba(242,241,238,.95),0 0 48px rgba(242,241,238,.86)}
+.vzt-explorer #rail{position:absolute;left:clamp(20px,4.4vw,76px);bottom:clamp(24px,5.5vh,68px);top:auto;transform:none; display:flex;flex-direction:column;gap:clamp(8px,1.5vh,17px);align-items:flex-start}
+.vzt-explorer .cta{appearance:none;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left; font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(.82rem,1.15vw,1.05rem);font-weight:500; letter-spacing:.09em;text-transform:uppercase;color:#2f383d;opacity:.82; display:flex;align-items:center;gap:11px;line-height:1.2; transition:opacity .32s ease,color .32s ease,transform .32s cubic-bezier(.22,.61,.36,1)}
+.vzt-explorer .cta .bar{display:block;width:16px;height:1px;background:currentColor;flex:none; transition:width .34s cubic-bezier(.22,.61,.36,1),background .32s ease}
+.vzt-explorer .cta span.t{text-shadow:0 0 12px rgba(242,241,238,.96),0 0 24px rgba(242,241,238,.86)}
+.vzt-explorer .cta:hover,
+.vzt-explorer .cta:focus-visible{opacity:1;color:#101619;outline:none;transform:translateX(3px)}
+.vzt-explorer .cta:hover .bar,
+.vzt-explorer .cta:focus-visible .bar{width:26px}
+.vzt-explorer .cta:active{transform:translateX(1px) scale(.995)}
+.vzt-explorer .cta[aria-current="true"]{opacity:1;color:#101619;font-weight:600}
+.vzt-explorer .cta[aria-current="true"] .bar{width:40px;background:var(--accent)}
+.vzt-explorer #rail.has-active .cta:not([aria-current="true"]){opacity:.72}
+.vzt-explorer #rail.has-active .cta:not([aria-current="true"]):hover{opacity:1}
+.vzt-explorer #panel{position:absolute;left:clamp(20px,4.4vw,76px);right:auto;top:clamp(110px,17vh,168px);transform:none; width:min(40vw,470px);display:flex;flex-direction:column;gap:13px;text-align:left}
+.vzt-explorer #panel .k:empty{display:none}
+.vzt-explorer #panel .k{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(10px,.95vw,12px);letter-spacing:.24em; text-transform:uppercase;color:var(--accent);font-weight:500}
+.vzt-explorer #panel h2{margin:0;font-size:clamp(1.5rem,2.6vw,2.4rem);font-weight:700;line-height:1.04; letter-spacing:-.04em;text-wrap:balance}
+.vzt-explorer #panel p{font-family:Inter,system-ui,sans-serif;margin:0;font-size:clamp(.9rem,1.25vw,1.06rem);line-height:1.55;font-weight:300;color:#2f383d; max-width:34ch}
+.vzt-explorer #panel .q{font-size:clamp(1.15rem,1.95vw,1.7rem);font-weight:500;line-height:1.16;letter-spacing:-.01em;color:#1b2226}
+.vzt-explorer #panel .list{display:flex;flex-direction:column;gap:5px;align-items:flex-start; font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(11px,1vw,13px);letter-spacing:.14em; text-transform:uppercase;color:#31434c}
+.vzt-explorer #panel .list i{font-style:normal;opacity:0;transform:translateY(6px); transition:opacity .5s ease,transform .5s cubic-bezier(.22,.61,.36,1)}
+.vzt-explorer #panel .list i.on{opacity:1;transform:none}
+.vzt-explorer .fade{opacity:0;transform:translateY(9px);transition:opacity .5s ease,transform .55s cubic-bezier(.22,.61,.36,1)}
+.vzt-explorer .fade.on{opacity:1;transform:none}
+.vzt-explorer .mark{position:absolute;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(10px,.95vw,12.5px); letter-spacing:.16em;text-transform:uppercase;color:#12181c;font-weight:500;white-space:nowrap; display:flex;flex-direction:column;gap:3px;opacity:0;transform:translateY(7px); transition:opacity .55s ease,transform .55s cubic-bezier(.22,.61,.36,1); text-shadow:0 0 11px rgba(242,241,238,.98),0 0 22px rgba(242,241,238,.9)}
+.vzt-explorer .mark.on{opacity:1;transform:none}
+.vzt-explorer .mark em{font-style:normal;font-size:11px;letter-spacing:.1em;color:#6b5220;font-weight:400}
+.vzt-explorer .mark.r{align-items:flex-end;text-align:right}
+.vzt-explorer #gap{position:absolute;inset:auto;left:clamp(20px,4.4vw,76px);top:clamp(110px,17vh,168px); width:min(44vw,560px);display:flex;flex-direction:column;align-items:flex-start; gap:clamp(16px,2.6vh,30px);padding:0;opacity:0;transition:opacity .6s ease}
+.vzt-explorer #gap.on{opacity:1}
+.vzt-explorer #gap .pair{display:flex;align-items:flex-start;gap:clamp(24px,3.6vw,56px)}
+.vzt-explorer #gap .col{display:flex;flex-direction:column;gap:7px;max-width:none}
+.vzt-explorer #gap .col.b{text-align:left;align-items:flex-start}
+.vzt-explorer #gap .close{margin:0;font-size:clamp(1.15rem,1.95vw,1.7rem);font-weight:500;line-height:1.16; letter-spacing:-.01em;color:#1b2226}
+.vzt-explorer #ui[data-state="brecha"] #panel{display:none}
+.vzt-explorer #gap h3{margin:0 0 6px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:clamp(10px,.95vw,12px); letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--dim)}
+.vzt-explorer #gap .col.b h3{color:var(--cool)}
+.vzt-explorer #gap li{list-style:none;font-size:clamp(.85rem,1.2vw,1.05rem);font-weight:400;color:#2c353a}
+.vzt-explorer #gap .col.b li{color:#2a5a75}
+.vzt-explorer #gap ul{margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.vzt-explorer #gap .col,
+.vzt-explorer #gap li,
+.vzt-explorer #gap h3{text-shadow:0 0 11px rgba(242,241,238,.97),0 0 24px rgba(242,241,238,.88)}
+.vzt-explorer #gap .close{text-shadow:0 0 12px rgba(242,241,238,.98),0 0 26px rgba(242,241,238,.92)}
+@media (min-width:901px) and (max-width:1180px){
+.vzt-explorer #wires{display:none}
+.vzt-explorer #marks{position:absolute;left:auto;right:clamp(14px,2vw,30px);top:50%;transform:translateY(-50%); width:max-content;display:flex;flex-direction:column;gap:clamp(6px,1.3vh,12px);align-items:flex-end}
+.vzt-explorer .mark{position:static !important;align-items:flex-end;text-align:right}
+.vzt-explorer .mark.r{align-items:flex-end;text-align:right}
+}
+.vzt-explorer #hint{position:absolute;left:clamp(20px,4.4vw,76px);bottom:auto;top:clamp(110px,17vh,168px);transform:none; font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase; color:#4b555b;text-align:left;transition:opacity .5s ease; text-shadow:0 0 11px rgba(242,241,238,.98),0 0 22px rgba(242,241,238,.9)}
+@media (max-width:900px){
+/* El neumático se compone abajo a la derecha (ver explorer.js: pan/dropY en mobile);
+   la mitad izquierda queda libre para título, CTAs y textos, igual que en escritorio. */
+/* top: 84px es la altura del header fijo del sitio (nav) — el header del componente
+   arranca debajo, nunca detrás de él. */
+.vzt-explorer #head{top:clamp(96px,13vh,112px);left:16px;width:calc(100vw - 32px);gap:6px;align-items:flex-start;text-align:left}
+.vzt-explorer .sub{font-size:clamp(.82rem,3.4vw,.95rem)}
+.vzt-explorer #panel{position:absolute;right:auto;left:16px;top:clamp(172px,21vh,196px);transform:none; width:min(60vw,320px);text-align:left;gap:9px}
+.vzt-explorer #panel p{max-width:none;margin:0}
+.vzt-explorer #panel .list{align-items:flex-start}
+.vzt-explorer #panel h2{font-size:clamp(1.3rem,6.6vw,1.9rem)}
+.vzt-explorer #panel .q{font-size:clamp(1.02rem,4.6vw,1.3rem)}
+/* CTAs en la misma posición que en escritorio: columna abajo a la izquierda. */
+.vzt-explorer #rail{left:16px;right:auto;bottom:clamp(20px,4.5vh,40px);top:auto;transform:none; flex-direction:column;align-items:flex-start;gap:9px; width:min(60vw,300px);overflow:visible;background:none;padding:0}
+.vzt-explorer .cta{flex-direction:row;gap:9px;padding:0;font-size:clamp(.72rem,3vw,.82rem);letter-spacing:.1em;text-align:left}
+.vzt-explorer .cta .bar{width:14px}
+.vzt-explorer .cta:hover .bar,
+.vzt-explorer .cta:focus-visible .bar,
+.vzt-explorer .cta:active .bar{width:14px}
+.vzt-explorer .cta[aria-current="true"] .bar{width:26px}
+.vzt-explorer #wires{display:none}
+/* Indicadores "lo visible": chip fondo negro / texto blanco, alrededor del neumático. */
+.vzt-explorer .mark{position:absolute;align-items:flex-start;text-align:left; background:#101619;color:#fff;padding:5px 9px;border-radius:5px;text-shadow:none; font-size:10.5px}
+.vzt-explorer .mark.r{align-items:flex-end;text-align:right}
+.vzt-explorer .mark em{color:#d9b877}
+.vzt-explorer #marks{position:absolute;inset:0}
+/* "La brecha": arriba del neumático, debajo del header — hay espacio de sobra.
+   Ancho generoso en el "pair" para que las columnas casi no envuelvan (bloque más
+   bajo = más lejos del neumático); el cierre se acota para que quiebre en dos
+   líneas cortas y no le pise el borde. */
+.vzt-explorer #gap{flex-direction:column;left:16px;top:clamp(172px,21vh,196px);width:min(88vw,380px); justify-content:flex-start;gap:12px;padding:0;align-items:flex-start}
+.vzt-explorer #gap .pair{flex-direction:row;align-items:flex-start;gap:22px}
+.vzt-explorer #gap .close{text-align:left;font-size:clamp(1.05rem,4.8vw,1.4rem);max-width:10.4ch}
+.vzt-explorer #gap .col,
+.vzt-explorer #gap .col.b{max-width:none;align-items:flex-start;text-align:left}
+.vzt-explorer #gap ul{align-items:flex-start}
+/* Solo visible en el estado inicial (sin CTA activo aún): se ubica bajo el título,
+   sobre el mismo carril izquierdo, para no pisar la lista de CTAs abajo. */
+.vzt-explorer #hint{left:16px;right:auto;top:clamp(172px,21vh,196px);bottom:auto;transform:none; text-align:left;font-size:9.5px}
+}
+@media (max-height:520px) and (orientation:landscape){
+.vzt-explorer #head{top:8px;gap:2px}
+.vzt-explorer h1{font-size:clamp(1rem,3.2vw,1.3rem)}
+.vzt-explorer .sub{display:none}
+.vzt-explorer #panel{top:auto;bottom:74px;width:min(46vw,340px);left:auto;right:16px;transform:none;text-align:right}
+.vzt-explorer #panel h2{font-size:1.15rem}
+.vzt-explorer #panel p{font-size:.82rem;max-width:30ch;margin-left:auto}
+.vzt-explorer #marks{top:auto;bottom:74px}
+.vzt-explorer #hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+.vzt-explorer .cta,
+.vzt-explorer .fade,
+.vzt-explorer .mark,
+.vzt-explorer #gap,
+.vzt-explorer #panel .list i{transition-duration:.001s}
+}
+.vzt-explorer.no-webgl #stage{position:static;inset:auto;height:auto;padding:clamp(40px,9vh,90px) clamp(20px,6vw,80px)}
+.vzt-explorer.no-webgl #ui{position:static;inset:auto}
+.vzt-explorer.no-webgl #head,
+.vzt-explorer.no-webgl #panel,
+.vzt-explorer.no-webgl #rail,
+.vzt-explorer.no-webgl #gap,
+.vzt-explorer.no-webgl #marks{position:static;inset:auto;transform:none;width:auto;max-width:66ch;margin:0 0 34px;text-align:left;opacity:1}
+.vzt-explorer.no-webgl #panel p{margin:0}
+.vzt-explorer.no-webgl #hint,
+.vzt-explorer.no-webgl #veil{display:none}
+.vzt-explorer.no-webgl .fade,
+.vzt-explorer.no-webgl .mark{opacity:1;transform:none}
+.vzt-explorer.no-webgl #scroller{display:none}
+
+/* El escenario acompana al scroll dentro de la seccion. La pagina anfitriona debe usar
+   overflow-x: clip (NO hidden) si necesita suprimir el scroll horizontal: hidden crea un
+   contenedor de scroll y anula el sticky. */
+.vzt-explorer .vzt-stage{position:sticky;top:0;height:100svh;overflow:hidden}
+.vzt-explorer .vzt-scroller{position:relative;margin-top:-100svh;z-index:4;pointer-events:none}

@@ -236,10 +236,6 @@ revealEls.forEach(el => observer.observe(el));
     if (maxLineW > 0) items[0].style.maxWidth = Math.ceil(maxLineW) + 'px';
   }
 
-  /* Ejecutar tras cargar fuentes para que las métricas sean exactas */
-  (document.fonts ? document.fonts.ready : Promise.resolve())
-    .then(syncCycleToTitle);
-
   /* ── 2b. Medir altura del contenedor con ambos textos ── */
   /* Usamos propiedades individuales para no borrar el maxWidth de items[0] */
   function measureHeight() {
@@ -264,7 +260,32 @@ revealEls.forEach(el => observer.observe(el));
       cycle.style.height = (h + 14) + 'px'; /* +14 para barra de progreso */
     });
   }
-  measureHeight();
+
+  /* syncCycleToTitle() debe correr ANTES de medir: fija el max-width de items[0]
+     al ancho de la línea del título, y ese ancho cambia cuántas líneas ocupa el
+     texto. Si se miden por separado (p. ej. measureHeight() de inmediato y
+     syncCycleToTitle() al ratito, tras cargar fuentes) la altura queda calculada
+     con el ancho viejo (más angosto/ancho de la caja completa) y el texto
+     reflowea después a más líneas de las que caben → queda cortado por el
+     overflow:hidden del contenedor. Por eso van encadenados. */
+  const resync = () => { syncCycleToTitle(); measureHeight(); };
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(resync);
+  /* Plus Jakarta Sans/Inter se cargan con el truco preload→rel=stylesheet
+     (ver <link rel="preload" ... onload="this.rel='stylesheet'"> en el <head>):
+     mientras el <link> sigue en modo preload, sus @font-face ni existen para
+     el navegador, así que el document.fonts.ready de arriba puede resolver
+     de inmediato usando la tipografía de reemplazo — más angosta que Plus
+     Jakarta Sans — y medir corto. Por eso volvemos a esperar fonts.ready
+     DESPUÉS de que ese <link> termine de activarse (ahí recién existen los
+     @font-face reales); y de respaldo, también al terminar de cargar toda
+     la página, por si algo más cambia el layout del título más tarde. */
+  const fontLink = document.querySelector('link[href*="fonts.googleapis.com"][as="style"]');
+  if (fontLink) {
+    fontLink.addEventListener('load', () => {
+      (document.fonts ? document.fonts.ready : Promise.resolve()).then(resync);
+    }, { once: true });
+  }
+  window.addEventListener('load', resync, { once: true });
 
   /* Recalcula altura Y max-width al redimensionar */
   let resizeTO = null;

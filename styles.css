@@ -51,7 +51,8 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip; /* NO "hidden": convierte <body> en contenedor de scroll y anula el
+                        position:sticky del escenario 3D de VIZUtire (#vizutire-story) */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -1436,20 +1437,20 @@ button.hero-btn-dark { border: none; cursor: pointer; }
 }
 
 .hero-btn-light {
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; justify-content: center;
   background: #fff;
   color: var(--text);
   font-family: var(--font);
   font-weight: 600; font-size: 0.95rem;
-  padding: 14px 28px;
+  line-height: 1;
+  padding: 0 28px;
+  height: 56px; /* mismo alto que .hero-btn-dark */
   border-radius: var(--radius-xl);
   border: 1px solid rgba(0,0,0,0.1);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--t), transform var(--t);
 }
 .hero-btn-light:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
-.hero-btn-exponor .exponor-star { transition: stroke var(--t), fill var(--t); }
-.hero-btn-exponor:hover .exponor-star { stroke: #c0312b; fill: #c0312b; }
 
 /* Social proof */
 .hero-proof { display: flex; align-items: center; gap: 12px; }

@@ -235,8 +235,7 @@
             See Technology
           </a>
           <a href="demo-day-aster-en.html" class="hero-btn-light hero-btn-exponor" style="display:inline-flex;align-items:center;gap:8px;">
-            <svg class="exponor-star" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            2nd place EXPONOR 2026
+            EXPONOR 2026
           </a>
         </div>
       </div>
@@ -278,7 +277,7 @@
         mounted = true;
         io.disconnect();
         import('./vizutire-story/story-en.js')
-          .then(({ createStructuralStory }) => createStructuralStory(el))
+          .then(({ createTireExplorer }) => createTireExplorer(el))
           .catch((err) => console.error('VIZUtire story load failed:', err));
       }, { rootMargin: '200px' });
       io.observe(el);
@@ -287,65 +286,6 @@
 
   <!-- ===================== DIAGNOSTIC SYSTEM ===================== -->
   <section class="diag-section" id="problema">
-
-    <div class="diag-main">
-      <div class="container">
-        <div class="diag-hdr-light reveal">
-          <h2 class="diag-title-light">Alicanto: In tire, we see<br/>what no one else can</h2>
-        </div>
-        <div class="diag-two-col reveal delay-1">
-          <div class="diag-tire-wrap">
-            <img src="images/tire-inner-2.webp" alt="Failures detected in OTR tire" class="diag-tire-img" fetchpriority="high" width="800" height="800" />
-            <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
-            <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
-            <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
-          </div>
-
-          <div class="diag-cards-area">
-
-            <div class="diag-info-card active" data-card="1">
-              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-1
-              </div>
-              <h3 class="diag-card-title">Internal Microcrack</h3>
-              <p class="diag-card-desc">Internal microcrack identified through non-destructive ultrasonic inspection and predictive analysis. Early stage with elevated risk of propagation under operational load.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Internal microcrack" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-            <div class="diag-info-card" data-card="2">
-              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-2
-              </div>
-              <h3 class="diag-card-title">Layer Separation</h3>
-              <p class="diag-card-desc">Delamination between structural tire layers. Tensional analysis identifies the extent and depth of damage with millimetric precision.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Layer separation" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-            <div class="diag-info-card" data-card="3">
-              <button class="diag-card-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-3
-              </div>
-              <h3 class="diag-card-title">Belt Fracture</h3>
-              <p class="diag-card-desc">Broken steel cords detected in the steel belt. Critical structural risk. The AI predictive model estimates imminent failure if current operating conditions persist.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Belt fracture" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 3 Pillars -->
     <div class="diag-solution" id="pilares">

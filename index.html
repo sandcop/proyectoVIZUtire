@@ -241,8 +241,7 @@
             Ver tecnología
           </a>
           <a href="demo-day-aster.html" class="hero-btn-light hero-btn-exponor" style="display:inline-flex;align-items:center;gap:8px;">
-            <svg class="exponor-star" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            2° lugar EXPONOR 2026
+            EXPONOR 2026
           </a>
         </div>
       </div>
@@ -286,7 +285,7 @@
         mounted = true;
         io.disconnect();
         import('./vizutire-story/story.js')
-          .then(({ createStructuralStory }) => createStructuralStory(el))
+          .then(({ createTireExplorer }) => createTireExplorer(el))
           .catch((err) => console.error('VIZUtire story load failed:', err));
       }, { rootMargin: '200px' });
       io.observe(el);
@@ -295,69 +294,6 @@
 
   <!-- ===================== SISTEMA DE DIAGNÓSTICO OPERACIONAL ===================== -->
   <section class="diag-section" id="problema">
-
-    <!-- Parte 1: Diagnóstico — fondo blanco con neumático + marcadores -->
-    <div class="diag-main">
-      <div class="container">
-        <div class="diag-hdr-light reveal">
-          <h2 class="diag-title-light">Alicanto: vemos lo<br/>que nadie ve</h2>
-
-        </div>
-        <div class="diag-two-col reveal delay-1">
-          <!-- Neumático con 5 marcadores interactivos -->
-          <div class="diag-tire-wrap">
-            <img src="images/tire-inner-2.webp" alt="Fallas detectadas en neumático OTR" class="diag-tire-img" fetchpriority="high" width="800" height="800" />
-            <span class="fault-marker fault-marker--active" data-fault="1" style="top:14%;left:24%" title="F-1"></span>
-            <span class="fault-marker" data-fault="2" style="top:31%;left:46%" title="F-2"></span>
-            <span class="fault-marker" data-fault="3" style="top:48%;left:33%" title="F-3"></span>
-          </div>
-
-          <!-- Área de tarjetas — se muestran al hover sobre cada marcador -->
-          <div class="diag-cards-area">
-
-            <div class="diag-info-card active" data-card="1">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-1
-              </div>
-              <h3 class="diag-card-title">Microfisura interna</h3>
-              <p class="diag-card-desc">Discontinuidades internas detectadas mediante inspección ultrasónica. Etapa temprana con alta probabilidad de progresión bajo carga operativa.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Microfisura interna" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-            <div class="diag-info-card" data-card="2">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-2
-              </div>
-              <h3 class="diag-card-title">Separación de capas</h3>
-              <p class="diag-card-desc">Delaminación entre capas estructurales del neumático. El análisis tensional identifica la extensión y profundidad del daño con precisión milimétrica.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Separación de capas" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-            <div class="diag-info-card" data-card="3">
-              <button class="diag-card-close" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-              <div class="diag-card-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                F-3
-              </div>
-              <h3 class="diag-card-title">Fractura en cinturón</h3>
-              <p class="diag-card-desc">Rotura de cordones metálicos en el cinturón de acero. Riesgo estructural crítico. El modelo predictivo de IA estima una falla inminente si continúan las condiciones operativas actuales.</p>
-              <div class="diag-card-thumb">
-                <img src="images/neumatico-1.webp" alt="Fractura en cinturón" width="600" height="600" loading="lazy" />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Parte 2: Los 3 Pilares -->
     <div class="diag-solution" id="pilares">
