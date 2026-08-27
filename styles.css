@@ -183,7 +183,12 @@ section[id] { position: relative; }
   justify-content: flex-end;
   padding: 16px 200px;
   pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
 }
+/* Pasado el hero y bajando se oculta hacia arriba; al subir (o antes de pasar
+   el hero) vuelve — ver bloque "NAVBAR" en script.js. -140% (no -100%) para
+   que también salga la sombra de la píldora, no solo el contenido. */
+.header.is-hidden { transform: translateY(-140%); }
 
 /* Logo en el hero — misma posición que antes pero se desplaza con scroll */
 .hero-logo {
@@ -228,9 +233,57 @@ section[id] { position: relative; }
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  /* Sin gap: el isotipo (ver .nav-isotipo) necesita poder colapsar a 0 sin
+     dejar hueco cuando está oculto — el espaciado entre hijos lo maneja cada
+     uno con su propio margin-left. */
   flex-shrink: 0;
   margin-left: 8px;
+}
+
+/* Isotipo que se revela al bajar (ver script.js, sección NAVBAR) — mismo
+   truco que un logotipo que se expande: se anima WIDTH (no solo opacity),
+   así ocupa sitio real al aparecer en vez de superponerse. Arranca en 0 sin
+   margin para no dejar hueco en la píldora antes de revelarse. */
+.nav-isotipo {
+  display: flex; align-items: center; justify-content: center;
+  width: 0; height: 32px; overflow: hidden;
+  margin-left: 0;
+  opacity: 0; transform: translateX(-8px);
+  flex-shrink: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease,
+              width 0.5s ease, margin-left 0.5s ease;
+}
+.nav-isotipo img { width: 22px; height: 22px; display: block; flex-shrink: 0; }
+.nav-isotipo.is-visible {
+  opacity: 1; transform: none;
+  width: 22px;
+  margin-left: 10px;
+}
+
+/* Botón flotante "volver arriba" — esquina inferior derecha, aparece desde la
+   segunda sección (ver script.js, mismo umbral "floor" que oculta el header). */
+.back-to-top {
+  position: fixed;
+  right: 24px; bottom: 24px;
+  z-index: 90;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--text); color: #fff;
+  border: none; border-radius: 50%;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s,
+              background var(--t), box-shadow var(--t);
+}
+.back-to-top.is-visible {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s,
+              background var(--t), box-shadow var(--t);
+}
+.back-to-top:hover { background: var(--danger); box-shadow: 0 4px 16px rgba(227,0,27,0.25); }
+@media (max-width: 768px) {
+  .back-to-top { right: 16px; bottom: 16px; width: 44px; height: 44px; }
 }
 
 .nav-lang-btn {
@@ -245,6 +298,7 @@ section[id] { position: relative; }
   padding: 9px 16px;
   border-radius: var(--radius-xl);
   cursor: pointer;
+  margin-left: 6px;
   transition: background var(--t), border-color var(--t);
 }
 .nav-lang-btn:hover { background: rgba(0,0,0,0.04); }

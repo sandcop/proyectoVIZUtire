@@ -152,11 +152,65 @@ document.addEventListener('mousemove', e => {
   }, { passive: true });
 })();
 
-// ========= NAVBAR SCROLL =========
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
-}, { passive: true });
+// ========= NAVBAR SCROLL: compactar + revelar isotipo + ocultar/mostrar =========
+// Un solo listener para los tres comportamientos (mismo patrón que la referencia
+// de navbar con scroll): 1) sombra a los 50px, 2) el isotipo se revela (WIDTH,
+// no solo opacity, para que ocupe sitio real) al pasar ~32% del alto del hero,
+// 3) pasado el hero Y bajando, el header entero se oculta hacia arriba; al subir
+// (o antes de pasar el hero) vuelve. Histéresis de 6px para que no parpadee con
+// trackpad/scroll de rueda fino.
+(function () {
+  const header = document.querySelector('.header');
+  const navbar = document.getElementById('navbar');
+  const isotipo = document.getElementById('navIsotipo');
+  const hero = document.querySelector('.hero');
+  const backToTop = document.getElementById('backToTop');
+  if (!header || !navbar) return;
+
+  const WORD_AT = 0.32;
+  const DEADZONE = 6;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let lastY = window.scrollY, ticking = false;
+
+  function update() {
+    const y = window.scrollY;
+    const heroH = hero ? hero.offsetHeight : 0;
+    const delta = y - lastY;
+
+    navbar.classList.toggle('scrolled', y > 50);
+
+    if (isotipo) {
+      isotipo.classList.toggle('is-visible', heroH ? y > heroH * WORD_AT : y > 50);
+    }
+
+    const floor = heroH || 400;
+    if (!reduced) {
+      if (y > floor && delta > DEADZONE) header.classList.add('is-hidden');
+      else if (delta < -DEADZONE || y <= floor) header.classList.remove('is-hidden');
+    }
+
+    // Botón "volver arriba": aparece a partir de la segunda sección (pasado el
+    // hero, mismo umbral "floor" que usa el header) — no depende de la
+    // dirección del scroll como el header, solo de la posición.
+    if (backToTop) backToTop.classList.toggle('is-visible', y > floor);
+
+    if (Math.abs(delta) > DEADZONE) lastY = y;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    });
+  }
+
+  update(); // estado correcto si se recarga a media página
+})();
 
 // ========= HAMBURGER =========
 const hamburgerCheck = document.getElementById('hamburgerCheck');
