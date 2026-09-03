@@ -130,9 +130,27 @@
   <header class="header">
     <nav class="navbar" id="navbar">
       <ul class="nav-links">
-        <li><a href="#alicanto" class="nav-highlight">Alicanto</a></li>
-        <li><a href="#tecnologia">Tecnología</a></li>
-        <li><a href="#ciencia">Ciencia</a></li>
+        <li><a href="#vizutire-story" class="nav-highlight">Brecha</a></li>
+        <li class="nav-dropdown">
+          <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
+            Eventos
+            <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dd-menu">
+            <a href="demo-day-aster.html">Exponor 2026</a>
+            <a href="open-aster.html">Open Aster</a>
+          </div>
+        </li>
+        <li class="nav-dropdown">
+          <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
+            Ciencia
+            <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dd-menu">
+            <a href="#ciencia">Ciencia</a>
+            <a href="#historia">Hitos</a>
+          </div>
+        </li>
         <li><a href="#pilares">Pilares</a></li>
       </ul>
       <div class="nav-actions">
@@ -167,17 +185,25 @@
     <div class="side-panel-content">
       <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería. Inteligencia operacional para cero fallas imprevistas.</p>
       <ul class="panel-nav">
-        <li><a href="#alicanto" onclick="toggleSidePanel()">
-          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
-          Alicanto
+        <li><a href="#vizutire-story" onclick="toggleSidePanel()">
+          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+          Brecha
         </a></li>
-        <li><a href="#tecnologia" onclick="toggleSidePanel()">
-          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
-          Tecnología
+        <li><a href="demo-day-aster.html" onclick="toggleSidePanel()">
+          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+          Exponor 2026
+        </a></li>
+        <li><a href="open-aster.html" onclick="toggleSidePanel()">
+          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7v10l10 5 10-5V7z"/><path d="M2 7l10 5 10-5M12 22V12"/></svg></span>
+          Open Aster
         </a></li>
         <li><a href="#ciencia" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>
           Ciencia
+        </a></li>
+        <li><a href="#historia" onclick="toggleSidePanel()">
+          <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></span>
+          Hitos
         </a></li>
         <li><a href="#pilares" onclick="toggleSidePanel()">
           <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
@@ -208,7 +234,6 @@
 
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="inicio">
-    <div class="hero-dots"></div>
     <a href="#" class="hero-logo">
       <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img logo-neg" width="619" height="315" />
       <img src="images/Logo_VIZUtire.svg"     alt="VIZUtire" class="logo-img logo-pos" width="619" height="315" />
@@ -249,9 +274,6 @@
           </a>
           <a href="#tecnologia" class="hero-btn-light">
             Ver tecnología
-          </a>
-          <a href="demo-day-aster.html" class="hero-btn-light hero-btn-exponor" style="display:inline-flex;align-items:center;gap:8px;">
-            EXPONOR 2026
           </a>
         </div>
       </div>
@@ -465,8 +487,7 @@
   <!-- ===================== EL DESAFÍO — Apple-style scroll ===================== -->
   <section class="scroll-story" id="tecnologia">
     <div class="story-sticky">
-      <div class="hero-dots"></div>
-      <div class="story-layout">
+        <div class="story-layout">
 
         <!-- LEFT: Apple-style navigation -->
         <div class="story-left reveal">

@@ -36,6 +36,7 @@
   --shadow:    0 6px 32px rgba(0,0,0,0.08);
   --shadow-lg: 0 16px 56px rgba(0,0,0,0.1);
   --t:         0.32s;
+  --ease:      cubic-bezier(0.28, 0.11, 0.32, 1);
 }
 
 html { scroll-behavior: smooth; }
@@ -104,7 +105,48 @@ img { max-width: 100%; display: block; }
 .nav-links a:hover { color: var(--text); background: rgba(0,0,0,0.04); }
 .nav-links .nav-highlight { font-weight: 600; color: var(--text); }
 
-.nav-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: 8px; }
+/* Desplegable del navbar ("Events"/"Science") — igual al del sitio principal:
+   hover en escritorio + click/teclado (ver script al final) para táctil. */
+.nav-dropdown { position: relative; }
+.nav-dd-trigger {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  font-family: var(--font); font-size: 0.875rem; font-weight: 500;
+  color: var(--text-2);
+  padding: 8px 14px; border-radius: var(--radius-xl);
+  display: flex; align-items: center; gap: 5px; white-space: nowrap; line-height: 1.2;
+  transition: color var(--t), background var(--t);
+}
+.nav-dropdown:hover .nav-dd-trigger,
+.nav-dd-trigger:focus-visible,
+.nav-dd-trigger[aria-expanded="true"] { color: var(--text); background: rgba(0,0,0,0.04); }
+.nav-dd-caret { flex: none; transition: transform var(--t); }
+.nav-dropdown:hover .nav-dd-caret,
+.nav-dd-trigger[aria-expanded="true"] .nav-dd-caret { transform: rotate(180deg); }
+.nav-dd-menu {
+  position: absolute; top: calc(100% + 12px); left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 186px; padding: 6px;
+  display: flex; flex-direction: column; gap: 2px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08); border-radius: 18px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), visibility 0.22s;
+}
+.nav-dd-menu::before { content: ''; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
+.nav-dropdown:hover .nav-dd-menu,
+.nav-dd-menu.open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dd-menu a {
+  font-family: var(--font); font-size: 0.875rem; font-weight: 500;
+  color: var(--text-2); padding: 9px 14px; border-radius: 11px; white-space: nowrap;
+  transition: color var(--t), background var(--t);
+}
+.nav-dd-menu a:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+
+.nav-actions { display: flex; align-items: center; flex-shrink: 0; margin-left: 8px; }
 .nav-cta-btn {
   display: flex; align-items: center;
   background: var(--text); color: #fff;
@@ -114,12 +156,29 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0; white-space: nowrap; text-decoration: none;
 }
 .nav-cta-btn:hover { background: #e3001b; color: #fff; box-shadow: 0 4px 16px rgba(227,0,27,0.25); }
+/* Isotipo que se revela al bajar (ver script al final) — anima WIDTH, no solo
+   opacity, para que ocupe sitio real al aparecer en vez de superponerse. */
+.nav-isotipo {
+  display: flex; align-items: center; justify-content: center;
+  width: 0; height: 32px; overflow: hidden;
+  margin-left: 0;
+  opacity: 0; transform: translateX(-8px);
+  flex-shrink: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease,
+              width 0.5s ease, margin-left 0.5s ease;
+}
+.nav-isotipo img { width: 22px; height: 22px; display: block; flex-shrink: 0; }
+.nav-isotipo.is-visible {
+  opacity: 1; transform: none;
+  width: 22px;
+  margin-left: 10px;
+}
 .nav-lang-btn {
   display: flex; align-items: center;
   background: transparent; border: 1px solid rgba(0,0,0,0.12);
   color: var(--text-2); font-family: var(--font); font-weight: 600; font-size: 0.8rem;
   padding: 9px 16px; border-radius: var(--radius-xl);
-  cursor: pointer; text-decoration: none;
+  cursor: pointer; text-decoration: none; margin-left: 6px;
   transition: background var(--t), border-color var(--t);
 }
 .nav-lang-btn:hover { background: rgba(0,0,0,0.04); }
@@ -520,13 +579,6 @@ img { max-width: 100%; display: block; }
   background: var(--white); position: relative; overflow: hidden;
   padding: 96px 0;
 }
-.cta-section::before {
-  content: ''; position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.5px, transparent 1.5px);
-  background-size: 20px 20px; pointer-events: none;
-  -webkit-mask-image: radial-gradient(circle 80px at var(--local-x,-9999px) var(--local-y,-9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 50%, transparent 100%);
-          mask-image: radial-gradient(circle 80px at var(--local-x,-9999px) var(--local-y,-9999px), rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 50%, transparent 100%);
-}
 .cta-inner { position: relative; z-index: 2; text-align: center; max-width: 640px; margin: 0 auto; }
 .cta-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
 .cta-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); }
@@ -624,13 +676,34 @@ img { max-width: 100%; display: block; }
 <header class="header">
   <nav class="navbar" id="navbar">
     <ul class="nav-links">
-      <li><a href="index-en.html#alicanto" class="nav-highlight">Alicanto</a></li>
-      <li><a href="index-en.html#tecnologia">Technology</a></li>
-      <li><a href="index-en.html#ciencia">Science</a></li>
+      <li><a href="index-en.html#vizutire-story" class="nav-highlight">The gap</a></li>
+      <li class="nav-dropdown">
+        <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
+          Events
+          <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dd-menu">
+          <a href="demo-day-aster-en.html" aria-current="page">Exponor 2026</a>
+          <a href="open-aster-en.html">Open Aster</a>
+        </div>
+      </li>
+      <li class="nav-dropdown">
+        <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
+          Science
+          <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dd-menu">
+          <a href="index-en.html#ciencia">Science</a>
+          <a href="index-en.html#historia">Milestones</a>
+        </div>
+      </li>
       <li><a href="index-en.html#pilares">Pillars</a></li>
     </ul>
     <div class="nav-actions">
       <a href="#cta" class="nav-cta-btn">Demo</a>
+      <a href="index-en.html" class="nav-isotipo" id="navIsotipo" aria-label="Go to home">
+        <img src="images/favicon.svg" alt="" width="22" height="22" />
+      </a>
       <a href="demo-day-aster.html" class="nav-lang-btn">ES</a>
     </div>
     <button class="menu-toggle" id="hamburger" aria-label="Menu">
@@ -651,9 +724,23 @@ img { max-width: 100%; display: block; }
   <div class="side-panel-content">
     <p class="panel-description">Non-destructive structural diagnostics for mining OTR tires. Operational intelligence for zero unplanned failures.</p>
     <ul class="panel-nav">
-      <li><a href="index-en.html#alicanto" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>Alicanto</a></li>
-      <li><a href="index-en.html#tecnologia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>Technology</a></li>
+      <li><a href="index-en.html#vizutire-story" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+        The gap
+      </a></li>
+      <li><a href="demo-day-aster-en.html" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+        Exponor 2026
+      </a></li>
+      <li><a href="open-aster-en.html" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7v10l10 5 10-5V7z"/><path d="M2 7l10 5 10-5M12 22V12"/></svg></span>
+        Open Aster
+      </a></li>
       <li><a href="index-en.html#ciencia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>Science</a></li>
+      <li><a href="index-en.html#historia" onclick="toggleSidePanel()">
+        <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></span>
+        Milestones
+      </a></li>
       <li><a href="index-en.html#pilares" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Pillars</a></li>
     </ul>
     <a href="#cta" class="panel-cta" onclick="toggleSidePanel()">Request Demo</a>
@@ -662,8 +749,8 @@ img { max-width: 100%; display: block; }
       <div class="panel-contact-item"><span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="panel-contact-text">Antofagasta, Chile</span></div>
     </div>
     <div class="panel-social">
-      <a href="#" class="social-icon" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg></a>
-      <a href="#" class="social-icon" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg></a>
+      <a href="https://www.instagram.com/vizutire" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/vizutire" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4M12 10v7"/></svg></a>
     </div>
   </div>
 </div>
@@ -952,22 +1039,51 @@ img { max-width: 100%; display: block; }
 </footer>
 
 <script>
-// ── Dot reveal (hero + CTA) ──
-var dotSections = document.querySelectorAll('.hero, .cta-section');
-
-document.addEventListener('mousemove', function(e) {
-  dotSections.forEach(function(sec) {
-    var r = sec.getBoundingClientRect();
-    sec.style.setProperty('--local-x', (e.clientX - r.left) + 'px');
-    sec.style.setProperty('--local-y', (e.clientY - r.top) + 'px');
-  });
-}, { passive: true });
-
-// ── Navbar scroll ──
+// ── Navbar scroll: sombra + revelar isotipo (igual al sitio principal) ──
 var navbar = document.getElementById('navbar');
+var navIsotipo = document.getElementById('navIsotipo');
+var heroEl = document.querySelector('.hero');
+var WORD_AT = 0.32;
 window.addEventListener('scroll', function() {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
+  var y = window.scrollY;
+  navbar.classList.toggle('scrolled', y > 50);
+  if (navIsotipo) {
+    var heroH = heroEl ? heroEl.offsetHeight : 0;
+    navIsotipo.classList.toggle('is-visible', heroH ? y > heroH * WORD_AT : y > 50);
+  }
 }, { passive: true });
+
+// ── Navbar dropdowns ("Events", "Science") — hover lo resuelve el CSS; esto
+// agrega click y teclado (táctil / Tab), cerrando al pulsar fuera, con Escape,
+// o al abrir otro desplegable del navbar. ──
+(function () {
+  var dds = document.querySelectorAll('.nav-dropdown');
+  if (!dds.length) return;
+  var instances = [];
+  dds.forEach(function(dd) {
+    var trigger = dd.querySelector('.nav-dd-trigger');
+    var menu = dd.querySelector('.nav-dd-menu');
+    if (trigger && menu) instances.push({ dd: dd, trigger: trigger, menu: menu });
+  });
+
+  function closeDd(inst) { inst.menu.classList.remove('open'); inst.trigger.setAttribute('aria-expanded', 'false'); }
+  function openDd(inst) { inst.menu.classList.add('open'); inst.trigger.setAttribute('aria-expanded', 'true'); }
+  function closeAllDd(except) { instances.forEach(function(inst) { if (inst !== except) closeDd(inst); }); }
+
+  instances.forEach(function(inst) {
+    inst.trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var willOpen = !inst.menu.classList.contains('open');
+      closeAllDd(inst);
+      willOpen ? openDd(inst) : closeDd(inst);
+    });
+    inst.menu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { closeDd(inst); }); });
+  });
+  document.addEventListener('click', function(e) {
+    instances.forEach(function(inst) { if (!inst.dd.contains(e.target)) closeDd(inst); });
+  }, { passive: true });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAllDd(); });
+})();
 
 // ── Side panel / Hamburger ──
 var _panel   = document.getElementById('mobileDrawer');

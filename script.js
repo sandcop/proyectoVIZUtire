@@ -75,16 +75,6 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && _panel && _panel.classList.contains('active')) toggleSidePanel();
 });
 
-// ========= DOT REVEAL — coordenadas locales por sección =========
-const dotSections = document.querySelectorAll('.hero, .scroll-story, .cta-section');
-document.addEventListener('mousemove', e => {
-  dotSections.forEach(sec => {
-    const r = sec.getBoundingClientRect();
-    sec.style.setProperty('--local-x', (e.clientX - r.left) + 'px');
-    sec.style.setProperty('--local-y', (e.clientY - r.top)  + 'px');
-  });
-}, { passive: true });
-
 // ========= CUSTOM SELECT — Cargo / Área =========
 (function () {
   const wrap    = document.getElementById('cargoSelect');
@@ -150,6 +140,39 @@ document.addEventListener('mousemove', e => {
   document.addEventListener('click', e => {
     if (!wrap.contains(e.target)) close();
   }, { passive: true });
+})();
+
+// ========= NAVBAR DROPDOWNS ("Eventos", "Ciencia") =========
+// El hover lo resuelve el CSS; esto agrega click y teclado (para táctil y para
+// quien navegue con Tab), cerrando al pulsar fuera, con Escape, o al abrir otro
+// desplegable del navbar (puede haber más de uno, ver index.html).
+(function () {
+  const dds = document.querySelectorAll('.nav-dropdown');
+  if (!dds.length) return;
+
+  const instances = [...dds].map(dd => {
+    const trigger = dd.querySelector('.nav-dd-trigger');
+    const menu    = dd.querySelector('.nav-dd-menu');
+    return trigger && menu ? { dd, trigger, menu } : null;
+  }).filter(Boolean);
+
+  function close(inst) { inst.menu.classList.remove('open'); inst.trigger.setAttribute('aria-expanded', 'false'); }
+  function open(inst)  { inst.menu.classList.add('open');    inst.trigger.setAttribute('aria-expanded', 'true');  }
+  function closeAll(except) { instances.forEach(inst => { if (inst !== except) close(inst); }); }
+
+  instances.forEach(inst => {
+    inst.trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const willOpen = !inst.menu.classList.contains('open');
+      closeAll(inst);
+      willOpen ? open(inst) : close(inst);
+    });
+    inst.menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => close(inst)));
+  });
+  document.addEventListener('click', e => {
+    instances.forEach(inst => { if (!inst.dd.contains(e.target)) close(inst); });
+  }, { passive: true });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
 })();
 
 // ========= NAVBAR SCROLL: compactar + revelar isotipo + ocultar/mostrar =========

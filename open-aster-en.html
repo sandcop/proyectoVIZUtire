@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="VIZUtire presentó Alicanto en el Demo Day de ASTER durante EXPONOR 2026 y obtuvo el 2° lugar entre 5 startups mineras. Conoce cómo la inteligencia estructural predictiva transforma la operación de neumáticos OTR."/>
-<title>Demo Day ASTER · VIZUtire obtuvo el 2° lugar — Alicanto validado en minería</title>
+<meta name="description" content="VIZUtire was selected in Open Aster, Escondida | BHP's open innovation program run by Aster Aceleradora, in the Mine Operations segment. Discover how Alicanto, the structural monitoring center for OTR tires, is preparing for its field pilot."/>
+<title>Open Aster · VIZUtire Selected in Mine Operations — Escondida | BHP</title>
 
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!-- Fotos del evento pendientes de subir (ver sección GALERÍA y hero):
+     images/open-aster/hero.webp, foto-1.webp .. foto-5.webp — mismas que usa
+     la version en espanol (open-aster.html), compartidas entre ambos idiomas.
+     Mientras no existan, esos <img> se ven rotos. -->
 
 <style>
 /* ─────────────────────────────────────────
@@ -105,8 +110,8 @@ img { max-width: 100%; display: block; }
 .nav-links a:hover { color: var(--text); background: rgba(0,0,0,0.04); }
 .nav-links .nav-highlight { font-weight: 600; color: var(--text); }
 
-/* Desplegable del navbar ("Nuevo") — igual al del sitio principal: hover en
-   escritorio + click/teclado (ver script al final) para táctil. */
+/* Desplegable del navbar ("Events"/"Science") — igual al del sitio principal:
+   hover en escritorio + click/teclado (ver script al final) para táctil. */
 .nav-dropdown { position: relative; }
 .nav-dd-trigger {
   appearance: none; background: none; border: 0; cursor: pointer;
@@ -285,7 +290,7 @@ img { max-width: 100%; display: block; }
 ───────────────────────────────────────── */
 .hero {
   height: clamp(720px, 100svh, 900px);
-  background: #0d1117 url('images/aster/hero.webp') center center / cover no-repeat;
+  background: #0d1117 url('images/open-aster/hero.webp') center center / cover no-repeat;
   position: relative;
   display: flex; align-items: center;
   padding: 0 200px; overflow: hidden; z-index: 0;
@@ -373,47 +378,8 @@ img { max-width: 100%; display: block; }
 }
 .hero-btn-light:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.45); transform: translateY(-2px); }
 
-/* Hero visual / foto */
-.hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
-.photo-frame {
-  width: 100%; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; position: relative;
-  box-shadow: 0 24px 60px rgba(0,0,0,.18), 0 0 0 1px rgba(192,49,43,.08);
-}
-.photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Placeholder cuando no hay foto */
-.photo-placeholder {
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg,#1a2030 0%,#2a1010 60%,#1a1520 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-}
-.ph-icon { width:52px; height:52px; border-radius:50%; border:2px dashed rgba(192,49,43,.4); display:flex; align-items:center; justify-content:center; }
-.ph-icon svg { width:22px; height:22px; stroke:rgba(192,49,43,.5); fill:none; stroke-width:1.5; stroke-linecap:round; }
-.ph-label { font-size:0.75rem; color:rgba(255,255,255,.4); font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
-.ph-sub   { font-size:0.65rem; color:rgba(255,255,255,.25); }
-
-.photo-corner-badge {
-  position:absolute; bottom:16px; left:16px;
-  background:rgba(0,0,0,.75); backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:8px 12px;
-  display:flex; align-items:center; gap:8px;
-}
-.pcb-logo { font-size:0.55rem; font-weight:800; color:rgba(255,255,255,.5); letter-spacing:.1em; }
-.pcb-div  { width:1px; height:20px; background:rgba(255,255,255,.1); }
-.pcb-text { font-size:0.58rem; color:rgba(255,255,255,.45); line-height:1.3; }
-.pcb-text strong { display:block; color:rgba(255,255,255,.8); font-size:0.65rem; }
-
-.floating-stat {
-  position:absolute; top:-14px; right:-14px;
-  background:var(--white); border:1px solid rgba(192,49,43,.2);
-  border-radius:12px; padding:10px 14px; text-align:center;
-  box-shadow: 0 8px 24px rgba(0,0,0,.1);
-}
-.fs-num { display:block; font-size:1.4rem; font-weight:800; color:var(--accent); line-height:1; }
-.fs-lbl { display:block; font-size:0.58rem; color:var(--text-2); margin-top:2px; }
-
 /* ─────────────────────────────────────────
-   2. GALERÍA
+   2. GALLERY
 ───────────────────────────────────────── */
 .gallery-section { background: var(--white); }
 .section-label {
@@ -439,16 +405,6 @@ img { max-width: 100%; display: block; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
 .gallery-item:hover img { transform: scale(1.04); }
 
-/* Placeholder galería */
-.gallery-ph {
-  width: 100%; background: var(--bg-2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-  color: var(--text-3); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
-}
-.gallery-item.featured .gallery-ph { aspect-ratio: 4/3; }
-.gallery-item:not(.featured) .gallery-ph { aspect-ratio: 3/2; }
-.gallery-ph svg { width: 28px; height: 28px; stroke: var(--text-3); fill: none; stroke-width: 1.5; stroke-linecap: round; }
-
 @media (max-width: 768px) {
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   .gallery-item.featured { grid-column: span 2; grid-row: span 1; }
@@ -459,7 +415,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ─────────────────────────────────────────
-   3. EL EVENTO
+   3. THE PROGRAM
 ───────────────────────────────────────── */
 .event-section { background: var(--bg); }
 .event-layout {
@@ -510,7 +466,7 @@ img { max-width: 100%; display: block; }
 .aster-stat-lbl { font-size: 0.72rem; color: var(--text-2); font-family: var(--font-body); }
 
 /* ─────────────────────────────────────────
-   4. ALICANTO — EL PRODUCTO
+   4. ALICANTO — THE PRODUCT
 ───────────────────────────────────────── */
 .product-section { background: var(--white); }
 
@@ -552,7 +508,7 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) { .product-badge { bottom: 12px; right: 12px; } }
 
 /* ─────────────────────────────────────────
-   5. LO QUE SE VALIDÓ
+   5. WHY IT ADVANCED
 ───────────────────────────────────────── */
 .validated-section { background: var(--bg); }
 .validated-grid {
@@ -573,7 +529,7 @@ img { max-width: 100%; display: block; }
 .val-card-accent { border-top: 3px solid var(--accent); }
 
 /* ─────────────────────────────────────────
-   6. CTA FINAL
+   6. FINAL CTA
 ───────────────────────────────────────── */
 .cta-section {
   background: var(--white); position: relative; overflow: hidden;
@@ -676,37 +632,37 @@ img { max-width: 100%; display: block; }
 <header class="header">
   <nav class="navbar" id="navbar">
     <ul class="nav-links">
-      <li><a href="index.html#vizutire-story" class="nav-highlight">Brecha</a></li>
+      <li><a href="index-en.html#vizutire-story" class="nav-highlight">The gap</a></li>
       <li class="nav-dropdown">
         <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
-          Eventos
+          Events
           <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="nav-dd-menu">
-          <a href="demo-day-aster.html" aria-current="page">Exponor 2026</a>
-          <a href="open-aster.html">Open Aster</a>
+          <a href="demo-day-aster-en.html">Exponor 2026</a>
+          <a href="open-aster-en.html" aria-current="page">Open Aster</a>
         </div>
       </li>
       <li class="nav-dropdown">
         <button type="button" class="nav-dd-trigger" aria-expanded="false" aria-haspopup="true">
-          Ciencia
+          Science
           <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="nav-dd-menu">
-          <a href="index.html#ciencia">Ciencia</a>
-          <a href="index.html#historia">Hitos</a>
+          <a href="index-en.html#ciencia">Science</a>
+          <a href="index-en.html#historia">Milestones</a>
         </div>
       </li>
-      <li><a href="index.html#pilares">Pilares</a></li>
+      <li><a href="index-en.html#pilares">Pillars</a></li>
     </ul>
     <div class="nav-actions">
       <a href="#cta" class="nav-cta-btn">Demo</a>
-      <a href="index.html" class="nav-isotipo" id="navIsotipo" aria-label="Ir al inicio">
+      <a href="index-en.html" class="nav-isotipo" id="navIsotipo" aria-label="Go to home">
         <img src="images/favicon.svg" alt="" width="22" height="22" />
       </a>
-      <a href="demo-day-aster-en.html" class="nav-lang-btn">EN</a>
+      <a href="open-aster.html" class="nav-lang-btn">ES</a>
     </div>
-    <button class="menu-toggle" id="hamburger" aria-label="Menú">
+    <button class="menu-toggle" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -716,34 +672,34 @@ img { max-width: 100%; display: block; }
      SIDE PANEL
 ════════════════════════════════════════ -->
 <div class="side-panel-overlay" id="mobileOverlay"></div>
-<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+<div class="side-panel" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <div class="side-panel-header">
     <img src="images/Logo_VIZUtire.svg" alt="VIZUtire" class="side-panel-logo-img"/>
-    <button class="close-panel" id="drawerClose" aria-label="Cerrar menú">×</button>
+    <button class="close-panel" id="drawerClose" aria-label="Close menu">×</button>
   </div>
   <div class="side-panel-content">
-    <p class="panel-description">Diagnóstico estructural no destructivo para neumáticos OTR de minería. Inteligencia operacional para cero fallas imprevistas.</p>
+    <p class="panel-description">Non-destructive structural diagnostics for mining OTR tires. Operational intelligence for zero unplanned failures.</p>
     <ul class="panel-nav">
-      <li><a href="index.html#vizutire-story" onclick="toggleSidePanel()">
+      <li><a href="index-en.html#vizutire-story" onclick="toggleSidePanel()">
         <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
-        Brecha
+        The gap
       </a></li>
-      <li><a href="demo-day-aster.html" onclick="toggleSidePanel()">
+      <li><a href="demo-day-aster-en.html" onclick="toggleSidePanel()">
         <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
         Exponor 2026
       </a></li>
-      <li><a href="open-aster.html" onclick="toggleSidePanel()">
+      <li><a href="open-aster-en.html" onclick="toggleSidePanel()">
         <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7v10l10 5 10-5V7z"/><path d="M2 7l10 5 10-5M12 22V12"/></svg></span>
         Open Aster
       </a></li>
-      <li><a href="index.html#ciencia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>Ciencia</a></li>
-      <li><a href="index.html#historia" onclick="toggleSidePanel()">
+      <li><a href="index-en.html#ciencia" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg></span>Science</a></li>
+      <li><a href="index-en.html#historia" onclick="toggleSidePanel()">
         <span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></span>
-        Hitos
+        Milestones
       </a></li>
-      <li><a href="index.html#pilares" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Pilares</a></li>
+      <li><a href="index-en.html#pilares" onclick="toggleSidePanel()"><span class="panel-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Pillars</a></li>
     </ul>
-    <a href="#cta" class="panel-cta" onclick="toggleSidePanel()">Solicitar Demo</a>
+    <a href="#cta" class="panel-cta" onclick="toggleSidePanel()">Request Demo</a>
     <div class="panel-contact">
       <div class="panel-contact-item"><span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span class="panel-contact-text">digital@vizutire.com</span></div>
       <div class="panel-contact-item"><span class="panel-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="panel-contact-text">Antofagasta, Chile</span></div>
@@ -759,125 +715,135 @@ img { max-width: 100%; display: block; }
      1. HERO
 ════════════════════════════════════════ -->
 <section class="hero" id="heroSection">
-  <a href="index.html" class="hero-logo" aria-label="VIZUtire — inicio">
+  <a href="index-en.html" class="hero-logo" aria-label="VIZUtire — home">
     <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="logo-img"/>
   </a>
   <div class="hero-inner">
     <div class="hero-badge reveal">
-      <span class="hero-badge-num">2°</span>
-      <span class="hero-badge-txt">lugar · Demo Day ASTER 2026</span>
+      <span class="hero-badge-num">✓</span>
+      <span class="hero-badge-txt">Selected · Open Aster 2026</span>
     </div>
-    <h1 class="hero-title">VIZUtire presenta a <em>Alicanto</em><span class="hero-title-lead">el primer centro de monitoreo estructural de neumáticos OTR de la minería</span></h1>
+    <h1 class="hero-title">VIZUtire was selected in <em>Open Aster</em><span class="hero-title-lead">Escondida | BHP's open innovation program, in the Mine Operations segment</span></h1>
     <p class="hero-sub">
-      El 9 de junio, VIZUtire presentó su centro Alicanto en el <strong>Demo Day de ASTER</strong> durante <strong>EXPONOR 2026</strong>, el cual integra tres de sus tecnologías: ultrasonidos en neumáticos OTR®, un modelo matemático de más de 150 variables y un agente de IA entrenado con más de 5.000 neumáticos. El uso constante de Alicanto promete una <strong>reducción del 80%</strong> de las bajas prematuras por daños estructurales.
+      Open Aster is <strong>Escondida | BHP's</strong> open innovation program, run by <strong>Aster Aceleradora</strong>, connecting operational challenges with local, national, and international startups and suppliers offering high-impact technology solutions. Among <strong>25 companies and startups selected</strong> to bring their technologies to the field, VIZUtire advanced in the <strong>Mine Operations</strong> segment with Alicanto, its structural monitoring center for OTR tires.
     </p>
     <div class="hero-actions">
       <a href="#alicanto" class="hero-btn-dark">
-        Más información
+        Learn more
         <span class="arr-btn"><span class="arr-btn-box">
           <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
           <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
         </span></span>
       </a>
-      <a href="#galeria" class="hero-btn-light">Ver el evento</a>
+      <a href="#galeria" class="hero-btn-light">See the program</a>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
-     2. GALERÍA
+     2. GALLERY
 ════════════════════════════════════════ -->
 <section class="gallery-section section" id="galeria">
   <div class="container">
 
-    <h2 class="section-title reveal delay-1">El día que Alicanto<br/>se hizo visible</h2>
-    <p class="section-sub reveal delay-2">9 de junio de 2026 · EXPONOR · Antofagasta · Demo Day ASTER</p>
+    <h2 class="section-title reveal delay-1">VIZUtire, selected<br/>in Open Aster</h2>
+    <p class="section-sub reveal delay-2">Open Aster 2026 · Escondida | BHP · Antofagasta</p>
 
     <div class="gallery-grid reveal delay-1">
       <div class="gallery-item featured">
-        <img src="images/aster/foto-1.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        <img src="images/open-aster/foto-1.webp" alt="VIZUtire at Open Aster 2026" loading="lazy"/>
       </div>
       <div class="gallery-item">
-        <img src="images/aster/foto-2.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        <img src="images/open-aster/foto-2.webp" alt="VIZUtire at Open Aster 2026" loading="lazy"/>
       </div>
       <div class="gallery-item">
-        <img src="images/aster/foto-3.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        <img src="images/open-aster/foto-3.webp" alt="VIZUtire at Open Aster 2026" loading="lazy"/>
       </div>
       <div class="gallery-item">
-        <img src="images/aster/foto-4.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        <img src="images/open-aster/foto-4.webp" alt="VIZUtire at Open Aster 2026" loading="lazy"/>
       </div>
       <div class="gallery-item">
-        <img src="images/aster/foto-5.webp" alt="Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+        <img src="images/open-aster/foto-5.webp" alt="VIZUtire at Open Aster 2026" loading="lazy"/>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
-     3. EL EVENTO
+     3. THE PROGRAM
 ════════════════════════════════════════ -->
 <section class="event-section section" id="evento">
   <div class="container">
     <div class="event-layout">
       <div>
 
-        <h2 class="section-title reveal delay-1">¿Qué fue el<br/>Demo Day de ASTER?</h2>
-        <p class="section-sub reveal delay-2">La aceleradora ASTER seleccionó a las 5 startups más prometedoras del sector minero para presentar sus soluciones ante un panel de evaluadores expertos mineros en el marco de <strong>EXPONOR 2026</strong>, la feria minera más importante de Latinoamérica.</p>
+        <h2 class="section-title reveal delay-1">What is<br/>Open Aster?</h2>
+        <p class="section-sub reveal delay-2">Open Aster connects <strong>Escondida | BHP's</strong> operational challenges with local, national, and international startups and suppliers offering high-impact technology solutions, through a 4-stage selection process.</p>
 
         <div class="event-timeline">
           <div class="timeline-item reveal delay-1">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </div>
             <div class="tl-content">
-              <div class="tl-date">5 startups seleccionadas</div>
-              <div class="tl-title">Convocatoria ASTER Minería 2026</div>
-              <div class="tl-desc">Proceso competitivo abierto a soluciones tecnológicas para la industria minera. VIZUtire clasificó con Alicanto.</div>
+              <div class="tl-date">Stage 1</div>
+              <div class="tl-title">Application</div>
+              <div class="tl-desc">Online form, open to local, national, and international startups and suppliers.</div>
             </div>
           </div>
           <div class="timeline-item reveal delay-2">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             </div>
             <div class="tl-content">
-              <div class="tl-date">9 de junio 2026, 16:30 · EXPONOR</div>
-              <div class="tl-title">Presentación Alicanto</div>
-              <div class="tl-desc">VIZUtire presentó su centro de monitoreo estructural de neumáticos Alicanto lanzando su integración tecnológica en el evento minero más importante de Latinoamérica.</div>
+              <div class="tl-date">Stage 2</div>
+              <div class="tl-title">Shortlisting</div>
+              <div class="tl-desc">Technical evaluation of the proposal. VIZUtire advanced with Alicanto in the Mine Operations segment.</div>
             </div>
           </div>
           <div class="timeline-item reveal delay-3">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Stage 3</div>
+              <div class="tl-title">Pilot proposal</div>
+              <div class="tl-desc">Preparing the field pilot, with support from Aster Aceleradora.</div>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-4">
             <div class="tl-dot accent">
               <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
             <div class="tl-content">
-              <div class="tl-date">Resultado final</div>
-              <div class="tl-title">2° lugar entre 5 startups</div>
-              <div class="tl-desc">Validación externa del modelo de negocio y la tecnología de Alicanto por evaluadores independientes del sector.</div>
+              <div class="tl-date">Stage 4 · Result</div>
+              <div class="tl-title">Selected in Mine Operations</div>
+              <div class="tl-desc">Final selection before Escondida | BHP's committee, with a 3-to-6-month pilot ahead.</div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="aster-card reveal delay-2">
-        <div class="aster-card-logo">ASTER Aceleradora</div>
-        <div class="aster-card-title">Programa de aceleración para startups mineras</div>
-        <div class="aster-card-desc">ASTER es uno de los programas de aceleración más relevantes de Latinoamérica para soluciones tecnológicas en minería. Sus Demo Days conectan startups con tomadores de decisión de las principales operaciones del norte de Chile.</div>
+        <div class="aster-card-logo">Escondida | BHP · Aster Aceleradora</div>
+        <div class="aster-card-title">Open innovation program for mining operational challenges</div>
+        <div class="aster-card-desc">Open Aster connects Escondida | BHP's operational challenges with local, national, and international startups and suppliers, run by Aster Aceleradora in Antofagasta.</div>
         <div class="aster-card-stats">
           <div class="aster-stat">
-            <div class="aster-stat-num"><em>5</em></div>
-            <div class="aster-stat-lbl">startups en competencia</div>
+            <div class="aster-stat-num"><em>25</em></div>
+            <div class="aster-stat-lbl">companies and startups selected</div>
           </div>
           <div class="aster-stat">
-            <div class="aster-stat-num"><em>2°</em></div>
-            <div class="aster-stat-lbl">lugar obtenido</div>
+            <div class="aster-stat-num">Mine</div>
+            <div class="aster-stat-lbl">Mine Operations segment</div>
           </div>
           <div class="aster-stat">
-            <div class="aster-stat-num">Tier 1</div>
-            <div class="aster-stat-lbl">evaluadores expertos en minería</div>
+            <div class="aster-stat-num">3-6</div>
+            <div class="aster-stat-lbl">months of field pilot</div>
           </div>
           <div class="aster-stat">
-            <div class="aster-stat-num">OTR</div>
-            <div class="aster-stat-lbl">tecnología única a nivel mundial</div>
+            <div class="aster-stat-num">5</div>
+            <div class="aster-stat-lbl">program categories</div>
           </div>
         </div>
       </div>
@@ -886,46 +852,46 @@ img { max-width: 100%; display: block; }
 </section>
 
 <!-- ═══════════════════════════════════════
-     4. ALICANTO — EL PRODUCTO
+     4. ALICANTO — THE PRODUCT
 ════════════════════════════════════════ -->
 <section class="product-section section" id="alicanto">
   <div class="container">
     <div class="product-layout">
       <div>
 
-        <h2 class="section-title reveal delay-1">Alicanto: inteligencia<br/>estructural para neumáticos OTR</h2>
-        <p class="section-sub reveal delay-2">La tecnología que VIZUtire lanzó al mercado redefine cómo las operaciones mineras podrán visibilizar y anticipar daños estructurales en neumáticos OTR.</p>
+        <h2 class="section-title reveal delay-1">Alicanto: the technology<br/>entering a pilot with Escondida | BHP</h2>
+        <p class="section-sub reveal delay-2">The same technology already operating at Escondida now begins a formal pilot in the Mine Operations segment of Open Aster.</p>
         <div class="product-features">
           <div class="feature-card reveal delay-1">
             <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
             <div>
-              <div class="feature-title">Aplicación de tecnologías no destructivas a neumáticos críticos</div>
-              <div class="feature-desc">Uso de ultrasonidos que mapea las dimensiones del daño no visible al exterior.</div>
+              <div class="feature-title">Non-destructive technology applied to critical tires</div>
+              <div class="feature-desc">Ultrasound technology that maps damage dimensions not visible from the outside.</div>
             </div>
           </div>
           <div class="feature-card reveal delay-2">
             <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
             <div>
-              <div class="feature-title">Modelo matemático predictivo con un 82,5% de efectividad</div>
-              <div class="feature-desc">VIZUtire ha desarrollado un modelo que permite identificar qué neumático y de qué CAEX está con daño estructural, permitiendo anticipar el desarrollo de daños que puedan generar liberación descontrolada de energía y/o daños del tipo separación mecánica o térmicas.</div>
+              <div class="feature-title">Predictive mathematical model with 82.5% effectiveness</div>
+              <div class="feature-desc">VIZUtire has developed a model that identifies which tire and which CAEX has structural damage, anticipating the development of damage that could lead to uncontrolled energy release and/or mechanical or thermal separation damage.</div>
             </div>
           </div>
           <div class="feature-card reveal delay-3">
             <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div>
-              <div class="feature-title">Cero liberación descontrolada de energía en neumáticos OTR</div>
-              <div class="feature-desc">El objetivo principal: equilibrar la seguridad de las personas con la continuidad operacional.</div>
+              <div class="feature-title">Zero uncontrolled energy release in OTR tires</div>
+              <div class="feature-desc">The main goal: balancing people's safety with operational continuity.</div>
             </div>
           </div>
         </div>
       </div>
       <div class="product-visual reveal delay-2">
         <div class="product-image-frame">
-          <img src="images/aster/alicanto-demo.webp" alt="Alicanto — Demo Day ASTER EXPONOR 2026" loading="lazy"/>
+          <img src="images/aster/alicanto-demo.webp" alt="Alicanto — VIZUtire" loading="lazy"/>
         </div>
         <div class="product-badge">
-          <div class="product-badge-num">2°</div>
-          <div class="product-badge-lbl">Demo Day ASTER · 8ª versión</div>
+          <div class="product-badge-num">✓</div>
+          <div class="product-badge-lbl">Open Aster · Mine Operations</div>
         </div>
       </div>
     </div>
@@ -933,58 +899,58 @@ img { max-width: 100%; display: block; }
 </section>
 
 <!-- ═══════════════════════════════════════
-     5. LO QUE SE VALIDÓ
+     5. WHY IT ADVANCED
 ════════════════════════════════════════ -->
 <section class="validated-section section" id="validacion">
   <div class="container">
 
-    <h2 class="section-title reveal delay-1">Lo que el Demo Day confirmó</h2>
-    <p class="section-sub reveal delay-2">La evaluación de los expertos validó tres capacidades claves de Alicanto.</p>
+    <h2 class="section-title reveal delay-1">Why Alicanto advanced in Mine Operations</h2>
+    <p class="section-sub reveal delay-2">Open Aster's selection process evaluated three key aspects of VIZUtire's proposal.</p>
     <div class="validated-grid">
       <div class="val-card val-card-accent reveal delay-1">
         <div class="val-card-num">01</div>
-        <div class="val-card-title">Aplicabilidad en terreno</div>
-        <div class="val-card-desc">La tecnología es sólida y compatible con las condiciones de operación más exigentes de la industria.</div>
+        <div class="val-card-title">Technical evaluation passed</div>
+        <div class="val-card-desc">Alicanto passed the application and technical evaluation stages, advancing to the pilot proposal.</div>
       </div>
       <div class="val-card val-card-accent reveal delay-2">
         <div class="val-card-num">02</div>
-        <div class="val-card-title">Propuesta de valor clara</div>
-        <div class="val-card-desc">El modelo de negocios propuesto es consistente con la operación diaria y busca capturar el valor que se pierde prematuramente.</div>
+        <div class="val-card-title">Fit with the Mine Operations challenge</div>
+        <div class="val-card-desc">Non-destructive structural monitoring of OTR tires directly addresses the segment's operational challenges.</div>
       </div>
       <div class="val-card val-card-accent reveal delay-3">
         <div class="val-card-num">03</div>
-        <div class="val-card-title">Equipo técnico sólido</div>
-        <div class="val-card-desc">Evaluadores destacaron la profundidad técnica detrás de Alicanto y la capacidad de ejecución del equipo.</div>
+        <div class="val-card-title">Field pilot</div>
+        <div class="val-card-desc">Alicanto begins a 3-to-6-month pilot supported by Aster Aceleradora, with a final evaluation before Escondida | BHP's committee.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
-     6. CTA FINAL
+     6. FINAL CTA
 ════════════════════════════════════════ -->
 <section class="cta-section" id="cta">
   <div class="container">
     <div class="cta-inner">
 
-      <h2 class="cta-title reveal delay-1">Agenda una demo de Alicanto</h2>
-      <p class="cta-sub reveal delay-2">Muéstranos tu flota OTR y te entregamos un análisis de riesgo estructural y el valor que puedes capturar aplicando Alicanto.</p>
+      <h2 class="cta-title reveal delay-1">Schedule an Alicanto demo</h2>
+      <p class="cta-sub reveal delay-2">Show us your OTR fleet and we'll provide a structural risk analysis and the value you can capture by applying Alicanto.</p>
       <div class="cta-actions reveal delay-3">
-        <a href="index.html#contacto" class="cta-btn-primary">
-          Solicitar Demo
+        <a href="index-en.html#contacto" class="cta-btn-primary">
+          Request Demo
           <span class="arr-btn"><span class="arr-btn-box">
             <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
             <span class="arr-btn-elem"><svg viewBox="0 0 46 40"><path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/></svg></span>
           </span></span>
         </a>
-        <a href="index.html" class="cta-btn-secondary">Conoce VIZUtire</a>
+        <a href="index-en.html" class="cta-btn-secondary">Discover VIZUtire</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
-     FOOTER — idéntico al sitio principal
+     FOOTER — identical to main site
 ════════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer-watermark" aria-hidden="true">
@@ -993,10 +959,10 @@ img { max-width: 100%; display: block; }
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="index.html" class="footer-logo-link">
+        <a href="index-en.html" class="footer-logo-link">
           <img src="images/Logo_VIZUtire_Neg.svg" alt="VIZUtire" class="footer-logo-img" width="619" height="315" loading="lazy" />
         </a>
-        <p class="footer-brand-desc">Diagnóstico estructural no destructivo<br/>para neumáticos OTR de minería.</p>
+        <p class="footer-brand-desc">Non-destructive structural diagnostics<br/>for mining OTR tires.</p>
         <a href="mailto:digital@vizutire.com" class="footer-email">digital@vizutire.com</a>
         <div class="footer-social">
           <a href="https://www.instagram.com/vizutire" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1016,23 +982,23 @@ img { max-width: 100%; display: block; }
       </div>
       <div class="footer-nav">
         <div class="footer-col">
-          <h4>SERVICIOS</h4>
-          <a href="index.html#pilares">Inspección Ultrasónica</a>
-          <a href="index.html#tecnologia">Beneficios</a>
-          <a href="index.html#alicanto">Analítica Con IA</a>
-          <a href="index.html#ciencia">Reportes De Diagnóstico</a>
+          <h4>SERVICES</h4>
+          <a href="index-en.html#pilares">Ultrasonic Inspection</a>
+          <a href="index-en.html#tecnologia">Benefits</a>
+          <a href="index-en.html#alicanto">AI Analytics</a>
+          <a href="index-en.html#ciencia">Diagnostic Reports</a>
         </div>
         <div class="footer-col">
-          <h4>EMPRESA</h4>
-          <a href="index.html#alicanto">Alicanto</a>
-          <a href="index.html#ciencia">Casos de éxito</a>
-          <a href="index.html#historia">Hitos</a>
-          <a href="index.html#contacto">Contacto</a>
+          <h4>COMPANY</h4>
+          <a href="index-en.html#alicanto">Alicanto</a>
+          <a href="index-en.html#ciencia">Case Studies</a>
+          <a href="index-en.html#historia">Milestones</a>
+          <a href="index-en.html#contacto">Contact</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 VIZUtire. Todos los derechos reservados.</p>
+      <p>© 2026 VIZUtire. All rights reserved.</p>
       <p>Antofagasta, Chile</p>
     </div>
   </div>
@@ -1053,7 +1019,7 @@ window.addEventListener('scroll', function() {
   }
 }, { passive: true });
 
-// ── Navbar dropdowns ("Eventos", "Ciencia") — hover lo resuelve el CSS; esto
+// ── Navbar dropdowns ("Events", "Science") — hover lo resuelve el CSS; esto
 // agrega click y teclado (táctil / Tab), cerrando al pulsar fuera, con Escape,
 // o al abrir otro desplegable del navbar. ──
 (function () {

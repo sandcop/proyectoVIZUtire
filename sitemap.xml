@@ -31,4 +31,20 @@
     <priority>0.7</priority>
     <lastmod>2026-06-09</lastmod>
   </url>
+  <url>
+    <loc>https://vizutire.com/open-aster.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vizutire.com/open-aster.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vizutire.com/open-aster-en.html"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-09-02</lastmod>
+  </url>
+  <url>
+    <loc>https://vizutire.com/open-aster-en.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vizutire.com/open-aster-en.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vizutire.com/open-aster.html"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-09-02</lastmod>
+  </url>
 </urlset>
